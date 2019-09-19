@@ -5,14 +5,18 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     // Variables //
     public float walkSpeed = 10.0f;
-    public int jumpSpeed = 10;
+    public float jumpSpeed = 10;
     private Vector3 playerTransformation = Vector3.zero;
+    [HideInInspector]
+    public Rigidbody rigidbody;
 
+    private bool jumpPressed;
 
     // Locking and removing cursor from view on spawned. //
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame //
@@ -36,11 +40,25 @@ public class PlayerController : MonoBehaviour {
             Cursor.lockState = CursorLockMode.None;
         }
         // Player Jumping
-        if (Input.GetButton("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
-            playerTransformation.y = jumpSpeed * Time.deltaTime;
+            //Handle Jump in FixedUpdate()
+            jumpPressed = true;
         }
 
         transform.Translate(playerTransformation);
+    }
+
+    private void FixedUpdate()
+    {
+        if (jumpPressed)
+        {
+            jumpPressed = false;
+            Vector3 velocity = rigidbody.velocity;
+            velocity.y = 0f;
+            rigidbody.velocity = velocity;
+            rigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.VelocityChange);
+        }
+        
     }
 }
