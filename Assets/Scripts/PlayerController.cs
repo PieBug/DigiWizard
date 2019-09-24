@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
     // Variables //
+    public static PlayerController singleton { get; private set; }
     public float walkSpeed = 10.0f;
     public float jumpSpeed = 10;
     private Vector3 playerTransformation = Vector3.zero;
@@ -15,6 +16,18 @@ public class PlayerController : MonoBehaviour {
     private int groundContacts;
     private int groundMask;
 
+    private void Awake()
+    {
+        //Set singleton
+        if (this != singleton && singleton == null)
+        {
+            singleton = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
     // Locking and removing cursor from view on spawned. //
     void Start()
     {
