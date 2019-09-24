@@ -11,12 +11,34 @@ public class PlayerController : MonoBehaviour {
     public Rigidbody rigidbody;
 
     private bool jumpPressed;
+    private bool onGround;
+    private int groundContacts;
+    private int groundMask;
 
     // Locking and removing cursor from view on spawned. //
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         rigidbody = GetComponent<Rigidbody>();
+        groundMask = LayerMask.GetMask("Default");
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        //Check if there is a floor beneath player
+        if (Physics.CheckSphere(transform.position + Vector3.down * 1.1f, 0.5f, groundMask))
+        {
+            onGround = true;
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        //Check if there is not a floor beneath player
+        if (!Physics.CheckSphere(transform.position + Vector3.down * 1.1f, 0.5f, groundMask))
+        {
+            onGround = false;
+        }
     }
 
     // Update is called once per frame //
@@ -40,7 +62,7 @@ public class PlayerController : MonoBehaviour {
             Cursor.lockState = CursorLockMode.None;
         }
         // Player Jumping
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && onGround)
         {
             //Handle Jump in FixedUpdate()
             jumpPressed = true;
@@ -54,6 +76,7 @@ public class PlayerController : MonoBehaviour {
         if (jumpPressed)
         {
             jumpPressed = false;
+            onGround = false;
             Vector3 velocity = rigidbody.velocity;
             velocity.y = 0f;
             rigidbody.velocity = velocity;
