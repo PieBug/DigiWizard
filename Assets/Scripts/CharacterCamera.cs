@@ -28,8 +28,10 @@ public class CharacterCamera : MonoBehaviour {
 
         mouseDirection += smoothV; // mouseDirection inherits information from smoothV 
 
-        
-        transform.localRotation = Quaternion.AngleAxis(-mouseDirection.y, Vector3.right); // Local rotation of the camera -> mouse Y axis movement, rotating along x-rotation-axis = up and down. If mouseDirection.y is not negative, camera will move up and down in the opposite direction of the mouse.
+        float Clampedmouse = Mathf.Clamp(mouseDirection.y, -90, 80); // resticts the up/down rotation of the player campera before applying the transform
+
+
+        transform.localRotation = Quaternion.AngleAxis(-Clampedmouse, Vector3.right); // Local rotation of the camera -> mouse Y axis movement, rotating along x-rotation-axis = up and down. If mouseDirection.y is not negative, camera will move up and down in the opposite direction of the mouse.
         playerCharacter.transform.localRotation = Quaternion.AngleAxis(mouseDirection.x, playerCharacter.transform.up); // Local rotation of the player character -> mouse X axis movement, rotating along y-rotation-axis = side to side.
 
 
