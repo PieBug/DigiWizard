@@ -1,0 +1,57 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class PlayerHealthAndDeathManager : MonoBehaviour{
+    // Variables //
+    public int startingHealth;
+    public int currentHealth;
+    public Slider healthBar;
+    PlayerController plyrController;
+    bool isDead;
+    bool isDamaged;
+
+    // Awake gets called right a the beginning
+    void Awake()
+    {
+        plyrController = GetComponent<PlayerController>();
+        currentHealth = startingHealth;
+    }
+
+    // Public so that damagePlayer function can be called anywhere.
+    public void DamagePlayer(int damageAmt)
+    {
+        isDamaged = true; 
+        currentHealth -= damageAmt;
+        healthBar.value = currentHealth; // Health slider in "HUD" will decrease as current health does.
+
+        if (currentHealth <= 0 && !isDead) // If player health is zero and the player isn't already dead, call the Die() function
+        {
+            KillPlayer();
+        }
+
+    }
+
+    void KillPlayer()
+    {
+        isDead = true; 
+        plyrController.enabled = false; // Stops the player from moving in the scene.
+    }
+
+
+
+
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    } // end start
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    } // end update
+} // end PlayerHealthAndDeathManager
