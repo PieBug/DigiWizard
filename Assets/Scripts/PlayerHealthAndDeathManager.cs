@@ -9,6 +9,7 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
     public int currentHealth;
     public Slider healthBar;
     PlayerController plyrController;
+    //CharacterCamera plyrCam;
     bool isDead;
     bool isDamaged;
 
@@ -16,6 +17,7 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
     void Awake()
     {
         plyrController = GetComponent<PlayerController>();
+        //plyrCam = GetComponent<CharacterCamera>();
         currentHealth = startingHealth;
     }
 
@@ -37,6 +39,7 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
     {
         isDead = true; 
         plyrController.enabled = false; // Stops the player from moving in the scene.
+        //plyrCam.enabled = false;
     }
 
 
