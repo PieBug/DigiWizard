@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MagicSystem : MonoBehaviour {
     // Start is called before the first frame update
-    private GameObject LeftWand;
-    private GameObject RightWand;
+    public GameObject LeftWand;
+    public GameObject RightWand;
     //float buttonPressedTime = 10.0f;
 
     // Shooting Variables // 
@@ -25,7 +25,9 @@ public class MagicSystem : MonoBehaviour {
     string Lelement = "fire";
     string Relement = "ice";
 
-
+    public Material fireMaterial;
+    public Material lightingMaterial;
+    public Material iceMaterial;
 
     void Start()
     {
@@ -34,7 +36,6 @@ public class MagicSystem : MonoBehaviour {
 
         LlaserLine = LeftWand.GetComponent<LineRenderer>();
         RlaserLine = RightWand.GetComponent<LineRenderer>();
-
         fpsCam = GetComponentInChildren<Camera>();
 
     } // end Start
@@ -145,30 +146,52 @@ public class MagicSystem : MonoBehaviour {
         }
 
 
-        // Q KEY //
-        if (Input.GetKeyDown(KeyCode.Q))
+        // Q KEY: Left Wand //
+        if (Input.GetKeyDown(KeyCode.Q) && Time.time > nextFire)
         {
+            nextFire = Time.time + fireRate;
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
                 Lelement = "lighting";
+                LlaserLine.material = new Material(lightingMaterial);
+                print(Lelement);
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting")) 
             {
                 Lelement = "fire";
+                LlaserLine.material = new Material(fireMaterial);
+                print(Lelement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Lelement = "ice";
+                LlaserLine.material = new Material(iceMaterial);
+                print(Lelement);
             }
-
-            
-            print("Q was pressed");
         }
 
-        // E KEY//
-        if (Input.GetKey(KeyCode.E))
+        // E KEY: Right Wand //
+        if (Input.GetKey(KeyCode.E) && Time.time > nextFire)
         {
-            print("E was pressed");
+            nextFire = Time.time + fireRate;
+            if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
+            {
+                Relement = "lighting";
+                RlaserLine.material = new Material(lightingMaterial);
+                print(Relement);
+            }
+            else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
+            {
+                Relement = "fire";
+                RlaserLine.material = new Material(fireMaterial);
+                print(Relement);
+            }
+            else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
+            {
+                Relement = "ice";
+                RlaserLine.material = new Material(iceMaterial);
+                print(Relement);
+            }
         }
 
     } // end update
