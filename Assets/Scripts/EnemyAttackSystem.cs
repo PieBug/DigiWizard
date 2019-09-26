@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/** 
+ * [NOTE:]
+ * When placing this script inside an enemy, please make sure the enemy has a collider component and isTrigger is checked to True.
+ * */
+
+
+    
+
+
 public class EnemyAttackSystem : MonoBehaviour {
     // Variables //
     public float timeBetweenAttacks = 0.5f;
