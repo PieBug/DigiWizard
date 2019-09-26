@@ -61,7 +61,7 @@ public class MagicSystem : MonoBehaviour {
             {
                 LlaserLine.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
 
-                EnemyHealthAndDamageManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDamageManager>(); // getting script from the object hit
+                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
                     enemyHealth.damageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
@@ -91,7 +91,7 @@ public class MagicSystem : MonoBehaviour {
             {
                 RlaserLine.SetPosition(1, hitObject.point); // setting end position of laser to the object hit
 
-                EnemyHealthAndDamageManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDamageManager>(); // creating object of enemyhealthmanager
+                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
                 if (enemyHealth != null) 
                 {
                     // if EnemyHealthAndDamaageManager exists, then damage enemy
@@ -130,7 +130,7 @@ public class MagicSystem : MonoBehaviour {
                 RlaserLine.SetPosition(1, hitObject.point);
 
                 // Creating object of EnemyHealthDamageManager and inserting it with the hitObject
-                EnemyHealthAndDamageManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDamageManager>();
+                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
                 if (enemyHealth != null)
                 {
                     // if it exsists, then insert wand damage

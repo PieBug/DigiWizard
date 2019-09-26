@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealthAndDamageManager : MonoBehaviour
+public class EnemyHealthAndDeathManager : MonoBehaviour
 {
     public int enemyHealth = 10; // Setting default enemy health
 
