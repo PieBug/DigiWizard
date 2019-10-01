@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour {
     // Start is called before the first frame update
     public GameObject LeftWand;
     public GameObject RightWand;
-    //float buttonPressedTime = 10.0f;
 
     // Shooting Variables // 
     public int wandDamage = 1; // Amount of damage
@@ -22,12 +22,21 @@ public class MagicSystem : MonoBehaviour {
     private LineRenderer LlaserLine; // takes array of two points and draws a line between each one in the game view
     private float nextFire; // Holds time when player can fire again after firing
 
+    // Wand Elements //
     string Lelement = "fire";
     string Relement = "ice";
 
     public Material fireMaterial;
     public Material lightingMaterial;
     public Material iceMaterial;
+
+    // RAM System //
+    public Slider ramSlider;
+    public int ramAmount = 100;
+    public float nextRamFire;
+    public float ramFireRate = 1.0f;
+
+    //---------------------------------------------------------------------------------------------//
 
     void Start()
     {
@@ -45,7 +54,7 @@ public class MagicSystem : MonoBehaviour {
     {
 
         // LEFT BUTTON // 
-        if (Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2") && Time.time > nextFire) 
+        if (Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2") && Time.time > nextFire && ramAmount != 0)
         {
             string element = Lelement; // storing the element information
 
@@ -65,6 +74,7 @@ public class MagicSystem : MonoBehaviour {
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
                     enemyHealth.damageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
+                    RamDepletion();
                 }
             }
             else // Raycast returns false
@@ -74,7 +84,7 @@ public class MagicSystem : MonoBehaviour {
         }
 
         // RIGHT BUTTON //
-        if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire)
+        if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0) 
         {
             string element = Relement; // storing the element information
 
@@ -92,28 +102,27 @@ public class MagicSystem : MonoBehaviour {
                 RlaserLine.SetPosition(1, hitObject.point); // setting end position of laser to the object hit
 
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
-                if (enemyHealth != null) 
+                if (enemyHealth != null)
                 {
                     // if EnemyHealthAndDamaageManager exists, then damage enemy
-                    enemyHealth.damageEnemy(wandDamage); 
+                    enemyHealth.damageEnemy(wandDamage);
+                    RamDepletion();
                 }
             }
-            else 
+            else
             {
                 // if it does not exist then cast the ray in a forward direction from the camera middle point
-                RlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange))); 
+                RlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
             }
         }
 
         // BOTH BUTTONS //
-        if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) )
+        if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0)
         {
-
-            //&& Time.time > nextFire
-            //nextFire = Time.time + fireRate; // Making sure player does not constantly fire
+            nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling to able the line renderer 
             StartCoroutine(ShotEffect(RlaserLine)); // Calling to able the line renderer 
-            Vector3 camShootingPoint = fpsCam.ViewportToWorldPoint(new Vector3(0.5f,0.5f,0)); // Point where ray will shoot at
+            Vector3 camShootingPoint = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Point where ray will shoot at
 
             RaycastHit hitObject; // Variable Raycast that will store the information of the object that is hit.
 
@@ -122,9 +131,9 @@ public class MagicSystem : MonoBehaviour {
             RlaserLine.SetPosition(0, RwandEnd.position);
 
 
-           // RayCast(origin, direction, out: inserting information of object hit from raycast, distance)
-           if (Physics.Raycast(camShootingPoint, fpsCam.transform.forward, out hitObject, shootRange))
-           {
+            // RayCast(origin, direction, out: inserting information of object hit from raycast, distance)
+            if (Physics.Raycast(camShootingPoint, fpsCam.transform.forward, out hitObject, shootRange))
+            {
                 // Point stores the Vector3 transformation of the object hit in the game view
                 LlaserLine.SetPosition(1, hitObject.point);
                 RlaserLine.SetPosition(1, hitObject.point);
@@ -135,16 +144,19 @@ public class MagicSystem : MonoBehaviour {
                 {
                     // if it exsists, then insert wand damage
                     enemyHealth.damageEnemy(wandDamage);
+                    RamDepletion();
                 }
-           }
-           else
+            }
+            else
             {
                 // If a object is not hit, then just cast the laser line in forward direction pointing originating from the camera middle point
                 LlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
                 RlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
-            }  
+            }
         }
 
+
+        // Magic Switching System //
 
         // Q KEY: Left Wand //
         if (Input.GetKeyDown(KeyCode.Q) && Time.time > nextFire)
@@ -156,7 +168,7 @@ public class MagicSystem : MonoBehaviour {
                 LlaserLine.material = new Material(lightingMaterial);
                 print(Lelement);
             }
-            else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting")) 
+            else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Lelement = "fire";
                 LlaserLine.material = new Material(fireMaterial);
@@ -194,11 +206,23 @@ public class MagicSystem : MonoBehaviour {
             }
         }
 
+        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && (ramAmount < 100))
+        {
+            nextRamFire = Time.time + ramFireRate;
+            ramAmount += 1;
+            print(ramAmount);
+            ramSlider.value = ramAmount;
+        }
+
     } // end update
 
-
-
-
+    // Deplete ram slider bar //
+    private void RamDepletion()
+    {
+        ramAmount -= 5;
+        print(ramAmount);
+        ramSlider.value = ramAmount;
+    }
 
     // Coroutine ShotEffect()
     private IEnumerator ShotEffect(LineRenderer laserLine) 
