@@ -14,12 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   docile: 0
   pacifist: 0
-  view: 0.5
+  viewEngage: 0
+  viewPounce: 0.9
   sightRange: 50
   attackRange: 10
-  rotSpeed: 50
-  attackTime: 1
-  recoupTime: 0.5
+  rotSpeed: 300
+  attackTime: 0.5
+  recoupTime: 0.3
   lungeDistance: 10
   lungeSpeed: 10
   jitterRate: 1
