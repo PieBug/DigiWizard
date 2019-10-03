@@ -11,7 +11,7 @@ public class MagicSystem : MonoBehaviour {
     // Shooting Variables // 
     public int wandDamage = 1; // Amount of damage
     public float fireRate = .25f; // How often player can fire weapon
-    public float shootRange = 30f; // How long rays are shot
+    public float shootRange = 10f; // How long rays are shot
     //public float hitForce = 100f; // How much force hitting game objects with a rigidbody
     public Transform LwandEnd; // Marks the tip of the wand where ray will shoot from
     public Transform RwandEnd; // Marks the tip of the wand where ray will shoot from
@@ -24,6 +24,7 @@ public class MagicSystem : MonoBehaviour {
 
     // Raycast visual indicator - bullet holes //
     public GameObject bullet;
+    private GameObject bulletClone;
 
     // Wand Elements //
     string Lelement = "fire";
@@ -38,7 +39,7 @@ public class MagicSystem : MonoBehaviour {
     public int ramAmount = 100;
     public float nextRamFire;
     public float ramFireRate = 3.0f;
-    private WaitForSeconds ramDuration = new WaitForSeconds(10.0f);
+    private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
     bool IsRamPenalty = false;
 
     //---------------------------------------------------------------------------------------------//
@@ -74,9 +75,11 @@ public class MagicSystem : MonoBehaviour {
             if (Physics.Raycast(camShootingPoint, fpsCam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
             {
                 LlaserLine.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
-               
-                Instantiate(bullet, hitObject.transform.position, Quaternion.identity);
-                print(hitObject.transform.position);
+                RamDepletion();
+                // Bullet Cloning //
+                bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
+                print(hitObject.point);
 
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
@@ -88,13 +91,17 @@ public class MagicSystem : MonoBehaviour {
             else // Raycast returns false
             {
                 LlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
-                Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
+
+                // Bullet Cloning //
+                bulletClone = Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
+                RamDepletion();
                 print((camShootingPoint + (fpsCam.transform.forward * shootRange)));
             }
         }
 
         // RIGHT BUTTON //
-        if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0) 
+        if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             string element = Relement; // storing the element information
 
@@ -105,11 +112,16 @@ public class MagicSystem : MonoBehaviour {
 
             RaycastHit hitObject;  // Raycast var storing information of the object hit
             RlaserLine.SetPosition(0, RwandEnd.position); // setting starting position of the laser
-
+            RamDepletion();
 
             if (Physics.Raycast(camShootingPoint, fpsCam.transform.forward, out hitObject, shootRange))
             {
                 RlaserLine.SetPosition(1, hitObject.point); // setting end position of laser to the object hit
+
+                // Bullet Cloning //
+                bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
+                print(hitObject.point);
 
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
                 if (enemyHealth != null)
@@ -123,6 +135,9 @@ public class MagicSystem : MonoBehaviour {
             {
                 // if it does not exist then cast the ray in a forward direction from the camera middle point
                 RlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
+                RamDepletion();
+                bulletClone = Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
             }
         }
 
@@ -139,6 +154,7 @@ public class MagicSystem : MonoBehaviour {
             // Setting initial starting position of te lasers to the tip of the designated wands.
             LlaserLine.SetPosition(0, LwandEnd.position);
             RlaserLine.SetPosition(0, RwandEnd.position);
+            RamDepletion();
 
 
             // RayCast(origin, direction, out: inserting information of object hit from raycast, distance)
@@ -147,6 +163,11 @@ public class MagicSystem : MonoBehaviour {
                 // Point stores the Vector3 transformation of the object hit in the game view
                 LlaserLine.SetPosition(1, hitObject.point);
                 RlaserLine.SetPosition(1, hitObject.point);
+
+                // Bullet Cloning //
+                bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
+                print(hitObject.point);
 
                 // Creating object of EnemyHealthDamageManager and inserting it with the hitObject
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
@@ -162,6 +183,9 @@ public class MagicSystem : MonoBehaviour {
                 // If a object is not hit, then just cast the laser line in forward direction pointing originating from the camera middle point
                 LlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
                 RlaserLine.SetPosition(1, (camShootingPoint + (fpsCam.transform.forward * shootRange)));
+                RamDepletion();
+                bulletClone = Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
+                Destroy(bulletClone, 0.2f);
             }
         }
 
@@ -217,12 +241,21 @@ public class MagicSystem : MonoBehaviour {
         }
 
         // Ram regeneration system //
-        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && (ramAmount < 100) && (ramAmount > 0) && IsRamPenalty == false)
+        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
         {
             nextRamFire = Time.time + ramFireRate;
-            ramAmount += 5;
-            print(ramAmount);
-            ramSlider.value = ramAmount;
+
+            if (!(ramAmount == 100) || !(ramAmount > 100))
+            {
+                ramAmount += 5;
+                print(ramAmount);
+                ramSlider.value = ramAmount;
+            }
+            else if (ramAmount > 100) 
+            {
+                ramAmount = 100;
+                ramSlider.value = ramAmount;
+            }
         }
 
         // Ram penalty system //
@@ -253,10 +286,10 @@ public class MagicSystem : MonoBehaviour {
     // Ram Coroutine //
     private IEnumerator RamPenalty()
     {
+        print (ramDuration);
         yield return ramDuration;
-        ramAmount = 1;
-        IsRamPenalty = false;
         print ("Ram coroutine worked!");
+        IsRamPenalty = false;
     }
 
     // Coroutine ShotEffect()
