@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b986937bd47b44ca319fc7dc2cdd5c, type: 3}
   m_Name: DebugAttributes
   m_EditorClassIdentifier: 
-  docile: 0
+  docile: 1
   pacifist: 0
   viewEngage: 0
   viewPounce: 0.9
@@ -25,3 +25,5 @@ MonoBehaviour:
   lungeSpeed: 10
   jitterRate: 1
   jitterRange: 1
+  preparePounce: {fileID: 8300000, guid: 3fefc0e222fd14c4891019b5033b3ca1, type: 3}
+  pounce: {fileID: 8300000, guid: 7e8ab216044dd2d46a59ce9a1888962e, type: 3}

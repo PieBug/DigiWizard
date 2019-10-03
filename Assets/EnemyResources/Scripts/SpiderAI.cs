@@ -8,6 +8,9 @@ public class SpiderAI : BaseAI
     public SpiderEnemyAttributes attributes;
     public NavMeshAgent agent;
     public Animator animator;
+    public AudioSource audioSource2D;
+    public AudioSource audioSource3D;
+    public EnemyAttackSystem attackSphere;
     private PlayerController player;
     public State state;
 
@@ -20,7 +23,8 @@ public class SpiderAI : BaseAI
         preparingPounce,
         pouncing,
         recouping,
-        closeQuaters
+        closeQuaters,
+        dead
     }
 
     private float distanceToPlayer;
@@ -70,7 +74,7 @@ public class SpiderAI : BaseAI
                 break;
             case State.chasing:
                 //bool pathRecalulated = false;
-                if (distanceToPlayer > attributes.sightRange)
+                if (distanceToPlayer > attributes.sightRange || attributes.docile)
                 {
                     state = State.idling;
                     agent.isStopped = true;
@@ -117,21 +121,24 @@ public class SpiderAI : BaseAI
                 agent.Move(transform.forward * delta);
                 distanceCovered += delta;
                 break;
+            case State.dead:
+                break;
         }
     }
 
     private IEnumerator Pounce()
     {
         Debug.Log(name + " is resting on his haunches.");
+        audioSource3D.PlayOneShot(attributes.preparePounceClip);
         agent.isStopped = true;
         state = State.preparingPounce;
-        animator.SetBool("pounce", true);
+        animator.SetTrigger("pounce");
         yield return new WaitForSeconds(attributes.attackTime);
         Debug.Log(name + " pounces ferociously OwO.");
+        audioSource2D.PlayOneShot(attributes.pounceClip);
         distanceCovered = 0f;
         state = State.pouncing;
         yield return new WaitUntil(() => distanceCovered > attributes.lungeDistance);
-        animator.SetBool("pounce", false);
         Debug.Log(name + " is recouping from that phat pounce.");
         state = State.recouping;
         yield return new WaitForSeconds(attributes.recoupTime);
