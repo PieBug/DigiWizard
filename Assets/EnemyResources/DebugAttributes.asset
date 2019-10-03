@@ -25,5 +25,8 @@ MonoBehaviour:
   lungeSpeed: 10
   jitterRate: 1
   jitterRange: 1
-  preparePounce: {fileID: 8300000, guid: 3fefc0e222fd14c4891019b5033b3ca1, type: 3}
-  pounce: {fileID: 8300000, guid: 7e8ab216044dd2d46a59ce9a1888962e, type: 3}
+  preparePounceClip: {fileID: 8300000, guid: 3fefc0e222fd14c4891019b5033b3ca1, type: 3}
+  pounceClip: {fileID: 8300000, guid: 7e8ab216044dd2d46a59ce9a1888962e, type: 3}
+  deathClip: {fileID: 8300000, guid: b1e23e1adfd70e24395bc39b6430cfc4, type: 3}
+  normalDrop: {fileID: 4372434887940159498, guid: f4cf460a7f2ae604ba8e97216f40e100,
+    type: 3}
