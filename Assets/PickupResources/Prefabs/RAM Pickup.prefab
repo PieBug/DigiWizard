@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68ce22f5986d75a43853167da39cf2c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collider: {fileID: 4372434887940159541}
   pickup: {fileID: 4372434888773897031}
   particles: {fileID: 4372434887311103866}
   audioSource: {fileID: 4898663409216591236}
@@ -88,6 +89,12 @@ PrefabInstance:
 --- !u!1 &4372434887940159498 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5612414388084988534, guid: 6b5e33fbe420fdd41a769625eacc956b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8164269089815683708}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &4372434887940159541 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 5612414388084988489, guid: 6b5e33fbe420fdd41a769625eacc956b,
     type: 3}
   m_PrefabInstance: {fileID: 8164269089815683708}
   m_PrefabAsset: {fileID: 0}
