@@ -29,4 +29,7 @@ public class SpiderEnemyAttributes : ScriptableObject
     public AudioClip preparePounceClip;
     public AudioClip pounceClip;
     public AudioClip deathClip;
+
+    [Header("Drops")]
+    public GameObject normalDrop;
 }
