@@ -7,6 +7,7 @@ public class SpiderAI : BaseAI
 {
     public SpiderEnemyAttributes attributes;
     public NavMeshAgent agent;
+    public Animator animator;
     private PlayerController player;
     public State state;
 
@@ -19,6 +20,7 @@ public class SpiderAI : BaseAI
         preparingPounce,
         pouncing,
         recouping,
+        closeQuaters
     }
 
     private float distanceToPlayer;
@@ -81,7 +83,7 @@ public class SpiderAI : BaseAI
                         agent.isStopped = true;
                         StopCoroutine(walkRoutine);
                     }
-                    else
+                    else if (FacingPlayer(attributes.viewPounce))
                     {
                         pounceRoutine = StartCoroutine(Pounce());
                     }
@@ -120,28 +122,34 @@ public class SpiderAI : BaseAI
 
     private IEnumerator Pounce()
     {
-        //Debug.Log(name + " is resting on his haunches.");
+        Debug.Log(name + " is resting on his haunches.");
         agent.isStopped = true;
         state = State.preparingPounce;
+        animator.SetBool("pounce", true);
         yield return new WaitForSeconds(attributes.attackTime);
-        //Debug.Log(name + " pounces ferociously OwO.");
+        Debug.Log(name + " pounces ferociously OwO.");
         distanceCovered = 0f;
         state = State.pouncing;
         yield return new WaitUntil(() => distanceCovered > attributes.lungeDistance);
-        //Debug.Log(name + " is recouping from that phat pounce.");
+        animator.SetBool("pounce", false);
+        Debug.Log(name + " is recouping from that phat pounce.");
         state = State.recouping;
         yield return new WaitForSeconds(attributes.recoupTime);
-        //Debug.Log(name + " is back on the prowl.");
+        Debug.Log(name + " is back on the prowl.");
         agent.isStopped = false;
         state = State.chasing;
     }
 
     private IEnumerator JitterWalkToPlayer()
     {
+        agent.destination = player.transform.position;
+        yield return new WaitForSeconds(Random.Range(0, 1f));
         while (true)
         {
             yield return new WaitForSeconds(attributes.jitterRate);
-            agent.destination = transform.position + Random.insideUnitSphere.normalized * attributes.jitterRange;
+            bool right = Random.Range(0f, 1f) < 0.5f;
+            Vector3 direction = right ? transform.right : -transform.right;
+            agent.destination = transform.position + direction * attributes.jitterRange;
             yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             agent.destination = player.transform.position;
         }
@@ -150,14 +158,14 @@ public class SpiderAI : BaseAI
 
     private bool CanSeePlayer()
     {
-        if (distanceToPlayer < attributes.sightRange && dotProductBetweenPlayer > attributes.view)
+        if (distanceToPlayer < attributes.sightRange && FacingPlayer(attributes.viewEngage))
             return !Physics.Linecast(transform.position, player.transform.position, LayerMask.GetMask("Default"));
         else
             return false;
     }
 
-    private bool FacingPlayer()
+    private bool FacingPlayer(float view, bool opposite = false)
     {
-        return dotProductBetweenPlayer > attributes.view;
+        return opposite == dotProductBetweenPlayer < attributes.viewEngage;
     }
 }

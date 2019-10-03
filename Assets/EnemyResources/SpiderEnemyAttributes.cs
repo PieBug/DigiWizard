@@ -9,7 +9,9 @@ public class SpiderEnemyAttributes : ScriptableObject
     public bool pacifist;
 
     [Range(-1f, 1f)]
-    public float view;
+    public float viewEngage;
+    [Range(-1f, 1f)]
+    public float viewPounce;
     public float sightRange;
     public float attackRange;
 
