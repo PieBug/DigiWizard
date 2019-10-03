@@ -10,6 +10,7 @@ public class SpiderEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         spider.animator.SetTrigger("death");
         spider.attackSphere.gameObject.SetActive(false);
         spider.state = SpiderAI.State.dead;
+        spider.StopAllCoroutines();
         spider.audioSource2D.PlayOneShot(spider.attributes.deathClip);
     }
 }
