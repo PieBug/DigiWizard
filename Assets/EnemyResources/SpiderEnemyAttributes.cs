@@ -5,9 +5,10 @@ using UnityEngine;
 [CreateAssetMenu( fileName = "newSpiderEnemyAttributes", menuName = "SpiderEnemyAttributes")]
 public class SpiderEnemyAttributes : ScriptableObject
 {
+    [Header("Behavior")]
     public bool docile;
     public bool pacifist;
-
+    [Header("Senses")]
     [Range(-1f, 1f)]
     public float viewEngage;
     [Range(-1f, 1f)]
@@ -24,4 +25,8 @@ public class SpiderEnemyAttributes : ScriptableObject
 
     public float jitterRate;
     public float jitterRange;
+    [Header("Sounds")]
+    public AudioClip preparePounceClip;
+    public AudioClip pounceClip;
+    public AudioClip deathClip;
 }

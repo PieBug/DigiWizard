@@ -84,7 +84,7 @@ public class MagicSystem : MonoBehaviour {
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
-                    enemyHealth.damageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
+                    enemyHealth.DamageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
                     RamDepletion();
                 }
             }
@@ -127,7 +127,7 @@ public class MagicSystem : MonoBehaviour {
                 if (enemyHealth != null)
                 {
                     // if EnemyHealthAndDamaageManager exists, then damage enemy
-                    enemyHealth.damageEnemy(wandDamage);
+                    enemyHealth.DamageEnemy(wandDamage);
                     RamDepletion();
                 }
             }
@@ -174,7 +174,7 @@ public class MagicSystem : MonoBehaviour {
                 if (enemyHealth != null)
                 {
                     // if it exsists, then insert wand damage
-                    enemyHealth.damageEnemy(wandDamage);
+                    enemyHealth.DamageEnemy(wandDamage);
                     RamDepletion();
                 }
             }
