@@ -12,6 +12,7 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
     //CharacterCamera plyrCam;
     bool isDead;
     bool isDamaged;
+   
 
     // Awake gets called right a the beginning
     void Awake()
@@ -32,8 +33,22 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
         {
             KillPlayer();
         }
+    }
+
+    public void HealPlayer(int healAmt)
+    {
+        isDamaged = false;
+        currentHealth += healAmt;
+        healthBar.value = currentHealth;
+
+        if (currentHealth >= 100)
+        {
+            currentHealth = 100;
+            healthBar.value = currentHealth;
+        }
 
     }
+
 
     void KillPlayer()
     {
