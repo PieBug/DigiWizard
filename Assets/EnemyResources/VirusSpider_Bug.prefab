@@ -170,8 +170,6 @@ GameObject:
   - component: {fileID: 6498152840612317937}
   - component: {fileID: 3082801556376151325}
   - component: {fileID: 9000939742765262565}
-  - component: {fileID: 5444510580888142696}
-  - component: {fileID: 5965118641348329033}
   m_Layer: 0
   m_Name: Spider
   m_TagString: Untagged
@@ -240,32 +238,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &5444510580888142696
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3739969090956718298}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.8562665, y: 3.0046852, z: 6.0573354}
-  m_Center: {x: 0.0064269747, y: -0.12854265, z: -0.5252488}
---- !u!114 &5965118641348329033
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3739969090956718298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04fc6df4a92401f438173ee06962fc65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyHealth: 10
 --- !u!1 &3861119076097888597
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,6 +387,8 @@ GameObject:
   - component: {fileID: 2844305401045334099}
   - component: {fileID: 3684287894612679328}
   - component: {fileID: 3169578659944365741}
+  - component: {fileID: 3744062898264636091}
+  - component: {fileID: 2385862236780299489}
   m_Layer: 9
   m_Name: VirusSpider_Bug
   m_TagString: Untagged
@@ -501,6 +475,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!65 &3744062898264636091
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363290153404773665}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.995022, y: 1.486438, z: 3.2994447}
+  m_Center: {x: 0.022753596, y: 0.6305809, z: -0.33697152}
+--- !u!114 &2385862236780299489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6363290153404773665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04fc6df4a92401f438173ee06962fc65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHealth: 1
 --- !u!1 &6984178042682283876
 GameObject:
   m_ObjectHideFlags: 0
