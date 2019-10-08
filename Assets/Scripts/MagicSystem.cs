@@ -79,7 +79,7 @@ public class MagicSystem : MonoBehaviour {
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
-                print(hitObject.point);
+               // print(hitObject.point);
 
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
@@ -96,7 +96,7 @@ public class MagicSystem : MonoBehaviour {
                 bulletClone = Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
                 RamDepletion();
-                print((camShootingPoint + (fpsCam.transform.forward * shootRange)));
+                //print((camShootingPoint + (fpsCam.transform.forward * shootRange)));
             }
         }
 
@@ -121,7 +121,7 @@ public class MagicSystem : MonoBehaviour {
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
-                print(hitObject.point);
+                //print(hitObject.point);
 
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
                 if (enemyHealth != null)
@@ -167,7 +167,7 @@ public class MagicSystem : MonoBehaviour {
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
-                print(hitObject.point);
+                //print(hitObject.point);
 
                 // Creating object of EnemyHealthDamageManager and inserting it with the hitObject
                 EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
@@ -200,19 +200,19 @@ public class MagicSystem : MonoBehaviour {
             {
                 Lelement = "lighting";
                 LlaserLine.material = new Material(lightingMaterial);
-                print(Lelement);
+                //print(Lelement);
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Lelement = "fire";
                 LlaserLine.material = new Material(fireMaterial);
-                print(Lelement);
+               // print(Lelement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Lelement = "ice";
                 LlaserLine.material = new Material(iceMaterial);
-                print(Lelement);
+                //print(Lelement);
             }
         }
 
@@ -224,19 +224,19 @@ public class MagicSystem : MonoBehaviour {
             {
                 Relement = "lighting";
                 RlaserLine.material = new Material(lightingMaterial);
-                print(Relement);
+                //print(Relement);
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Relement = "fire";
                 RlaserLine.material = new Material(fireMaterial);
-                print(Relement);
+               // print(Relement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Relement = "ice";
                 RlaserLine.material = new Material(iceMaterial);
-                print(Relement);
+               // print(Relement);
             }
         }
 
@@ -248,7 +248,7 @@ public class MagicSystem : MonoBehaviour {
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
                 ramAmount += 5;
-                print(ramAmount);
+                //print(ramAmount);
                 ramSlider.value = ramAmount;
             }
             else if (ramAmount > 100) 
@@ -261,7 +261,7 @@ public class MagicSystem : MonoBehaviour {
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
-            print("Starting penalty");
+           // print("Starting penalty");
             IsRamPenalty = true;
             StartCoroutine(RamPenalty());
         }
@@ -279,16 +279,16 @@ public class MagicSystem : MonoBehaviour {
         {
             ramAmount = 0;
         }
-        print(ramAmount);
+       // print(ramAmount);
         ramSlider.value = ramAmount;
     }
 
     // Ram Coroutine //
     private IEnumerator RamPenalty()
     {
-        print (ramDuration);
+       // print (ramDuration);
         yield return ramDuration;
-        print ("Ram coroutine worked!");
+       // print ("Ram coroutine worked!");
         IsRamPenalty = false;
     }
 

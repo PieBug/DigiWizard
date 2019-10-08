@@ -19,6 +19,6 @@ public class EnemyHealthAndDeathManager : MonoBehaviour
     public virtual void Kill()
     {
         Destroy(gameObject);
-        print("Enemy died");
+        //print("Enemy died");
     }
 }
