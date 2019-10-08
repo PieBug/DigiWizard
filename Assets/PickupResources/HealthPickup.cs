@@ -12,6 +12,6 @@ public class HealthPickup : Pickup
     public override void Obtain(PlayerController player)
     {
         base.Obtain(player);
-        player.GetComponent<PlayerHealthAndDeathManager>().currentHealth += 25;
+        player.GetComponent<PlayerHealthAndDeathManager>().HealPlayer(25);
     }
 }

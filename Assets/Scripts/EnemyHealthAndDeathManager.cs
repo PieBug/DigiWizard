@@ -16,9 +16,13 @@ public class EnemyHealthAndDeathManager : MonoBehaviour
         }
     }
 
-    public virtual void Kill()
+    public void Kill()
     {
-        Destroy(gameObject);
-        print("Enemy died");
+        StartCoroutine(Death());
+    }
+
+    protected virtual IEnumerator Death()
+    {
+        yield return null;
     }
 }

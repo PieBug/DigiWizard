@@ -128,21 +128,21 @@ public class SpiderAI : BaseAI
 
     private IEnumerator Pounce()
     {
-        Debug.Log(name + " is resting on his haunches.");
+        //Debug.Log(name + " is resting on his haunches.");
         audioSource3D.PlayOneShot(attributes.preparePounceClip);
         agent.isStopped = true;
         state = State.preparingPounce;
         animator.SetTrigger("pounce");
         yield return new WaitForSeconds(attributes.attackTime);
-        Debug.Log(name + " pounces ferociously OwO.");
+        //Debug.Log(name + " pounces ferociously OwO.");
         audioSource2D.PlayOneShot(attributes.pounceClip);
         distanceCovered = 0f;
         state = State.pouncing;
         yield return new WaitUntil(() => distanceCovered > attributes.lungeDistance);
-        Debug.Log(name + " is recouping from that phat pounce.");
+        //Debug.Log(name + " is recouping from that phat pounce.");
         state = State.recouping;
         yield return new WaitForSeconds(attributes.recoupTime);
-        Debug.Log(name + " is back on the prowl.");
+        //Debug.Log(name + " is back on the prowl.");
         agent.isStopped = false;
         state = State.chasing;
     }
