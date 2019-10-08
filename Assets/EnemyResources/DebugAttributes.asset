@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b986937bd47b44ca319fc7dc2cdd5c, type: 3}
   m_Name: DebugAttributes
   m_EditorClassIdentifier: 
-  docile: 1
+  docile: 0
   pacifist: 0
   viewEngage: 0
   viewPounce: 0.9
