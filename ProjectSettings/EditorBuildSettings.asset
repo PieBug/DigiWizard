@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenuScene.unity
     guid: 7db93d7c80ee4544d970085fcca1e9a2
   - enabled: 1
+    path: Assets/Scenes/LevelTest.unity
+    guid: b560456c9bd5fe04bb80db82d79cd571
+  - enabled: 1
     path: Assets/Scenes/DigiWizard_01.unity
     guid: 67d7e1f18b2709b47a875ae8b7888ced
   m_configObjects: {}
