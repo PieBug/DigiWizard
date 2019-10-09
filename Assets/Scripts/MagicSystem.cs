@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour {
+
     // Start is called before the first frame update
     public GameObject LeftWand;
     public GameObject RightWand;
@@ -35,6 +36,8 @@ public class MagicSystem : MonoBehaviour {
     public Material iceMaterial;
 
     // RAM System //
+    public bool cancelPenalty = false;
+    public bool penaltyRunning;
     public Slider ramSlider;
     public int ramAmount = 100;
     public float nextRamFire;
@@ -269,7 +272,7 @@ public class MagicSystem : MonoBehaviour {
     } // end update
 
     // Deplete ram slider bar //
-    private void RamDepletion()
+    public void RamDepletion()
     {
         if (ramAmount > 0 && !(ramAmount <= 0))
         {
@@ -283,13 +286,42 @@ public class MagicSystem : MonoBehaviour {
         ramSlider.value = ramAmount;
     }
 
+    // Add Ram //
+
+    public void AddRam(int Amt)
+    {
+        ramAmount += Amt;
+        ramSlider.value = ramAmount;
+
+        if (ramAmount > 100)
+        {
+            ramAmount = 100;
+            ramSlider.value = ramAmount;
+        }
+    }
+
     // Ram Coroutine //
     private IEnumerator RamPenalty()
     {
-       // print (ramDuration);
-        yield return ramDuration;
-       // print ("Ram coroutine worked!");
-        IsRamPenalty = false;
+        if (cancelPenalty == false)
+        {
+            penaltyRunning = true;
+            // print (ramDuration);
+            yield return ramDuration;
+            // print ("Ram coroutine worked!");
+            IsRamPenalty = false;
+            penaltyRunning = false;
+        }
+        else if (cancelPenalty == true)
+        {
+            CancelPenaltyCoroutine();
+        }
+    }
+
+    public void CancelPenaltyCoroutine()
+    {
+        cancelPenalty = true;
+        StopCoroutine(RamPenalty());
     }
 
     // Coroutine ShotEffect()
