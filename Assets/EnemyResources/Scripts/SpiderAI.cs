@@ -11,7 +11,7 @@ public class SpiderAI : BaseAI
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
     public EnemyAttackSystem attackSphere;
-    private PlayerController player;
+
     public State state;
 
     public enum State
@@ -27,9 +27,6 @@ public class SpiderAI : BaseAI
         dead
     }
 
-    private float distanceToPlayer;
-    private float dotProductBetweenPlayer;
-
     private Vector3 lastRecalcLocation;
     private Vector3 playersLastKnownLocation;
 
@@ -39,10 +36,11 @@ public class SpiderAI : BaseAI
     private Coroutine pounceRoutine;
 
     // Start is called before the first frame update
-    void Start()
+    new void Start()
     {
+        base.Start();
         agent = GetComponent<NavMeshAgent>();
-        player = PlayerController.singleton;
+        
     }
 
     // Update is called once per frame
@@ -54,9 +52,7 @@ public class SpiderAI : BaseAI
             case State.idling:
             case State.patroling:
             case State.chasing:
-                Vector3 difference = PlayerController.singleton.transform.position - transform.position;
-                distanceToPlayer = difference.magnitude;
-                dotProductBetweenPlayer = Vector3.Dot(transform.forward, difference.normalized);
+                UpdateDistanceToAndDotProductBetweenPlayer();
                 break;
             default:
                 break;

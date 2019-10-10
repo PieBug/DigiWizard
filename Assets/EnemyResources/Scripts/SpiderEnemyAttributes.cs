@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu( fileName = "newSpiderEnemyAttributes", menuName = "SpiderEnemyAttributes")]
+[CreateAssetMenu( fileName = "newSpiderEnemyAttributes", menuName = "Enemy Attributes/Spider Enemy Attributes")]
 public class SpiderEnemyAttributes : ScriptableObject
 {
     [Header("Behavior")]
@@ -15,7 +15,7 @@ public class SpiderEnemyAttributes : ScriptableObject
     public float viewPounce;
     public float sightRange;
     public float attackRange;
-
+    [Header("Attacks")]
     public float rotSpeed;
 
     public float attackTime;

@@ -44,6 +44,12 @@ public class MagicSystem : MonoBehaviour {
     public float ramFireRate = 3.0f;
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
     bool IsRamPenalty = false;
+    private IEnumerator ramPenaltyCoroutine;
+
+
+    // Spider AI //
+    SpiderAI spiderEnemy;
+
 
     //---------------------------------------------------------------------------------------------//
 
@@ -261,16 +267,46 @@ public class MagicSystem : MonoBehaviour {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
             }
-            print(ramAmount);
+           // print(ramAmount);
         }
+
+        /*
 
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
            // print("Starting penalty");
             IsRamPenalty = true;
-            StartCoroutine(RamPenalty());
+            StartPenalty();
         }
+
+        // Creating elemental damages //
+        
+        void fireDamage(string element, LineRenderer laser, EnemyHealthAndDeathManager healthDMG)
+        {
+           // int currentElementDamage = 10;
+
+            if (element == "fire"){
+                // damage here
+            }
+        }
+
+
+        int iceDamage(string element)
+        {
+            if (element == "ice")
+            {
+                return 10;
+            }
+        }
+    */
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+           // spiderEnem
+        }
+
+
 
     } // end update
 
@@ -287,7 +323,7 @@ public class MagicSystem : MonoBehaviour {
         }
        // print(ramAmount);
         ramSlider.value = ramAmount;
-        print(ramAmount);
+        //print(ramAmount);
     }
 
     // Add Ram //
@@ -302,7 +338,15 @@ public class MagicSystem : MonoBehaviour {
             ramAmount = 100;
             ramSlider.value = ramAmount;
         }
-        print(ramAmount);
+        //print(ramAmount);
+    }
+
+    void StartPenalty()
+    {
+        print("Starting penalty");
+        ramPenaltyCoroutine = RamPenalty();
+        StartCoroutine(ramPenaltyCoroutine);
+        cancelPenalty = false;
     }
 
     // Ram Coroutine //
@@ -317,18 +361,19 @@ public class MagicSystem : MonoBehaviour {
             IsRamPenalty = false;
             penaltyRunning = false;
         }
-        else if (cancelPenalty == true)
-        {
-            CancelPenaltyCoroutine();
-        }
     }
 
     public void CancelPenaltyCoroutine()
     {
         cancelPenalty = true;
         penaltyRunning = false;
-        StopCoroutine(RamPenalty());
+        IsRamPenalty = false;
+
+       // ramAmount = 40;
+       // ramSlider.value = ramAmount;
+
         //print("Coroutine was stopped successfully");
+        StopCoroutine(ramPenaltyCoroutine);
     }
 
     // Coroutine ShotEffect()
@@ -339,3 +384,7 @@ public class MagicSystem : MonoBehaviour {
         laserLine.enabled = false;
     }
 }
+
+
+
+// Spider AI Frozen float - to increase or decrease speed

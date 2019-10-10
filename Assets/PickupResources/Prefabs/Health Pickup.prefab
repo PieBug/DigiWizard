@@ -16,6 +16,9 @@ MonoBehaviour:
   pickup: {fileID: 4195618872203703901}
   particles: {fileID: 4195618873433713248}
   audioSource: {fileID: 5002473433645967518}
+  onObtain:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8636382381930880870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83,6 +86,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5612414387744598333, guid: 6b5e33fbe420fdd41a769625eacc956b,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7df45c41506b0a244b81272a1d28b9c5, type: 2}
     m_RemovedComponents:
     - {fileID: 619042638453387840, guid: 6b5e33fbe420fdd41a769625eacc956b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6b5e33fbe420fdd41a769625eacc956b, type: 3}
