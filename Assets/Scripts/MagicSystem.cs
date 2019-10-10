@@ -242,7 +242,6 @@ public class MagicSystem : MonoBehaviour {
                // print(Relement);
             }
         }
-
         // Ram regeneration system //
         if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
         {
@@ -251,7 +250,10 @@ public class MagicSystem : MonoBehaviour {
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
                 ramAmount += 5;
-                //print(ramAmount);
+                if (ramAmount > 100)
+                {
+                    ramAmount = 100;
+                }
                 ramSlider.value = ramAmount;
             }
             else if (ramAmount > 100) 
@@ -259,6 +261,7 @@ public class MagicSystem : MonoBehaviour {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
             }
+            print(ramAmount);
         }
 
         // Ram penalty system //
@@ -276,7 +279,7 @@ public class MagicSystem : MonoBehaviour {
     {
         if (ramAmount > 0 && !(ramAmount <= 0))
         {
-            ramAmount -= 10;
+            ramAmount -= 5;
         }
         else if (ramAmount < 0)
         {
@@ -284,6 +287,7 @@ public class MagicSystem : MonoBehaviour {
         }
        // print(ramAmount);
         ramSlider.value = ramAmount;
+        print(ramAmount);
     }
 
     // Add Ram //
@@ -298,6 +302,7 @@ public class MagicSystem : MonoBehaviour {
             ramAmount = 100;
             ramSlider.value = ramAmount;
         }
+        print(ramAmount);
     }
 
     // Ram Coroutine //
@@ -321,7 +326,9 @@ public class MagicSystem : MonoBehaviour {
     public void CancelPenaltyCoroutine()
     {
         cancelPenalty = true;
+        penaltyRunning = false;
         StopCoroutine(RamPenalty());
+        //print("Coroutine was stopped successfully");
     }
 
     // Coroutine ShotEffect()
