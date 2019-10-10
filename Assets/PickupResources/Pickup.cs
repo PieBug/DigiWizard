@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 
 public class Pickup : MonoBehaviour
@@ -8,6 +9,8 @@ public class Pickup : MonoBehaviour
     public GameObject pickup;
     public ParticleSystem particles;
     public AudioSource audioSource;
+
+    public UnityEvent onObtain;
 
     public void MakeTemporary(float lifespan)
     {
@@ -35,6 +38,7 @@ public class Pickup : MonoBehaviour
         Destroy(gameObject, 10f);
         particles.Play();
         audioSource.Play();
+        onObtain.Invoke();
     }
 
     protected IEnumerator Blink(float lifespan)

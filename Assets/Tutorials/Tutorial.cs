@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine;
 
-public class Tutorial : MonoBehaviour
+public abstract class Tutorial : MonoBehaviour
 {
     public TutorialContent tutorialContent;
     public UnityEvent onComplete;
@@ -24,6 +24,16 @@ public class Tutorial : MonoBehaviour
         }
     }
 
+    public abstract bool IsComplete();
+
+    private void Update()
+    {
+        if (!triggered || !notPaused)
+        {
+            return;
+        }
+    }
+
     public virtual void Pause()
     {
         notPaused = false;
@@ -31,6 +41,6 @@ public class Tutorial : MonoBehaviour
 
     public virtual void Resume()
     {
-        notPaused = false;
+        notPaused = true;
     }
 }
