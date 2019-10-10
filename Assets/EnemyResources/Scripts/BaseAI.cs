@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseAI : MonoBehaviour
 {
-    private PlayerController player;
+    protected PlayerController player;
 
     //Which encounter does the enemy belong to.
     public int encounter;
