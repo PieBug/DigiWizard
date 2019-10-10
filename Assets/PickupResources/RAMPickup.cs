@@ -16,7 +16,7 @@ public class RAMPickup : Pickup
         if (player.GetComponent<MagicSystem>().penaltyRunning == true)  // Checking to see if the penalty coroutine is running
         {
             player.GetComponent<MagicSystem>().CancelPenaltyCoroutine();  // If it is running, cancel the penalty.
-            print("Calling to cancel penalty!");
+            //print("Calling to cancel penalty!");
             base.Obtain(player);
             player.GetComponent<MagicSystem>().AddRam(ramAmt);
         }
