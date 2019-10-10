@@ -35,6 +35,10 @@ public class MagicSystem : MonoBehaviour {
     public Material lightingMaterial;
     public Material iceMaterial;
 
+    int lightingDMG;
+    int fireDMG;
+    int iceDMG;
+
     // RAM System //
     public bool cancelPenalty = false;
     public bool penaltyRunning;
@@ -48,8 +52,9 @@ public class MagicSystem : MonoBehaviour {
 
 
     // Spider AI //
-    SpiderAI spiderEnemy;
-
+    BaseAI enemyFreeze;
+    EnemyHealthAndDeathManager enemyHealth;
+    int lightingCounter = 0;
 
     //---------------------------------------------------------------------------------------------//
 
@@ -90,12 +95,16 @@ public class MagicSystem : MonoBehaviour {
                 Destroy(bulletClone, 0.2f);
                // print(hitObject.point);
 
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+
+                
+
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
-                    enemyHealth.DamageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
+                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in th
                     RamDepletion();
                 }
+
             }
             else // Raycast returns false
             {
@@ -132,7 +141,7 @@ public class MagicSystem : MonoBehaviour {
                 Destroy(bulletClone, 0.2f);
                 //print(hitObject.point);
 
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
                 if (enemyHealth != null)
                 {
                     // if EnemyHealthAndDamaageManager exists, then damage enemy
@@ -179,7 +188,7 @@ public class MagicSystem : MonoBehaviour {
                 //print(hitObject.point);
 
                 // Creating object of EnemyHealthDamageManager and inserting it with the hitObject
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
                 if (enemyHealth != null)
                 {
                     // if it exsists, then insert wand damage
@@ -270,8 +279,6 @@ public class MagicSystem : MonoBehaviour {
            // print(ramAmount);
         }
 
-        /*
-
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
@@ -280,35 +287,38 @@ public class MagicSystem : MonoBehaviour {
             StartPenalty();
         }
 
-        // Creating elemental damages //
-        
-        void fireDamage(string element, LineRenderer laser, EnemyHealthAndDeathManager healthDMG)
-        {
-           // int currentElementDamage = 10;
-
-            if (element == "fire"){
-                // damage here
-            }
-        }
-
-
-        int iceDamage(string element)
-        {
-            if (element == "ice")
-            {
-                return 10;
-            }
-        }
-    */
-
         if (Input.GetKeyDown(KeyCode.T))
         {
-           // spiderEnem
+            enemyFreeze.frozen = 0.1f;
         }
-
-
-
     } // end update
+
+
+    // Creating elemental damages //
+
+    void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
+    {
+        if (element == "fire" && enemyH != null)
+        {
+            // does regular damage
+            fireDMG = 5;
+            enemyH.DamageEnemy(fireDMG);
+            print("success");
+        }
+        if (element == "ice" && enemyH != null)
+        {
+            iceDMG = 1;
+            enemyH.DamageEnemy(iceDMG);  // Does very little damage
+            // Call freeze from BaseAI
+        }
+        if (element == "lighting" && enemyH != null)
+        {
+            // does damage + increase damage if you conseutively hit an enemy AI
+            lightingDMG = 2;
+            enemyH.DamageEnemy(lightingDMG);
+            lightingCounter += 1;  // Need to find a way to catch when player doesn't hit enemy
+        }   
+    }
 
     // Deplete ram slider bar //
     public void RamDepletion()
@@ -327,7 +337,6 @@ public class MagicSystem : MonoBehaviour {
     }
 
     // Add Ram //
-
     public void AddRam(int Amt)
     {
         ramAmount += Amt;
@@ -386,5 +395,5 @@ public class MagicSystem : MonoBehaviour {
 }
 
 
-
+// NOTES: //
 // Spider AI Frozen float - to increase or decrease speed
