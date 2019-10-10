@@ -14,7 +14,7 @@ public class BaseAI : MonoBehaviour
     protected float dotProductBetweenPlayer;
 
     //What damage states am I in
-    public bool frozen;
+    public float frozen;
 
 
     protected void Start()
