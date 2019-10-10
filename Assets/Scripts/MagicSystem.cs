@@ -44,7 +44,7 @@ public class MagicSystem : MonoBehaviour {
     public float ramFireRate = 3.0f;
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
     bool IsRamPenalty = false;
-
+    private IEnumerator ramPenaltyCoroutine;
     //---------------------------------------------------------------------------------------------//
 
     void Start()
@@ -269,8 +269,9 @@ public class MagicSystem : MonoBehaviour {
         {
            // print("Starting penalty");
             IsRamPenalty = true;
-            StartCoroutine(RamPenalty());
+            StartPenalty();
         }
+
 
     } // end update
 
@@ -305,6 +306,14 @@ public class MagicSystem : MonoBehaviour {
         print(ramAmount);
     }
 
+    void StartPenalty()
+    {
+        print("Starting penalty");
+        ramPenaltyCoroutine = RamPenalty();
+        StartCoroutine(ramPenaltyCoroutine);
+        cancelPenalty = false;
+    }
+
     // Ram Coroutine //
     private IEnumerator RamPenalty()
     {
@@ -317,18 +326,19 @@ public class MagicSystem : MonoBehaviour {
             IsRamPenalty = false;
             penaltyRunning = false;
         }
-        else if (cancelPenalty == true)
-        {
-            CancelPenaltyCoroutine();
-        }
     }
 
     public void CancelPenaltyCoroutine()
     {
         cancelPenalty = true;
         penaltyRunning = false;
-        StopCoroutine(RamPenalty());
-        //print("Coroutine was stopped successfully");
+        IsRamPenalty = false;
+
+       // ramAmount = 40;
+       // ramSlider.value = ramAmount;
+
+        print("Coroutine was stopped successfully");
+        StopCoroutine(ramPenaltyCoroutine);
     }
 
     // Coroutine ShotEffect()
