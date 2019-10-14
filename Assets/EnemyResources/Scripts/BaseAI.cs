@@ -22,7 +22,7 @@ public class BaseAI : MonoBehaviour
 
     //What damage states am I in
     [HideInInspector]
-    public float frozen;
+    public float slowDownAI;
 
 
     protected void Start()
@@ -52,5 +52,18 @@ public class BaseAI : MonoBehaviour
     protected bool FacingPlayer(float view, bool opposite = false)
     {
         return opposite == dotProductBetweenPlayer < view;
+    }
+
+    public void SlowAI()
+    {
+        baseSpeed = slowDownAI;
+    }
+    public void FreezeAI()
+    {
+        baseSpeed = 0;
+    }
+    public void UNFreezeAI()
+    {
+        baseSpeed = agent.speed;
     }
 }

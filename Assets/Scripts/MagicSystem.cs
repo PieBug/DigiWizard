@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour {
 
+    
+
     // Start is called before the first frame update
     public GameObject LeftWand;
     public GameObject RightWand;
@@ -39,6 +41,9 @@ public class MagicSystem : MonoBehaviour {
     int fireDMG;
     int iceDMG;
 
+    string LastHitElement;
+    int LightingCounter;
+
     // RAM System //
     public bool cancelPenalty = false;
     public bool penaltyRunning;
@@ -52,9 +57,8 @@ public class MagicSystem : MonoBehaviour {
 
 
     // Spider AI //
-    BaseAI enemyFreeze;
+    BaseAI enemyMonster;
     EnemyHealthAndDeathManager enemyHealth;
-    int lightingCounter = 0;
 
     //---------------------------------------------------------------------------------------------//
 
@@ -77,6 +81,7 @@ public class MagicSystem : MonoBehaviour {
         if (Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             string element = Lelement; // storing the element information
+            LastHitElement = Lelement;
 
             nextFire = Time.time + fireRate; // making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling the coroutine ShotEffect function to enable laser line
@@ -101,7 +106,7 @@ public class MagicSystem : MonoBehaviour {
 
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
-                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in th
+                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                     RamDepletion();
                 }
 
@@ -122,6 +127,7 @@ public class MagicSystem : MonoBehaviour {
         if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             string element = Relement; // storing the element information
+            LastHitElement = Relement;
 
             nextFire = Time.time + fireRate;  // Prevent player from spamming fire button
             StartCoroutine(ShotEffect(RlaserLine)); // enabling the liner renderer 
@@ -162,6 +168,7 @@ public class MagicSystem : MonoBehaviour {
         // BOTH BUTTONS //
         if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+            LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling to able the line renderer 
             StartCoroutine(ShotEffect(RlaserLine)); // Calling to able the line renderer 
@@ -286,11 +293,6 @@ public class MagicSystem : MonoBehaviour {
             IsRamPenalty = true;
             StartPenalty();
         }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            enemyFreeze.frozen = 0.1f;
-        }
     } // end update
 
 
@@ -300,23 +302,41 @@ public class MagicSystem : MonoBehaviour {
     {
         if (element == "fire" && enemyH != null)
         {
-            // does regular damage
-            fireDMG = 5;
-            enemyH.DamageEnemy(fireDMG);
-            print("success");
+            if (LastHitElement == "ice")
+            {
+                fireDMG = 10;
+                enemyH.DamageEnemy(fireDMG);
+                print("success");
+            }
+            else
+            {
+                // does regular damage
+                fireDMG = 5;
+                enemyH.DamageEnemy(fireDMG);
+                print("success");
+            }
         }
         if (element == "ice" && enemyH != null)
         {
             iceDMG = 1;
             enemyH.DamageEnemy(iceDMG);  // Does very little damage
-            // Call freeze from BaseAI
+            FreezeAIEnemy();
         }
         if (element == "lighting" && enemyH != null)
         {
-            // does damage + increase damage if you conseutively hit an enemy AI
-            lightingDMG = 2;
-            enemyH.DamageEnemy(lightingDMG);
-            lightingCounter += 1;  // Need to find a way to catch when player doesn't hit enemy
+            if (LastHitElement == "lighting" != (LightingCounter == 5))
+            {
+                LightingCounter += 1;
+                lightingDMG = 3 * LightingCounter;
+                enemyH.DamageEnemy(lightingDMG);
+            }
+            else
+            {
+                LightingCounter = 1;
+                // does damage + increase damage if you conseutively hit an enemy AI
+                lightingDMG = 3;
+                enemyH.DamageEnemy(lightingDMG);
+            }       
         }   
     }
 
@@ -392,6 +412,23 @@ public class MagicSystem : MonoBehaviour {
         yield return rayDuration;
         laserLine.enabled = false;
     }
+
+
+    public void FreezeAIEnemy()
+    {
+        enemyMonster.SlowAI();
+        StartCoroutine(EnemyFreezeCoroutine());
+        enemyMonster.FreezeAI();
+        StartCoroutine(EnemyFreezeCoroutine());
+        enemyMonster.UNFreezeAI();
+    }
+
+    private IEnumerator EnemyFreezeCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+        print("Enemy Coroutine is over");
+    }
+
 }
 
 
