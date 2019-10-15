@@ -181,6 +181,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -343,7 +344,9 @@ GameObject:
   - component: {fileID: 5476085994680166071}
   - component: {fileID: 2900363521448672805}
   - component: {fileID: 136410491231914094}
-  m_Layer: 0
+  - component: {fileID: 2846975400636364697}
+  - component: {fileID: 117643826416245926}
+  m_Layer: 9
   m_Name: WormSlug
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -403,8 +406,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 2900363521448672805}
   encounter: 0
-  frozen: 0
+  slowDownAI: 0
   attributes: {fileID: 11400000, guid: d7bf8118ca6bbe5438cc9f41b3a2471b, type: 2}
   audioSource2D: {fileID: 295859002948950054}
   audioSource3D: {fileID: 740852223403422681}
   state: 0
+--- !u!65 &2846975400636364697
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053834946882426020}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.8235703, y: 4.067668, z: 4.4202194}
+  m_Center: {x: 0.023785591, y: 2.04138, z: 0.0015392303}
+--- !u!114 &117643826416245926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053834946882426020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a851ff696c0bcf54a837d7fb587b5761, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyHealth: 1
