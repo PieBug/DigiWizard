@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class SpiderAI : BaseAI
 {
     public SpiderEnemyAttributes attributes;
+    public NavMeshAgent agent;
     public Animator animator;
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
