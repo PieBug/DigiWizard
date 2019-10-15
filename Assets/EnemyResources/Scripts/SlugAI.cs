@@ -108,11 +108,10 @@ public class SlugAI : BaseAI
             if(state == State.fleeing)
             {
                 Debug.Log(name + "is birthing.");
+                Instantiate(attributes.child, transform.position, Quaternion.LookRotation(normalBetweenPlayer,Vector3.up));
                 animator.SetTrigger("birth");
                 state = State.birthing;
                 agent.isStopped = true;
-                //trigger animation
-                //instantiate spiders
                 yield return new WaitForSeconds(1f);
                 agent.isStopped = false;
                 state = State.fleeing;

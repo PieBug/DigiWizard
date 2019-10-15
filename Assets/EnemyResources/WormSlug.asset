@@ -16,6 +16,7 @@ MonoBehaviour:
   brave: 0
   viewRunaway: 0
   sightRange: 50
+  child: {fileID: 6363290153404773665, guid: 5992af52a52f9184eaad362fbf564e6b, type: 3}
   defensiveBirthRange: 5
   rotSpeed: 0
   burstRate: 3
