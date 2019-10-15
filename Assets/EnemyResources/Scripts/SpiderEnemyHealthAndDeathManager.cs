@@ -19,5 +19,6 @@ public class SpiderEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         GetComponent<Collider>().enabled = false;
         GameObject pickup = Instantiate(spider.attributes.normalDrop, transform.position, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
+        Destroy(gameObject, 5f);
     }
 }

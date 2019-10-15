@@ -7,7 +7,7 @@ public class SlugAI : BaseAI
 {
     public SlugEnemyAttributes attributes;
 
-    //public Animator animator;
+    public Animator animator;
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
     //public EnemyAttackSystem attackSphere;
@@ -58,7 +58,10 @@ public class SlugAI : BaseAI
                 if (CanSeePlayer(attributes.sightRange, attributes.viewRunaway) && !attributes.brave)
                 {
                     state = State.fleeing;
+                    audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
                     walkRoutine = StartCoroutine(FleeFromPlayer());
+                    if(!attributes.infertile)
+                        birthRoutine = StartCoroutine(BirthSpiders());
                     agent.isStopped = false;
                 }
                 break;
@@ -68,8 +71,9 @@ public class SlugAI : BaseAI
                     state = State.idling;
                     agent.isStopped = true;
                     StopCoroutine(walkRoutine);
+                    StopCoroutine(birthRoutine);
                 }
-                SetFleeDestination(20, 2.5f);
+                //SetFleeDestination(20, 2.5f);
                 break;
         }
     }
@@ -82,12 +86,36 @@ public class SlugAI : BaseAI
         while (true)
         {
             yield return new WaitForSeconds(attributes.burstRate);
-            state = State.bursting;
-            agent.speed = baseSpeed + attributes.burstSpeedIncrease;
-            SetFleeDestination(20, 2.5f);
-            yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
-            state = State.fleeing;
-            agent.speed = baseSpeed;
+            if(state == State.fleeing)
+            {
+                Debug.Log(name + "is bursting.");
+                state = State.bursting;
+                agent.speed = baseSpeed + attributes.burstSpeedIncrease;
+                SetFleeDestination(20, 2.5f);
+                yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
+                state = State.fleeing;
+                agent.speed = baseSpeed;
+            }
+        }
+    }
+
+    private IEnumerator BirthSpiders()
+    {
+        yield return new WaitForSeconds(Random.Range(0, 1f));
+        while (true)
+        {
+            yield return new WaitForSeconds(attributes.defensiveBirthRange);
+            if(state == State.fleeing)
+            {
+                Debug.Log(name + "is birthing.");
+                Instantiate(attributes.child, transform.position, Quaternion.LookRotation(normalBetweenPlayer,Vector3.up));
+                animator.SetTrigger("birth");
+                state = State.birthing;
+                agent.isStopped = true;
+                yield return new WaitForSeconds(1f);
+                agent.isStopped = false;
+                state = State.fleeing;
+            }
         }
     }
 
@@ -100,7 +128,7 @@ public class SlugAI : BaseAI
         do
         {
             i++;
-            target = transform.position + (-normalBetweenPlayer * i * step);
+            target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
             pathExists = agent.CalculatePath(target, path);
         } while (i < attempts && !pathExists);
         if (pathExists)

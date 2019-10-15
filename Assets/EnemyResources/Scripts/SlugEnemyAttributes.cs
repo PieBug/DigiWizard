@@ -13,6 +13,7 @@ public class SlugEnemyAttributes : ScriptableObject
     public float viewRunaway;
     public float sightRange;
     [Header("Attacks")]
+    public GameObject child;
     public float defensiveBirthRange;
 
     public float rotSpeed;
