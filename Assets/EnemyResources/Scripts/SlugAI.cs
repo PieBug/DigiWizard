@@ -11,7 +11,6 @@ public class SlugAI : BaseAI
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
     //public EnemyAttackSystem attackSphere;
-    private PlayerController player;
     public State state;
 
     public enum State
@@ -70,7 +69,7 @@ public class SlugAI : BaseAI
                     agent.isStopped = true;
                     StopCoroutine(walkRoutine);
                 }
-                agent.destination = transform.position + (-normalBetweenPlayer * attributes.burstRange);
+                SetFleeDestination(20, 2.5f);
                 break;
         }
     }
@@ -85,10 +84,29 @@ public class SlugAI : BaseAI
             yield return new WaitForSeconds(attributes.burstRate);
             state = State.bursting;
             agent.speed = baseSpeed + attributes.burstSpeedIncrease;
-            agent.destination = transform.position + (-normalBetweenPlayer * attributes.burstRange);
+            SetFleeDestination(20, 2.5f);
             yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             state = State.fleeing;
             agent.speed = baseSpeed;
         }
     }
+
+    private void SetFleeDestination(int attempts, float step)
+    {
+        NavMeshPath path = new NavMeshPath();
+        Vector3 target = new Vector3();
+        int i = 0;
+        bool pathExists;
+        do
+        {
+            i++;
+            target = transform.position + (-normalBetweenPlayer * i * step);
+            pathExists = agent.CalculatePath(target, path);
+        } while (i < attempts && !pathExists);
+        if (pathExists)
+            agent.destination = target;
+        else
+            agent.destination = player.transform.position;
+    }
+    
 }
