@@ -7,7 +7,7 @@ public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
     protected override IEnumerator Death()
     {
         SlugAI slug = GetComponent<SlugAI>();
-        //slug.animator.SetTrigger("death");
+        slug.animator.SetTrigger("death");
         //slug.attackSphere.gameObject.SetActive(false);
         slug.state = SlugAI.State.dead;
         slug.StopAllCoroutines();
@@ -19,5 +19,6 @@ public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         GetComponent<Collider>().enabled = false;
         GameObject pickup = Instantiate(slug.attributes.normalDrop, transform.position, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
+        Destroy(gameObject, 5f);
     }
 }

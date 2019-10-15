@@ -181,7 +181,6 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -343,6 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5476085994680166071}
   - component: {fileID: 2900363521448672805}
+  - component: {fileID: 2567286511800807410}
   - component: {fileID: 136410491231914094}
   - component: {fileID: 2846975400636364697}
   - component: {fileID: 117643826416245926}
@@ -392,6 +392,25 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &2567286511800807410
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9053834946882426020}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bb4d8529c85f4e24faba245ee01dbb30, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &136410491231914094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +427,7 @@ MonoBehaviour:
   encounter: 0
   slowDownAI: 0
   attributes: {fileID: 11400000, guid: d7bf8118ca6bbe5438cc9f41b3a2471b, type: 2}
+  animator: {fileID: 2567286511800807410}
   audioSource2D: {fileID: 295859002948950054}
   audioSource3D: {fileID: 740852223403422681}
   state: 0
