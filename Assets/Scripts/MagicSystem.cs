@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MagicSystem : MonoBehaviour {
+public class MagicSystem : MonoBehaviour
+{
 
-    
+
 
     // Start is called before the first frame update
     public GameObject LeftWand;
@@ -98,11 +99,10 @@ public class MagicSystem : MonoBehaviour {
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
-               // print(hitObject.point);
+                // print(hitObject.point);
 
                 enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
-
-                
+                enemyMonster = hitObject.collider.GetComponent<BaseAI>();
 
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
@@ -148,10 +148,11 @@ public class MagicSystem : MonoBehaviour {
                 //print(hitObject.point);
 
                 enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
+                enemyMonster = hitObject.collider.GetComponent<BaseAI>();
+
                 if (enemyHealth != null)
                 {
-                    // if EnemyHealthAndDamaageManager exists, then damage enemy
-                    enemyHealth.DamageEnemy(wandDamage);
+                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                     RamDepletion();
                 }
             }
@@ -231,7 +232,7 @@ public class MagicSystem : MonoBehaviour {
             {
                 Lelement = "fire";
                 LlaserLine.material = new Material(fireMaterial);
-               // print(Lelement);
+                // print(Lelement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
@@ -255,13 +256,13 @@ public class MagicSystem : MonoBehaviour {
             {
                 Relement = "fire";
                 RlaserLine.material = new Material(fireMaterial);
-               // print(Relement);
+                // print(Relement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Relement = "ice";
                 RlaserLine.material = new Material(iceMaterial);
-               // print(Relement);
+                // print(Relement);
             }
         }
         // Ram regeneration system //
@@ -278,18 +279,18 @@ public class MagicSystem : MonoBehaviour {
                 }
                 ramSlider.value = ramAmount;
             }
-            else if (ramAmount > 100) 
+            else if (ramAmount > 100)
             {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
             }
-           // print(ramAmount);
+            // print(ramAmount);
         }
 
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
-           // print("Starting penalty");
+            // print("Starting penalty");
             IsRamPenalty = true;
             StartPenalty();
         }
@@ -306,14 +307,14 @@ public class MagicSystem : MonoBehaviour {
             {
                 fireDMG = 10;
                 enemyH.DamageEnemy(fireDMG);
-                print("success");
+                print("success fire + ice");
             }
             else
             {
                 // does regular damage
                 fireDMG = 5;
                 enemyH.DamageEnemy(fireDMG);
-                print("success");
+                print("success fire");
             }
         }
         if (element == "ice" && enemyH != null)
@@ -336,8 +337,8 @@ public class MagicSystem : MonoBehaviour {
                 // does damage + increase damage if you conseutively hit an enemy AI
                 lightingDMG = 3;
                 enemyH.DamageEnemy(lightingDMG);
-            }       
-        }   
+            }
+        }
     }
 
     // Deplete ram slider bar //
@@ -351,7 +352,7 @@ public class MagicSystem : MonoBehaviour {
         {
             ramAmount = 0;
         }
-       // print(ramAmount);
+        // print(ramAmount);
         ramSlider.value = ramAmount;
         //print(ramAmount);
     }
@@ -398,15 +399,15 @@ public class MagicSystem : MonoBehaviour {
         penaltyRunning = false;
         IsRamPenalty = false;
 
-       // ramAmount = 40;
-       // ramSlider.value = ramAmount;
+        // ramAmount = 40;
+        // ramSlider.value = ramAmount;
 
         //print("Coroutine was stopped successfully");
         StopCoroutine(ramPenaltyCoroutine);
     }
 
     // Coroutine ShotEffect()
-    private IEnumerator ShotEffect(LineRenderer laserLine) 
+    private IEnumerator ShotEffect(LineRenderer laserLine)
     {
         laserLine.enabled = true; // When shot, laserline is enabled and coroutine is waiting for .07 seconds until it enables the laser from game view
         yield return rayDuration;
@@ -414,18 +415,22 @@ public class MagicSystem : MonoBehaviour {
     }
 
 
-    public void FreezeAIEnemy()
+    private void FreezeAIEnemy()
     {
-        enemyMonster.SlowAI();
+        // StartCoroutine(EnemyFreezeCoroutine());
+        enemyMonster.IceAI(1f, 1f);
+        print("Slowing enemy");
         StartCoroutine(EnemyFreezeCoroutine());
-        enemyMonster.FreezeAI();
+        enemyMonster.IceAI(0f, 0f);
+        print("Freezing enemy");
         StartCoroutine(EnemyFreezeCoroutine());
-        enemyMonster.UNFreezeAI();
+        enemyMonster.ResetAI();
+        print("Un freezing enemy");
     }
-
     private IEnumerator EnemyFreezeCoroutine()
     {
-        yield return new WaitForSeconds(1);
+        print("Enemy Coroutine start");
+        yield return new WaitForSeconds(5);
         print("Enemy Coroutine is over");
     }
 

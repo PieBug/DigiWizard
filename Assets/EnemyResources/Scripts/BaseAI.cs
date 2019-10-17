@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class BaseAI : MonoBehaviour
 {
+    //public float slowDownAI = 1;
+
     protected PlayerController player;
     public NavMeshAgent agent;
 
@@ -22,7 +24,7 @@ public class BaseAI : MonoBehaviour
 
     //What damage states am I in
     [HideInInspector]
-    public float slowDownAI;
+    //public float slowDownAI = 1;
 
 
     protected void Start()
@@ -54,16 +56,17 @@ public class BaseAI : MonoBehaviour
         return opposite == dotProductBetweenPlayer < view;
     }
 
-    public void SlowAI()
+    public void IceAI(float slowSpeed, float slowAngularSpeed)
     {
-        baseSpeed = slowDownAI;
+        agent.speed = slowSpeed;
+        agent.angularSpeed = slowAngularSpeed;
+        print(agent.speed);
+        print(agent.angularSpeed);
     }
-    public void FreezeAI()
+    public void ResetAI()
     {
-        baseSpeed = 0;
+        agent.speed = baseSpeed;
+        agent.angularSpeed = baseAngularSpeed;
     }
-    public void UNFreezeAI()
-    {
-        baseSpeed = agent.speed;
-    }
+
 }
