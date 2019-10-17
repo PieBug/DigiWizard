@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class SpiderAI : BaseAI
 {
     public SpiderEnemyAttributes attributes;
-    public NavMeshAgent agent;
     public Animator animator;
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
@@ -39,7 +38,6 @@ public class SpiderAI : BaseAI
     new void Start()
     {
         base.Start();
-        agent = GetComponent<NavMeshAgent>();
         
     }
 
@@ -61,7 +59,7 @@ public class SpiderAI : BaseAI
         switch (state)
         {
             case State.idling:
-                if (CanSeePlayer() && !attributes.docile)
+                if (CanSeePlayer(attributes.sightRange, attributes.viewEngage) && !attributes.docile)
                 {
                     state = State.chasing;
                     walkRoutine = StartCoroutine(JitterWalkToPlayer());
@@ -156,19 +154,7 @@ public class SpiderAI : BaseAI
             yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             agent.destination = player.transform.position;
         }
-        
     }
 
-    private bool CanSeePlayer()
-    {
-        if (distanceToPlayer < attributes.sightRange && FacingPlayer(attributes.viewEngage))
-            return !Physics.Linecast(transform.position, player.transform.position, LayerMask.GetMask("Default"));
-        else
-            return false;
-    }
-
-    private bool FacingPlayer(float view, bool opposite = false)
-    {
-        return opposite == dotProductBetweenPlayer < attributes.viewEngage;
-    }
+    
 }

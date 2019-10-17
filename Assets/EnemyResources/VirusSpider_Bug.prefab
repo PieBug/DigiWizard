@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 7804932673794743749}
   - component: {fileID: 2910420562256967410}
   - component: {fileID: 6821262815451505707}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: DamageSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,9 +448,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef1ce4926159bc4ba239bd47c4543e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  encounter: 0
-  attributes: {fileID: 11400000, guid: e41359c242059114a8f75d90a31d06fb, type: 2}
   agent: {fileID: 2844305401045334099}
+  encounter: 0
+  slowDownAI: 0
+  attributes: {fileID: 11400000, guid: e41359c242059114a8f75d90a31d06fb, type: 2}
   animator: {fileID: 3169578659944365741}
   audioSource2D: {fileID: 2420367032183582620}
   audioSource3D: {fileID: 7321372628320553806}
@@ -500,7 +501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04fc6df4a92401f438173ee06962fc65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyHealth: 1
+  enemyHealth: 3
 --- !u!1 &6984178042682283876
 GameObject:
   m_ObjectHideFlags: 0
