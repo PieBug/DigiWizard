@@ -6,9 +6,14 @@ public class PlayerController : MonoBehaviour {
     // Variables //
     public static PlayerController singleton { get; private set; }
     public float walkSpeed = 10.0f;
+    public float accelerationWalk = 1f;
+    public float deaccelerationWalk = 1f;
+    public float accelerationAir = 1f;
+    public float deaccelerationAir = 1f;
     public float jumpSpeed = 10;
     public LayerMask solidLayerMask;
-    private Vector3 playerTransformation = Vector3.zero;
+    private Vector3 direction = Vector3.zero;
+    private Vector3 playerVelocity = Vector3.zero;
     [HideInInspector]
     new public Rigidbody rigidbody;
     [HideInInspector]
@@ -64,14 +69,24 @@ public class PlayerController : MonoBehaviour {
         float zAxis = Input.GetAxis("Vertical") * walkSpeed; // Getting the z axis and multiplying by player's speed.
         float xAxis = Input.GetAxis("Horizontal") * walkSpeed; // Getting the x axis and multiplying by player's speed.
 
-        zAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
-        xAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
+        //zAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
+        //xAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
 
-        // Move the transformation of the player accordingly to the updated z and x axis variables
-        playerTransformation = transform.localRotation * new Vector3 (xAxis, 0 , zAxis);
-        //transform.Translate(playerTransformation);
+        // Set the desired direction of the player accordingly to the updated z and x axis variables
+        direction = transform.localRotation * new Vector3 (xAxis, 0 , zAxis);
+        direction = direction.normalized;
+        //Get player velocity with y component set to zero.
+        Vector3 playerVelocityNoGravity = new Vector3(playerVelocity.x, 0, playerVelocity.z);
+        //Determine whether or not to accelerate
+        bool accelerate = Vector3.Dot(direction,playerVelocityNoGravity) > 0;
+        //Declare and set the target speed
+        Vector3 targetVelocity;
+        targetVelocity = direction * walkSpeed;
 
-
+        //Calculate Velocity
+        float acceleration = onGround  ? accelerationWalk : accelerationAir;
+        float deacceleration = onGround ? deaccelerationWalk : deaccelerationAir;
+        playerVelocity = Vector3.Lerp(playerVelocity, targetVelocity, (accelerate ? acceleration : deacceleration) * Time.deltaTime);
 
         // If player presses ESC, the player's cursor will enable. 
         if (Input.GetKeyDown("escape"))
@@ -103,7 +118,7 @@ public class PlayerController : MonoBehaviour {
         RaycastHit hit_info;
         while (Physics.CapsuleCast(transform.position + collider.center + (Vector3.up * collider.height * 0.15f),
                 transform.position + collider.center + (Vector3.up * collider.height * -0.15f), collider.radius,
-                playerTransformation.normalized, out hit_info, playerTransformation.magnitude,
+                playerVelocity.normalized, out hit_info, playerVelocity.magnitude,
                 solidLayerMask))
         {
             //If normal has a significant y component, break the while loop
@@ -112,20 +127,20 @@ public class PlayerController : MonoBehaviour {
                 break;
             }
             Vector3 hit_normal_perpendicular = Quaternion.AngleAxis(90f, Vector3.up) * hit_info.normal;
-            hit_normal_perpendicular *= (Vector3.Angle(hit_normal_perpendicular, playerTransformation.normalized) > 90f) ? (-1) : (1);
+            hit_normal_perpendicular *= (Vector3.Angle(hit_normal_perpendicular, playerVelocity.normalized) > 90f) ? (-1) : (1);
 
 
             //Calculate clamp
-            Vector3 hitDirection = (hit_info.point - transform.position);
-            hitDirection.y = 0;
-            hitDirection = hitDirection.normalized;
-            float clamp = Vector3.Dot(hitDirection, playerTransformation.normalized);
+            Vector3 hitplayerVelocity = (hit_info.point - transform.position);
+            hitplayerVelocity.y = 0;
+            hitplayerVelocity = hitplayerVelocity.normalized;
+            float clamp = Vector3.Dot(hitplayerVelocity, playerVelocity.normalized);
             clamp = (1f - Mathf.Abs(clamp)) * Mathf.Sign(clamp) * 1.2f;
 
-            playerTransformation = hit_normal_perpendicular * Mathf.Sign(clamp) * playerTransformation.magnitude * clamp;
-            playerTransformation.y = 0;
+            playerVelocity = hit_normal_perpendicular * Mathf.Sign(clamp) * playerVelocity.magnitude * clamp;
+            playerVelocity.y = 0;
         }
         //Translate the player
-        rigidbody.MovePosition(rigidbody.position + (playerTransformation));
+        rigidbody.MovePosition(rigidbody.position + (playerVelocity));
     }
 }

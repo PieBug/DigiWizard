@@ -562,7 +562,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b736665fbed5414fa782320164c99de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 10
+  walkSpeed: 0.25
+  accelerationWalk: 3
+  deaccelerationWalk: 5
+  accelerationAir: 1
+  deaccelerationAir: 1
   jumpSpeed: 10
   solidLayerMask:
     serializedVersion: 2
