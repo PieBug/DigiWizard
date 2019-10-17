@@ -37,6 +37,11 @@ public class MagicSystem : MonoBehaviour
     public Material fireMaterial;
     public Material lightingMaterial;
     public Material iceMaterial;
+    public Material icefire;
+    public Material icelight;
+    public Material firelight;
+
+
 
     int lightingDMG;
     int fireDMG;
@@ -126,6 +131,7 @@ public class MagicSystem : MonoBehaviour
         // RIGHT BUTTON //
         if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+
             string element = Relement; // storing the element information
             LastHitElement = Relement;
 
@@ -169,6 +175,11 @@ public class MagicSystem : MonoBehaviour
         // BOTH BUTTONS //
         if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+            // storing base material to reset later
+            Material lMaterialBase = LlaserLine.material;
+            Material rMaterialBase = RlaserLine.material;
+
+
             LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling to able the line renderer 
@@ -189,6 +200,9 @@ public class MagicSystem : MonoBehaviour
                 // Point stores the Vector3 transformation of the object hit in the game view
                 LlaserLine.SetPosition(1, hitObject.point);
                 RlaserLine.SetPosition(1, hitObject.point);
+
+                //CALLING COMBO MATERIAL SWITCH
+                //comboLaserMaterial(Lelement, Relement);
 
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
@@ -213,10 +227,15 @@ public class MagicSystem : MonoBehaviour
                 bulletClone = Instantiate(bullet, (camShootingPoint + (fpsCam.transform.forward * shootRange)), Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
             }
+           // LlaserLine.material = lMaterialBase;
+           // RlaserLine.material = rMaterialBase;
         }
 
 
         // Magic Switching System //
+
+
+
 
         // Q KEY: Left Wand //
         if (Input.GetKeyDown(KeyCode.Q) && Time.time > nextFire)
@@ -296,6 +315,26 @@ public class MagicSystem : MonoBehaviour
         }
     } // end update
 
+    void comboLaserMaterial(string lwand, string rwand)
+    {
+
+        if (lwand == "fire" && rwand == "ice")
+        {
+            LlaserLine.material = new Material(icefire);
+            RlaserLine.material = new Material(icefire);
+        }
+        else if (lwand == "ice" && rwand == "lighting")
+        {
+            LlaserLine.material = new Material(icelight);
+            RlaserLine.material = new Material(icelight);
+        }
+        else if (lwand == "fire" && rwand == "lighting")
+        {
+            LlaserLine.material = new Material(firelight);
+            RlaserLine.material = new Material(firelight);
+        }
+
+    }
 
     // Creating elemental damages //
 
@@ -417,15 +456,18 @@ public class MagicSystem : MonoBehaviour
 
     private void FreezeAIEnemy()
     {
-        // StartCoroutine(EnemyFreezeCoroutine());
-        enemyMonster.IceAI(1f, 1f);
-        print("Slowing enemy");
-        StartCoroutine(EnemyFreezeCoroutine());
-        enemyMonster.IceAI(0f, 0f);
-        print("Freezing enemy");
-        StartCoroutine(EnemyFreezeCoroutine());
-        enemyMonster.ResetAI();
-        print("Un freezing enemy");
+        if (enemyMonster != null)
+        {
+            // StartCoroutine(EnemyFreezeCoroutine());
+            enemyMonster.IceAI(1f, 1f);
+            print("Slowing enemy");
+            StartCoroutine(EnemyFreezeCoroutine());
+            enemyMonster.IceAI(0f, 0f);
+            print("Freezing enemy");
+            StartCoroutine(EnemyFreezeCoroutine());
+            enemyMonster.ResetAI();
+            print("Un freezing enemy");
+        }
     }
     private IEnumerator EnemyFreezeCoroutine()
     {
