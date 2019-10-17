@@ -564,7 +564,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 10
   jumpSpeed: 10
+  solidLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   rigidbody: {fileID: 0}
+  collider: {fileID: 0}
 --- !u!114 &2125132071942386170
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour {
 
+    
+
     // Start is called before the first frame update
     public GameObject LeftWand;
     public GameObject RightWand;
@@ -35,6 +37,13 @@ public class MagicSystem : MonoBehaviour {
     public Material lightingMaterial;
     public Material iceMaterial;
 
+    int lightingDMG;
+    int fireDMG;
+    int iceDMG;
+
+    string LastHitElement;
+    int LightingCounter;
+
     // RAM System //
     public bool cancelPenalty = false;
     public bool penaltyRunning;
@@ -48,8 +57,8 @@ public class MagicSystem : MonoBehaviour {
 
 
     // Spider AI //
-    SpiderAI spiderEnemy;
-
+    BaseAI enemyMonster;
+    EnemyHealthAndDeathManager enemyHealth;
 
     //---------------------------------------------------------------------------------------------//
 
@@ -72,6 +81,7 @@ public class MagicSystem : MonoBehaviour {
         if (Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             string element = Lelement; // storing the element information
+            LastHitElement = Lelement;
 
             nextFire = Time.time + fireRate; // making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling the coroutine ShotEffect function to enable laser line
@@ -90,12 +100,16 @@ public class MagicSystem : MonoBehaviour {
                 Destroy(bulletClone, 0.2f);
                // print(hitObject.point);
 
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+
+                
+
                 if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
-                    enemyHealth.DamageEnemy(wandDamage); // if "EnemyHealthAndDamageManager" exists, then call the damage function and pass in wand damage
+                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                     RamDepletion();
                 }
+
             }
             else // Raycast returns false
             {
@@ -113,6 +127,7 @@ public class MagicSystem : MonoBehaviour {
         if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             string element = Relement; // storing the element information
+            LastHitElement = Relement;
 
             nextFire = Time.time + fireRate;  // Prevent player from spamming fire button
             StartCoroutine(ShotEffect(RlaserLine)); // enabling the liner renderer 
@@ -132,7 +147,7 @@ public class MagicSystem : MonoBehaviour {
                 Destroy(bulletClone, 0.2f);
                 //print(hitObject.point);
 
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // creating object of enemyhealthmanager
                 if (enemyHealth != null)
                 {
                     // if EnemyHealthAndDamaageManager exists, then damage enemy
@@ -153,6 +168,7 @@ public class MagicSystem : MonoBehaviour {
         // BOTH BUTTONS //
         if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+            LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             StartCoroutine(ShotEffect(LlaserLine)); // Calling to able the line renderer 
             StartCoroutine(ShotEffect(RlaserLine)); // Calling to able the line renderer 
@@ -179,7 +195,7 @@ public class MagicSystem : MonoBehaviour {
                 //print(hitObject.point);
 
                 // Creating object of EnemyHealthDamageManager and inserting it with the hitObject
-                EnemyHealthAndDeathManager enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
+                enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>();
                 if (enemyHealth != null)
                 {
                     // if it exsists, then insert wand damage
@@ -270,8 +286,6 @@ public class MagicSystem : MonoBehaviour {
            // print(ramAmount);
         }
 
-        /*
-
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
@@ -279,36 +293,52 @@ public class MagicSystem : MonoBehaviour {
             IsRamPenalty = true;
             StartPenalty();
         }
-
-        // Creating elemental damages //
-        
-        void fireDamage(string element, LineRenderer laser, EnemyHealthAndDeathManager healthDMG)
-        {
-           // int currentElementDamage = 10;
-
-            if (element == "fire"){
-                // damage here
-            }
-        }
-
-
-        int iceDamage(string element)
-        {
-            if (element == "ice")
-            {
-                return 10;
-            }
-        }
-    */
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-           // spiderEnem
-        }
-
-
-
     } // end update
+
+
+    // Creating elemental damages //
+
+    void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
+    {
+        if (element == "fire" && enemyH != null)
+        {
+            if (LastHitElement == "ice")
+            {
+                fireDMG = 10;
+                enemyH.DamageEnemy(fireDMG);
+                print("success");
+            }
+            else
+            {
+                // does regular damage
+                fireDMG = 5;
+                enemyH.DamageEnemy(fireDMG);
+                print("success");
+            }
+        }
+        if (element == "ice" && enemyH != null)
+        {
+            iceDMG = 1;
+            enemyH.DamageEnemy(iceDMG);  // Does very little damage
+            FreezeAIEnemy();
+        }
+        if (element == "lighting" && enemyH != null)
+        {
+            if (LastHitElement == "lighting" != (LightingCounter == 5))
+            {
+                LightingCounter += 1;
+                lightingDMG = 3 * LightingCounter;
+                enemyH.DamageEnemy(lightingDMG);
+            }
+            else
+            {
+                LightingCounter = 1;
+                // does damage + increase damage if you conseutively hit an enemy AI
+                lightingDMG = 3;
+                enemyH.DamageEnemy(lightingDMG);
+            }       
+        }   
+    }
 
     // Deplete ram slider bar //
     public void RamDepletion()
@@ -327,7 +357,6 @@ public class MagicSystem : MonoBehaviour {
     }
 
     // Add Ram //
-
     public void AddRam(int Amt)
     {
         ramAmount += Amt;
@@ -383,8 +412,25 @@ public class MagicSystem : MonoBehaviour {
         yield return rayDuration;
         laserLine.enabled = false;
     }
+
+
+    public void FreezeAIEnemy()
+    {
+        enemyMonster.SlowAI();
+        StartCoroutine(EnemyFreezeCoroutine());
+        enemyMonster.FreezeAI();
+        StartCoroutine(EnemyFreezeCoroutine());
+        enemyMonster.UNFreezeAI();
+    }
+
+    private IEnumerator EnemyFreezeCoroutine()
+    {
+        yield return new WaitForSeconds(1);
+        print("Enemy Coroutine is over");
+    }
+
 }
 
 
-
+// NOTES: //
 // Spider AI Frozen float - to increase or decrease speed

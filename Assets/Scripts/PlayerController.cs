@@ -7,9 +7,12 @@ public class PlayerController : MonoBehaviour {
     public static PlayerController singleton { get; private set; }
     public float walkSpeed = 10.0f;
     public float jumpSpeed = 10;
+    public LayerMask solidLayerMask;
     private Vector3 playerTransformation = Vector3.zero;
     [HideInInspector]
-    public Rigidbody rigidbody;
+    new public Rigidbody rigidbody;
+    [HideInInspector]
+    new public CapsuleCollider collider;
 
     private bool jumpPressed;
     private bool onGround;
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour {
     {
         Cursor.lockState = CursorLockMode.Locked;
         rigidbody = GetComponent<Rigidbody>();
+        collider = GetComponent<CapsuleCollider>();
         groundMask = LayerMask.GetMask("Default");
     }
 
@@ -64,7 +68,7 @@ public class PlayerController : MonoBehaviour {
         xAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
 
         // Move the transformation of the player accordingly to the updated z and x axis variables
-        playerTransformation = new Vector3 (xAxis, 0 , zAxis);
+        playerTransformation = transform.localRotation * new Vector3 (xAxis, 0 , zAxis);
         //transform.Translate(playerTransformation);
 
 
@@ -81,7 +85,7 @@ public class PlayerController : MonoBehaviour {
             jumpPressed = true;
         }
 
-        transform.Translate(playerTransformation);
+        //transform.Translate(playerTransformation);
     }
 
     private void FixedUpdate()
@@ -95,6 +99,33 @@ public class PlayerController : MonoBehaviour {
             rigidbody.velocity = velocity;
             rigidbody.AddForce(Vector3.up * jumpSpeed, ForceMode.VelocityChange);
         }
-        
+        //Check for approaching collision
+        RaycastHit hit_info;
+        while (Physics.CapsuleCast(transform.position + collider.center + (Vector3.up * collider.height * 0.15f),
+                transform.position + collider.center + (Vector3.up * collider.height * -0.15f), collider.radius,
+                playerTransformation.normalized, out hit_info, playerTransformation.magnitude,
+                solidLayerMask))
+        {
+            //If normal has a significant y component, break the while loop
+            if (hit_info.normal.y > 0.5f || (!hit_info.transform.gameObject.isStatic && onGround))
+            {
+                break;
+            }
+            Vector3 hit_normal_perpendicular = Quaternion.AngleAxis(90f, Vector3.up) * hit_info.normal;
+            hit_normal_perpendicular *= (Vector3.Angle(hit_normal_perpendicular, playerTransformation.normalized) > 90f) ? (-1) : (1);
+
+
+            //Calculate clamp
+            Vector3 hitDirection = (hit_info.point - transform.position);
+            hitDirection.y = 0;
+            hitDirection = hitDirection.normalized;
+            float clamp = Vector3.Dot(hitDirection, playerTransformation.normalized);
+            clamp = (1f - Mathf.Abs(clamp)) * Mathf.Sign(clamp) * 1.2f;
+
+            playerTransformation = hit_normal_perpendicular * Mathf.Sign(clamp) * playerTransformation.magnitude * clamp;
+            playerTransformation.y = 0;
+        }
+        //Translate the player
+        rigidbody.MovePosition(rigidbody.position + (playerTransformation));
     }
 }
