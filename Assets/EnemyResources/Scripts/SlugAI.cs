@@ -124,13 +124,13 @@ public class SlugAI : BaseAI
         NavMeshPath path = new NavMeshPath();
         Vector3 target = new Vector3();
         int i = 0;
-        bool pathExists;
-        do
-        {
-            i++;
-            target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
-            pathExists = agent.CalculatePath(target, path);
-        } while (i < attempts && !pathExists);
+        bool pathExists = false;
+        //do
+        //{
+        //    i++;
+        //    target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
+        //    pathExists = agent.CalculatePath(target, path);
+        //} while (i < attempts && !pathExists);
         if (pathExists)
             agent.destination = target;
         else
