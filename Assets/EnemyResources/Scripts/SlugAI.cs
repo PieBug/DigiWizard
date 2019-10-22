@@ -6,10 +6,6 @@ using UnityEngine;
 public class SlugAI : BaseAI
 {
     public SlugEnemyAttributes attributes;
-
-    public Animator animator;
-    public AudioSource audioSource2D;
-    public AudioSource audioSource3D;
     //public EnemyAttackSystem attackSphere;
     public State state;
 
