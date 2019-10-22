@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour {
             hitplayerVelocity.y = 0;
             hitplayerVelocity = hitplayerVelocity.normalized;
             float clamp = Vector3.Dot(hitplayerVelocity, playerVelocity.normalized);
-            clamp = (1f - Mathf.Abs(clamp)) * Mathf.Sign(clamp) * 1.2f;
+            clamp = (1f - Mathf.Abs(clamp)) * Mathf.Sign(clamp);
             clamp = Mathf.Clamp(clamp * 1.2f, -1f, 1f);
 
             playerVelocity = hit_normal_perpendicular * Mathf.Sign(clamp) * playerVelocity.magnitude * clamp;
