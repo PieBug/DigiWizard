@@ -22,6 +22,11 @@ public class BaseAI : MonoBehaviour
     protected Vector3 normalBetweenPlayer;
     protected float baseAngularSpeed;
 
+    //Sound and animation
+    public Animator animator;
+    public AudioSource audioSource2D;
+    public AudioSource audioSource3D;
+
     //What damage states am I in
     [HideInInspector]
     //public float slowDownAI = 1;

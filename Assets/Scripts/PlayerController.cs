@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour {
         //Get player velocity with y component set to zero.
         Vector3 playerVelocityNoGravity = new Vector3(playerVelocity.x, 0, playerVelocity.z);
         //Determine whether or not to accelerate
-        bool accelerate = Vector3.Dot(direction,playerVelocityNoGravity) > 0;
+        bool accelerate = Vector3.Dot(direction,playerVelocityNoGravity) > 0.8f;
         //Declare and set the target speed
         Vector3 targetVelocity;
         targetVelocity = direction * walkSpeed;
