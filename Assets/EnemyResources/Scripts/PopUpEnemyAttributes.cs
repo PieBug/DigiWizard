@@ -14,11 +14,13 @@ public class PopUpAdAttributes : ScriptableObject
     [Range(-1f, 1f)]
     public float viewFire;
     public float sightRange;
-    public float attackRange;
+    public float revealRange;
     [Header("Attacks")]
     public float rotSpeed;
     public GameObject projectile;
     public float fireRate;
+    public float normalStoppingDistance;
+    public float playerInaccessibleStoppingDistance;
 
     [Header("Sounds")]
     public AudioClip appearClip;

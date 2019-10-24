@@ -6,6 +6,8 @@ using UnityEngine;
 public class PopUpAdAI : BaseAI
 {
     public PopUpAdAttributes attributes;
+    public GameObject projectileLauncher;
+    public ParticleSystem chargeParticles;
 
     public State state;
 
@@ -14,6 +16,7 @@ public class PopUpAdAI : BaseAI
         idling,
         hiding,
         chasingAndShooting,
+        justShooting,
         closeQuaters,
         dead
     }
@@ -48,6 +51,24 @@ public class PopUpAdAI : BaseAI
                 {
                     state = State.chasingAndShooting;
                     walkRoutine = StartCoroutine(ChasePlayer());
+                    shootRoutine = StartCoroutine(ShootAtPlayer());
+                }
+                break;
+            case State.hiding:
+                if(CanSeePlayer(attributes.revealRange, attributes.viewEngage) && !attributes.docile)
+                {
+                    state = State.chasingAndShooting;
+                    //Take a quick shot at the player
+                    walkRoutine = StartCoroutine(ChasePlayer());
+                }
+                break;
+            case State.chasingAndShooting:
+                if (distanceToPlayer > attributes.sightRange || attributes.docile)
+                {
+                    state = State.idling;
+                    agent.isStopped = true;
+                    StopCoroutine(walkRoutine);
+                    StopCoroutine(shootRoutine);
                 }
                 break;
         }
@@ -59,21 +80,40 @@ public class PopUpAdAI : BaseAI
         yield return new WaitForSeconds(Random.Range(0, 1f));
         while (true)
         {
-            yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             agent.destination = player.transform.position;
+            if(agent.pathStatus == NavMeshPathStatus.PathPartial)
+            {
+                Debug.Log("Cannot reach player. Stop when I'm close enough.");
+                agent.stoppingDistance = attributes.playerInaccessibleStoppingDistance;
+                state = State.justShooting;
+                
+            }
+            else
+            {
+                agent.stoppingDistance = attributes.normalStoppingDistance;
+            }
+            yield return new WaitForSeconds(1f);
+            agent.isStopped = true;
+            yield return new WaitForSeconds(1f);
+            agent.isStopped = false;
         }
     }
 
     private IEnumerator ShootAtPlayer()
     {
+        yield return new WaitForSeconds(Random.value);
         while (true)
         {
             //Spawn projectile
-            GameObject projectile = Instantiate(attributes.projectile);
+            Projectile projectile = Instantiate(attributes.projectile).GetComponent<Projectile>();
             //Aim projectile at player
-            projectile.transform.rotation = Quaternion.LookRotation(normalBetweenPlayer, Vector3.up);
+            projectile.transform.position = projectileLauncher.transform.position;
+            projectileLauncher.transform.LookAt(player.transform);
+            projectile.Fire(projectileLauncher.transform.rotation);
             //Wait
             yield return new WaitForSeconds(attributes.fireRate);
+            chargeParticles.Play();
+            yield return new WaitUntil(() => !chargeParticles.IsAlive());
         }
     }
 }
