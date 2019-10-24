@@ -55,6 +55,7 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
         isDead = true; 
         plyrController.enabled = false; // Stops the player from moving in the scene.
         //plyrCam.enabled = false;
+        //FindObjectOfType<GameManager>().EndGame();
     }
 
 
