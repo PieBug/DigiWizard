@@ -563,11 +563,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 0.25
-  accelerationWalk: 3
-  deaccelerationWalk: 5
-  accelerationAir: 1
-  deaccelerationAir: 1
-  jumpSpeed: 10
+  accelerationWalk: 9
+  deaccelerationWalk: 9
+  accelerationAir: 0.7
+  deaccelerationAir: 8
+  jumpSpeed: 12
   solidLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -596,6 +596,9 @@ MonoBehaviour:
   fireMaterial: {fileID: 2100000, guid: add6f55b060df6142992ec96d14994bd, type: 2}
   lightingMaterial: {fileID: 2100000, guid: f8c6954a705d1324a856815d3d994646, type: 2}
   iceMaterial: {fileID: 2100000, guid: 9dc1ec76dfc52d44298c1a5a9ea2f118, type: 2}
+  icefire: {fileID: 0}
+  icelight: {fileID: 0}
+  firelight: {fileID: 0}
   cancelPenalty: 0
   penaltyRunning: 0
   ramSlider: {fileID: 2125132073198583924}
