@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class MagicSystem : MonoBehaviour
 {
 
-
-
     // Start is called before the first frame update
     public GameObject LeftWand;
     public GameObject RightWand;
@@ -66,6 +64,13 @@ public class MagicSystem : MonoBehaviour
     BaseAI enemyMonster;
     EnemyHealthAndDeathManager enemyHealth;
 
+    // Testing particle shooter // 
+    public GameObject fireParticle;
+    private GameObject fireBulletClone;
+    private List<GameObject> fireBulletList = new List<GameObject>();
+    public float fireSpeed = 20;
+ 
+
     //---------------------------------------------------------------------------------------------//
 
     void Start()
@@ -90,7 +95,7 @@ public class MagicSystem : MonoBehaviour
             LastHitElement = Lelement;
 
             nextFire = Time.time + fireRate; // making sure player does not constantly fire
-            StartCoroutine(ShotEffect(LlaserLine)); // Calling the coroutine ShotEffect function to enable laser line
+            //StartCoroutine(ShotEffect(LlaserLine)); // Calling the coroutine ShotEffect function to enable laser line
 
             Vector3 camShootingPoint = fpsCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
 
@@ -104,7 +109,18 @@ public class MagicSystem : MonoBehaviour
                 // Bullet Cloning //
                 bulletClone = Instantiate(bullet, hitObject.point, Quaternion.identity);
                 Destroy(bulletClone, 0.2f);
-                // print(hitObject.point);
+
+                // INSTANTIATING FIRE BULLETS
+              
+                if (fireBulletList.Count < 30) {   
+                    fireBulletClone = Instantiate(fireParticle, LwandEnd.position, Quaternion.identity);
+                    Quaternion BulletRotation = Quaternion.LookRotation(fpsCam.transform.forward);
+                    fireBulletClone.transform.localRotation = Quaternion.Lerp(fireBulletClone.transform.rotation, BulletRotation, 1);
+                    //fireBulletClone.transform.position += fireBulletClone.transform.forward * (20 * Time.deltaTime);
+                    fireBulletList.Add(fireBulletClone);  
+                    print(fireBulletList.Count);
+                }
+              
 
                 enemyHealth = hitObject.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
                 enemyMonster = hitObject.collider.GetComponent<BaseAI>();
@@ -353,7 +369,7 @@ public class MagicSystem : MonoBehaviour
                 // does regular damage
                 fireDMG = 5;
                 enemyH.DamageEnemy(fireDMG);
-                print("success fire");
+                //print("success fire");
             }
         }
         if (element == "ice" && enemyH != null)
@@ -475,6 +491,7 @@ public class MagicSystem : MonoBehaviour
         yield return new WaitForSeconds(5);
         print("Enemy Coroutine is over");
     }
+
 
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
     // Variables //
     public static PlayerController singleton { get; private set; }
-    public float walkSpeed = 10.0f;
+    public float walkSpeed = 10f;
     public float accelerationWalk = 1f;
     public float deaccelerationWalk = 1f;
     public float accelerationAir = 1f;
