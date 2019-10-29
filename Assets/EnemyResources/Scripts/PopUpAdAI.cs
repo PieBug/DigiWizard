@@ -28,6 +28,10 @@ public class PopUpAdAI : BaseAI
     new void Start()
     {
         base.Start();
+        if (state == State.hiding)
+        {
+            animator.SetBool("hide", true);
+        }
     }
 
     // Update is called once per frame
@@ -49,17 +53,13 @@ public class PopUpAdAI : BaseAI
             case State.idling:
                 if (CanSeePlayer(attributes.sightRange, attributes.viewEngage) && !attributes.docile)
                 {
-                    state = State.chasingAndShooting;
-                    walkRoutine = StartCoroutine(ChasePlayer());
-                    shootRoutine = StartCoroutine(ShootAtPlayer());
+                    Alert();
                 }
                 break;
             case State.hiding:
                 if(CanSeePlayer(attributes.revealRange, attributes.viewEngage) && !attributes.docile)
                 {
-                    state = State.chasingAndShooting;
-                    //Take a quick shot at the player
-                    walkRoutine = StartCoroutine(ChasePlayer());
+                    Alert();
                 }
                 break;
             case State.chasingAndShooting:
@@ -115,5 +115,13 @@ public class PopUpAdAI : BaseAI
             chargeParticles.Play();
             yield return new WaitUntil(() => !chargeParticles.IsAlive());
         }
+    }
+
+    public override void Alert()
+    {
+        animator.SetBool("hide", false);
+        state = State.chasingAndShooting;
+        walkRoutine = StartCoroutine(ChasePlayer());
+        shootRoutine = StartCoroutine(ShootAtPlayer());
     }
 }

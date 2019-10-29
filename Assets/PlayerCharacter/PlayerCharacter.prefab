@@ -596,15 +596,18 @@ MonoBehaviour:
   fireMaterial: {fileID: 2100000, guid: add6f55b060df6142992ec96d14994bd, type: 2}
   lightingMaterial: {fileID: 2100000, guid: f8c6954a705d1324a856815d3d994646, type: 2}
   iceMaterial: {fileID: 2100000, guid: 9dc1ec76dfc52d44298c1a5a9ea2f118, type: 2}
-  icefire: {fileID: 0}
-  icelight: {fileID: 0}
-  firelight: {fileID: 0}
+  icefire: {fileID: 2100000, guid: 8697473aa70ea4748b76d417197a31b1, type: 2}
+  icelight: {fileID: 2100000, guid: 417836c374103c84e89bdb740f4fc650, type: 2}
+  firelight: {fileID: 2100000, guid: 2600bd8ab7358834ebe79f0991f21b7f, type: 2}
   cancelPenalty: 0
   penaltyRunning: 0
   ramSlider: {fileID: 2125132073198583924}
   ramAmount: 100
   nextRamFire: 0
   ramFireRate: 1
+  fireParticle: {fileID: 1654774515346404946, guid: 4043bf0ca4bec7b4882a03d043175842,
+    type: 3}
+  fireSpeed: 20
 --- !u!114 &2125132071942386173
 MonoBehaviour:
   m_ObjectHideFlags: 0

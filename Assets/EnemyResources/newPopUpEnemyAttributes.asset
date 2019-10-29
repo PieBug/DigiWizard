@@ -17,7 +17,7 @@ MonoBehaviour:
   viewEngage: 0
   viewFire: 0.1
   sightRange: 100
-  revealRange: 0
+  revealRange: 10
   rotSpeed: 0
   projectile: {fileID: 3839188215730322321, guid: 8029cf5c069c39a44b2fb83da9625851,
     type: 3}
