@@ -58,9 +58,7 @@ public class SpiderAI : BaseAI
             case State.idling:
                 if (CanSeePlayer(attributes.sightRange, attributes.viewEngage) && !attributes.docile)
                 {
-                    state = State.chasing;
-                    walkRoutine = StartCoroutine(JitterWalkToPlayer());
-                    agent.isStopped = false;
+                    Alert();
                 }
                 break;
             case State.chasing:
@@ -153,5 +151,10 @@ public class SpiderAI : BaseAI
         }
     }
 
-    
+    public override void Alert()
+    {
+        state = State.chasing;
+        walkRoutine = StartCoroutine(JitterWalkToPlayer());
+        agent.isStopped = false;
+    }
 }
