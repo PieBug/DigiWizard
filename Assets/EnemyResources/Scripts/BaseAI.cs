@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.AI;
 using UnityEngine;
 
-public class BaseAI : MonoBehaviour
+public abstract class BaseAI : MonoBehaviour
 {
     //public float slowDownAI = 1;
 
@@ -61,17 +61,19 @@ public class BaseAI : MonoBehaviour
         return opposite == dotProductBetweenPlayer < view;
     }
 
-    public void IceAI(float slowSpeed, float slowAngularSpeed)
+    public virtual void IceAI(float slowSpeed, float slowAngularSpeed)
     {
         agent.speed = slowSpeed;
         agent.angularSpeed = slowAngularSpeed;
         print(agent.speed);
         print(agent.angularSpeed);
     }
-    public void ResetAI()
+
+    public virtual void ResetAI()
     {
         agent.speed = baseSpeed;
         agent.angularSpeed = baseAngularSpeed;
     }
 
+    public abstract void Alert(); //Alert is not defined in BaseAI because it has no sensible implementation
 }
