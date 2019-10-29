@@ -53,12 +53,7 @@ public class SlugAI : BaseAI
             case State.idling:
                 if (CanSeePlayer(attributes.sightRange, attributes.viewRunaway) && !attributes.brave)
                 {
-                    state = State.fleeing;
-                    audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
-                    walkRoutine = StartCoroutine(FleeFromPlayer());
-                    if(!attributes.infertile)
-                        birthRoutine = StartCoroutine(BirthSpiders());
-                    agent.isStopped = false;
+                    Alert();
                 }
                 break;
             case State.fleeing:
@@ -132,5 +127,14 @@ public class SlugAI : BaseAI
         else
             agent.destination = player.transform.position;
     }
-    
+
+    public override void Alert()
+    {
+        state = State.fleeing;
+        audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
+        walkRoutine = StartCoroutine(FleeFromPlayer());
+        if (!attributes.infertile)
+            birthRoutine = StartCoroutine(BirthSpiders());
+        agent.isStopped = false;
+    }
 }

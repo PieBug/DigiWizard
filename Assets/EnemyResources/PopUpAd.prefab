@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 352390116082420550}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 20.416948, y: -6.068, z: -10.60025}
-  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 236595216938896706}
   - {fileID: 4392748423315768878}
@@ -55,7 +55,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 60
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: 10
+  popUp: {fileID: 1995356471689038381}
 --- !u!65 &4720118023190482146
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -134,7 +135,7 @@ Animator:
   m_GameObject: {fileID: 352390116082420550}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c975abf5ff3e639449341ef30825815a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -200,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 3824637729453768529}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 3.291, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.005, y: 0.01, z: 0.005}
   m_Children: []
   m_Father: {fileID: 352390116082420551}
   m_RootOrder: 0
@@ -230,7 +231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: 39308ae43dae94642820ac061610c35e, type: 3}
+  - {fileID: 2100000, guid: 7d88d009717bbc14cba194cd0fe0b631, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -533,7 +534,7 @@ Transform:
   m_GameObject: {fileID: 6788759579132994481}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 10.7, z: 0.74}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 352390116082420551}
   m_RootOrder: 2
