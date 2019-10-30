@@ -308,7 +308,7 @@ Transform:
   m_LocalScale: {x: 0.06364, y: 0.21392024, z: 0.06364006}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!1 &73784459
 GameObject:
@@ -481,7 +481,7 @@ PrefabInstance:
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
@@ -720,6 +720,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.041}
+--- !u!4 &459465540 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2125132071808896483, guid: b722d7435d48a9245b6b42aa8d72b325,
+    type: 3}
+  m_PrefabInstance: {fileID: 376656004}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &492068592
 GameObject:
   m_ObjectHideFlags: 0
@@ -806,7 +812,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireBall: {fileID: 5710447335357598971, guid: a5c7aedc61e89e64c9d1f2d264097305,
     type: 3}
-  wand: {fileID: 714655174}
+  iceBall: {fileID: 3568299356324862748, guid: 14500ac38ea57f844a9bc510ace46de1, type: 3}
+  lightingBall: {fileID: 0}
+  LeftWand: {fileID: 881262417}
+  RightWand: {fileID: 1717975247}
+  LwandEnd: {fileID: 714655174}
+  RwandEnd: {fileID: 459465540}
+  forwardBounce: 2
+  bounceHeight: 0.2
+  shootRange: 10
+  fpsCam: {fileID: 0}
 --- !u!1 &663515910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1302,6 +1317,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &881262417 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2125132071641129174, guid: b722d7435d48a9245b6b42aa8d72b325,
+    type: 3}
+  m_PrefabInstance: {fileID: 376656004}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1054791499
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,6 +1985,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dc0223d4a43ca34d9013fc11b1336eb, type: 3}
+--- !u!1 &1717975247 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2125132072431796860, guid: b722d7435d48a9245b6b42aa8d72b325,
+    type: 3}
+  m_PrefabInstance: {fileID: 376656004}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1825284462
 GameObject:
   m_ObjectHideFlags: 0

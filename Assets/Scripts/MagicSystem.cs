@@ -492,7 +492,6 @@ public class MagicSystem : MonoBehaviour
         print("Enemy Coroutine is over");
     }
 
-
 }
 
 
