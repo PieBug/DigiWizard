@@ -425,11 +425,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 2900363521448672805}
   encounter: 0
-  slowDownAI: 0
-  attributes: {fileID: 11400000, guid: d7bf8118ca6bbe5438cc9f41b3a2471b, type: 2}
   animator: {fileID: 2567286511800807410}
   audioSource2D: {fileID: 295859002948950054}
   audioSource3D: {fileID: 740852223403422681}
+  attributes: {fileID: 11400000, guid: d7bf8118ca6bbe5438cc9f41b3a2471b, type: 2}
   state: 0
 --- !u!65 &2846975400636364697
 BoxCollider:
@@ -457,3 +456,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: 30
+  colliders:
+  - {fileID: 2846975400636364697}
+  slug: {fileID: 136410491231914094}
