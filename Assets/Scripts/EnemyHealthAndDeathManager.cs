@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyHealthAndDeathManager : MonoBehaviour
 {
     public int enemyHealth = 10; // Setting default enemy health
-
+    public Collider[] colliders;
     public virtual void DamageEnemy(int damageAmount) // public function that takes in damage amount from user
     {
         enemyHealth -= damageAmount;  // subtracting enemy health with damage amount
@@ -19,6 +19,10 @@ public class EnemyHealthAndDeathManager : MonoBehaviour
 
     public void Kill()
     {
+        foreach(Collider collider in colliders)
+        {
+            collider.enabled = false;
+        }
         StartCoroutine(Death());
     }
 
