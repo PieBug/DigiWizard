@@ -18,12 +18,14 @@ MonoBehaviour:
   viewFire: 0.1
   sightRange: 100
   revealRange: 10
-  rotSpeed: 0
+  backupRange: 8
+  rotSpeed: 10
+  stopTime: 0.5
   projectile: {fileID: 3839188215730322321, guid: 8029cf5c069c39a44b2fb83da9625851,
     type: 3}
   fireRate: 3
-  normalStoppingDistance: 5
-  playerInaccessibleStoppingDistance: 10
+  normalStoppingDistance: 10
+  playerInaccessibleStoppingDistance: 20
   appearClip: {fileID: 0}
   shootClip: {fileID: 0}
   deathClip: {fileID: 0}

@@ -153,8 +153,11 @@ public class SpiderAI : BaseAI
 
     public override void Alert()
     {
-        state = State.chasing;
-        walkRoutine = StartCoroutine(JitterWalkToPlayer());
-        agent.isStopped = false;
+        if (state != State.dead)
+        {
+            state = State.chasing;
+            walkRoutine = StartCoroutine(JitterWalkToPlayer());
+            agent.isStopped = false;
+        }
     }
 }

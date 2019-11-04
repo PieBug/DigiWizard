@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PopUpAdAI : BaseAI
 {
+    public GameObject mesh;
     public PopUpAdAttributes attributes;
     public GameObject projectileLauncher;
     public ParticleSystem chargeParticles;
@@ -43,6 +44,8 @@ public class PopUpAdAI : BaseAI
             case State.idling:
             case State.hiding:
             case State.chasingAndShooting:
+            case State.justShooting:
+            case State.closeQuaters:
                 UpdateDistanceToAndDotProductBetweenPlayer();
                 break;
             default:
@@ -70,6 +73,18 @@ public class PopUpAdAI : BaseAI
                     StopCoroutine(walkRoutine);
                     StopCoroutine(shootRoutine);
                 }
+                if (distanceToPlayer < attributes.backupRange)
+                {
+                    state = State.closeQuaters;
+                    agent.updateRotation = false;
+                }
+                break;
+            case State.closeQuaters:
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up), attributes.rotSpeed * Time.deltaTime);
+                if (distanceToPlayer > attributes.backupRange)
+                {
+                    state = State.chasingAndShooting;
+                }
                 break;
         }
     }
@@ -80,7 +95,15 @@ public class PopUpAdAI : BaseAI
         yield return new WaitForSeconds(Random.Range(0, 1f));
         while (true)
         {
-            agent.destination = player.transform.position;
+            if(state == State.chasingAndShooting || state == State.justShooting)
+            {
+                agent.destination = player.transform.position;
+                agent.updateRotation = true;
+            }
+            else if(state == State.closeQuaters)
+            {
+                agent.destination = transform.position + (-normalBetweenPlayer * agent.stoppingDistance * 2);
+            }
             if(agent.pathStatus == NavMeshPathStatus.PathPartial)
             {
                 Debug.Log("Cannot reach player. Stop when I'm close enough.");
@@ -92,9 +115,9 @@ public class PopUpAdAI : BaseAI
             {
                 agent.stoppingDistance = attributes.normalStoppingDistance;
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(attributes.stopTime);
             agent.isStopped = true;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(attributes.stopTime);
             agent.isStopped = false;
         }
     }
@@ -119,9 +142,12 @@ public class PopUpAdAI : BaseAI
 
     public override void Alert()
     {
-        animator.SetBool("hide", false);
-        state = State.chasingAndShooting;
-        walkRoutine = StartCoroutine(ChasePlayer());
-        shootRoutine = StartCoroutine(ShootAtPlayer());
+        if(state != State.dead)
+        {
+            animator.SetBool("hide", false);
+            state = State.chasingAndShooting;
+            walkRoutine = StartCoroutine(ChasePlayer());
+            shootRoutine = StartCoroutine(ShootAtPlayer());
+        }
     }
 }

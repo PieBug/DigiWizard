@@ -116,12 +116,12 @@ public class SlugAI : BaseAI
         Vector3 target = new Vector3();
         int i = 0;
         bool pathExists = false;
-        //do
-        //{
-        //    i++;
-        //    target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
-        //    pathExists = agent.CalculatePath(target, path);
-        //} while (i < attempts && !pathExists);
+        do
+        {
+            i++;
+            target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
+            pathExists = agent.CalculatePath(target, path);
+        } while (i < attempts && !pathExists);
         if (pathExists)
             agent.destination = target;
         else
@@ -130,11 +130,14 @@ public class SlugAI : BaseAI
 
     public override void Alert()
     {
-        state = State.fleeing;
-        audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
-        walkRoutine = StartCoroutine(FleeFromPlayer());
-        if (!attributes.infertile)
-            birthRoutine = StartCoroutine(BirthSpiders());
-        agent.isStopped = false;
+        if(state != State.dead)
+        {
+            state = State.fleeing;
+            audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
+            walkRoutine = StartCoroutine(FleeFromPlayer());
+            if (!attributes.infertile)
+                birthRoutine = StartCoroutine(BirthSpiders());
+            agent.isStopped = false;
+        }
     }
 }

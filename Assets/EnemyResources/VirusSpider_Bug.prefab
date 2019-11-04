@@ -450,11 +450,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 2844305401045334099}
   encounter: 0
-  slowDownAI: 0
-  attributes: {fileID: 11400000, guid: e41359c242059114a8f75d90a31d06fb, type: 2}
   animator: {fileID: 3169578659944365741}
   audioSource2D: {fileID: 2420367032183582620}
   audioSource3D: {fileID: 7321372628320553806}
+  attributes: {fileID: 11400000, guid: e41359c242059114a8f75d90a31d06fb, type: 2}
   attackSphere: {fileID: 6821262815451505707}
   state: 0
 --- !u!95 &3169578659944365741
@@ -502,6 +501,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyHealth: 3
+  colliders:
+  - {fileID: 3744062898264636091}
+  - {fileID: 2910420562256967410}
+  spider: {fileID: 3684287894612679328}
 --- !u!1 &6984178042682283876
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,10 @@ public class PopUpAdAttributes : ScriptableObject
     public float viewFire;
     public float sightRange;
     public float revealRange;
+    public float backupRange;
     [Header("Attacks")]
     public float rotSpeed;
+    public float stopTime;
     public GameObject projectile;
     public float fireRate;
     public float normalStoppingDistance;
