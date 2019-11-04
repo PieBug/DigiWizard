@@ -17,23 +17,21 @@ public class IceMagic : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        /**
-        cam = csp.returnCam();
-        Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
+       
         if (speed != 0)
         {
-            RaycastHit hitObject;
             transform.position += transform.forward * (speed * Time.deltaTime);
+            /**
             if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange))
             {
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, hitObject.transform.rotation, Time.time * speed);
             }
-                
+            **/
         }
         else
         {
             Debug.Log("No speed given for fire projectile.");
         }
-    **/
+   
     }
 }
