@@ -16,10 +16,10 @@ TagManager:
   - 
   - Player
   - Enemy
-  - Projectile
+  - 
   - PostProcess
-  - 
-  - 
+  - EnemyProjectile
+  - PlayerProjectile
   - 
   - 
   - 
