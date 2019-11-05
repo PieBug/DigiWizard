@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour {
     public float deaccelerationAir = 1f;
     public float jumpSpeed = 10;
     public LayerMask solidLayerMask;
+    public LayerMask groundMask;
     private Vector3 direction = Vector3.zero;
     private Vector3 playerVelocity = Vector3.zero;
     [HideInInspector]
@@ -22,7 +23,7 @@ public class PlayerController : MonoBehaviour {
     private bool jumpPressed;
     private bool onGround;
     private int groundContacts;
-    private int groundMask;
+    
 
     private void Awake()
     {
@@ -42,7 +43,6 @@ public class PlayerController : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<CapsuleCollider>();
-        groundMask = LayerMask.GetMask("Default");
     }
 
     private void OnCollisionEnter(Collision collision)
