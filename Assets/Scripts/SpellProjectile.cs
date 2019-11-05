@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireProjectile : MonoBehaviour {
+public class SpellProjectile : MonoBehaviour {
     public float speed;
     public float firerate;
     // Start is called before the first frame update
