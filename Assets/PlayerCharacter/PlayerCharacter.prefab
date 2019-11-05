@@ -573,6 +573,9 @@ MonoBehaviour:
   solidLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 513
   rigidbody: {fileID: 0}
   collider: {fileID: 0}
 --- !u!114 &2125132071942386170
