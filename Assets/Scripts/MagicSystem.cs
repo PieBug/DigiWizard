@@ -68,10 +68,10 @@ public class MagicSystem : MonoBehaviour
                     FireShoot(Lwand);
                     break;
                 case "ice":
-                    ShootElement(Lwand, iceBall);
+                    ShootElement(Lwand, iceBall, element);
                     break;
                 case "lighting":
-                    ShootElement(Lwand, lightingBall);
+                    ShootElement(Lwand, lightingBall, element);
                     break;
             }
         }
@@ -88,10 +88,10 @@ public class MagicSystem : MonoBehaviour
                     FireShoot(Rwand);
                     break;
                 case "ice":
-                    ShootElement(Rwand, iceBall);
+                    ShootElement(Rwand, iceBall, element);
                     break;
                 case "lighting":
-                    ShootElement(Rwand, lightingBall);
+                    ShootElement(Rwand, lightingBall, element);
                     break;
             }
         }
@@ -293,7 +293,7 @@ public class MagicSystem : MonoBehaviour
         print("Enemy Coroutine is over");
     }
 
-    public void ShootElement(Transform wandPosition, GameObject Element)
+    public void ShootElement(Transform wandPosition, GameObject Element, string power)
     {
         Transform wand = wandPosition;
         Quaternion BulletRotation = Quaternion.LookRotation(cam.transform.forward);
@@ -307,6 +307,14 @@ public class MagicSystem : MonoBehaviour
             Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, rotationDestination, 1);
             RamDepletion();
+            enemyHealth = hitObj.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+            enemyMonster = hitObj.collider.GetComponent<BaseAI>();
+
+            if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+            {
+                ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                RamDepletion();
+            }
         }
         else
         {
