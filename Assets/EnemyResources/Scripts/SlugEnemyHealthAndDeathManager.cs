@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
 {
-    public SlugAI slug;
     public override void DamageEnemy(int damageAmount)
     {
         base.DamageEnemy(damageAmount);
-        slug.Alert();
+        ai.Alert();
     }
     protected override IEnumerator Death()
     {
+        //Upcast to slug ai
+        SlugAI slug = (SlugAI)ai;
         slug.animator.SetTrigger("death");
         //slug.attackSphere.gameObject.SetActive(false);
         slug.state = SlugAI.State.dead;

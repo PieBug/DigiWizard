@@ -6,6 +6,8 @@ using UnityEngine.AI;
 public class SpiderAI : BaseAI
 {
     public SpiderEnemyAttributes attributes;
+    private SpiderEnemyAttributes baseAttributes;
+
     public EnemyAttackSystem attackSphere;
 
     public State state;
@@ -149,6 +151,13 @@ public class SpiderAI : BaseAI
             yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             agent.destination = player.transform.position;
         }
+    }
+
+    public override void IceAI(float linearIceFactor, float angularIceFactor)
+    {
+        base.IceAI(linearIceFactor, angularIceFactor);
+        attributes.lungeSpeed = baseAttributes.lungeSpeed * linearIceFactor;
+        attributes.rotSpeed = baseAttributes.rotSpeed * angularIceFactor;
     }
 
     public override void Alert()

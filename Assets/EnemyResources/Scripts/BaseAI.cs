@@ -60,19 +60,18 @@ public abstract class BaseAI : MonoBehaviour
     {
         return opposite == dotProductBetweenPlayer < view;
     }
-
-    public virtual void IceAI(float slowSpeed, float slowAngularSpeed)
+    //Slow down the enemy
+    public virtual void IceAI(float linearIceFactor, float angularIceFactor)
     {
-        agent.speed = slowSpeed;
-        agent.angularSpeed = slowAngularSpeed;
-        print(agent.speed);
-        print(agent.angularSpeed);
+        agent.speed = baseSpeed * linearIceFactor;
+        agent.angularSpeed = baseAngularSpeed * angularIceFactor;
+        //print(agent.speed);
+        //print(agent.angularSpeed);
     }
 
     public virtual void ResetAI()
     {
-        agent.speed = baseSpeed;
-        agent.angularSpeed = baseAngularSpeed;
+        IceAI(1f, 1f);
     }
 
     public abstract void Alert(); //Alert is not defined in BaseAI because it has no sensible implementation

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyHealthAndDeathManager : MonoBehaviour
 {
+    public BaseAI ai;
     public int enemyHealth = 10; // Setting default enemy health
     public Collider[] colliders;
     public virtual void DamageEnemy(int damageAmount) // public function that takes in damage amount from user

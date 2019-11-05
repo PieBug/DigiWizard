@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class SpiderEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
 {
-    public SpiderAI spider;
+    public GameObject mesh;
     public override void DamageEnemy(int damageAmount)
     {
         base.DamageEnemy(damageAmount);
-        spider.Alert();
+        ai.Alert();
     }
     protected override IEnumerator Death()
     {
+        SpiderAI spider = (SpiderAI)ai;
         spider.animator.SetTrigger("death");
         spider.state = SpiderAI.State.dead;
         spider.StopAllCoroutines();
@@ -19,7 +20,7 @@ public class SpiderEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         yield return new WaitForSeconds(1f);
         //Play particle effect
         //Play dissappear noise
-        transform.Find("Spider").gameObject.SetActive(false);
+        mesh.SetActive(false);
         GameObject pickup = Instantiate(spider.attributes.normalDrop, transform.position, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
         Destroy(gameObject, 5f);

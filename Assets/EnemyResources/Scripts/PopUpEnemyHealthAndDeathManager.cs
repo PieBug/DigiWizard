@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class PopUpEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
 {
-    public PopUpAdAI popUp;
-
     public override void DamageEnemy(int damageAmount)
     {
         base.DamageEnemy(damageAmount);
-        popUp.Alert();
+        ai.Alert();
     }
     protected override IEnumerator Death()
     {
+        PopUpAdAI popUp = (PopUpAdAI)ai;
         popUp.animator.SetTrigger("death");
         //slug.attackSphere.gameObject.SetActive(false);
         popUp.state = PopUpAdAI.State.dead;
