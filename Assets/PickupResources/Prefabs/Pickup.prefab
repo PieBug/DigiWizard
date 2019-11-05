@@ -4950,9 +4950,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 5612414388084988489}
+  meshRenderer: {fileID: 5612414387744598333}
   pickup: {fileID: 5612414387744598331}
   particles: {fileID: 5612414386248250630}
   audioSource: {fileID: 3654322628554225656}
+  onObtain:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5650740217390072469
 GameObject:
   m_ObjectHideFlags: 0
