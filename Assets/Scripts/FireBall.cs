@@ -12,7 +12,6 @@ public class FireBall : MonoBehaviour
         if (col.gameObject.tag == "Ground" && colCounter != 5) // If collided gameObject does not have game tag "Ground"
         {
             colCounter++;
-            print(colCounter);
         }
         if (colCounter == 3)
         {
