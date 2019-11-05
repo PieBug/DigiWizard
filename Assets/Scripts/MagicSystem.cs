@@ -193,7 +193,7 @@ public class MagicSystem : MonoBehaviour
         {
             iceDMG = 1;
             enemyH.DamageEnemy(iceDMG);  // Does very little damage
-            FreezeAIEnemy();
+            FreezeAIEnemy(enemyH.ai);
         }
         if (element == "lighting" && enemyH != null)
         {
@@ -272,17 +272,17 @@ public class MagicSystem : MonoBehaviour
         StopCoroutine(ramPenaltyCoroutine);
     }
 
-    private void FreezeAIEnemy()
+    private void FreezeAIEnemy(BaseAI ai)
     {
-        if (enemyMonster != null)
+        if (ai != null)
         {
-            enemyMonster.IceAI(1f, 1f);
+            ai.IceAI(0.5f, 0.5f);
             print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
-            enemyMonster.IceAI(0f, 0f);
+            ai.IceAI(1f, 1f);
             print("Freezing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
-            enemyMonster.ResetAI();
+            ai.ResetAI();
             print("Un freezing enemy");
         }
     }
@@ -307,7 +307,7 @@ public class MagicSystem : MonoBehaviour
             Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, rotationDestination, 1);
             RamDepletion();
-            enemyHealth = hitObj.collider.GetComponent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+            enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
             enemyMonster = hitObj.collider.GetComponent<BaseAI>();
 
             if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
