@@ -5,48 +5,26 @@ using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour
 {
-
-    // Start is called before the first frame update
-    public GameObject LeftWand;
-    public GameObject RightWand;
-
     // Shooting Variables // 
-    public int wandDamage = 1; // Amount of damage
-    public float fireRate = .25f; // How often player can fire weapon
     public float shootRange = 10f; // How long rays are shot
-    //public float hitForce = 100f; // How much force hitting game objects with a rigidbody
+    public float fireRate = .25f; // How often player can fire weapon
     public Transform Lwand; // Marks the tip of the wand where ray will shoot from
     public Transform Rwand; // Marks the tip of the wand where ray will shoot from
-    private Camera cam;
-    private WaitForSeconds rayDuration = new WaitForSeconds(.07f); // How long ray will remain in game view
-    //private AudioSource bulletSound;  // Only use this once we get audio sounds
-    private LineRenderer RlaserLine; // takes array of two points and draws a line between each one in the game view
-    private LineRenderer LlaserLine; // takes array of two points and draws a line between each one in the game view
+    private Camera cam; // Player camera
     private float nextFire; // Holds time when player can fire again after firing
 
-    // Raycast visual indicator - bullet holes //
-    public GameObject bullet;
-    private GameObject bulletClone;
+    // Wand Objects //
+    public GameObject fireBall; // Holds fire prefab
+    public GameObject iceBall; // Holds ice prefab
+    public GameObject lightingBall; // Holds lighting prefab
+    string Lelement; // string to store current element in LEFT hand
+    string Relement; // string to store current element in RIGHT hand
+    int lightingDMG; // lighting damage 
+    int fireDMG; // fire damage 
+    int iceDMG; // ice damage
 
-    // Wand Elements //
-    string Lelement;
-    string Relement;
-
-    public Material fireMaterial;
-    public Material lightingMaterial;
-    public Material iceMaterial;
-    public Material icefire;
-    public Material icelight;
-    public Material firelight;
-
-
-
-    int lightingDMG;
-    int fireDMG;
-    int iceDMG;
-
-    string LastHitElement;
-    int LightingCounter;
+    string LastHitElement; // obtains the element last shot
+    int LightingCounter; // counting lighting -> if shot consecutively, lighting does more damage
 
     // RAM System //
     public bool cancelPenalty = false;
@@ -59,28 +37,14 @@ public class MagicSystem : MonoBehaviour
     bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
 
-
     // Spider AI //
-    BaseAI enemyMonster;
-    EnemyHealthAndDeathManager enemyHealth;
-
-    // Testing particle shooter // 
-    public GameObject fireParticle;
-    private GameObject fireBulletClone;
-    private List<GameObject> fireBulletList = new List<GameObject>();
-    public float fireSpeed = 20;
-
-    // GameObjects //
-    public GameObject fireBall;
-    public GameObject iceBall;
-    public GameObject lightingBall;
+    BaseAI enemyMonster; // WIP freezing spider AI
+    EnemyHealthAndDeathManager enemyHealth; // damaging enemy
 
     //---------------------------------------------------------------------------------------------//
 
     void Start()
     {
-        LeftWand = GameObject.Find("LeftWand");
-        RightWand = GameObject.Find("RightWand");
         Lelement = "fire";
         Relement = "ice";
 
@@ -97,31 +61,44 @@ public class MagicSystem : MonoBehaviour
         {
             string element = Lelement; // storing the element information
             LastHitElement = Lelement;
-
             nextFire = Time.time + fireRate; // making sure player does not constantly fire
-            //StartCoroutine(ShotEffect(LlaserLine)); // Calling the coroutine ShotEffect function to enable laser line
-
-            //ShootElement(Lwand, lightingBall);
-            FireShoot(Lwand);
-
+            switch (element)
+            {
+                case "fire":
+                    FireShoot(Lwand);
+                    break;
+                case "ice":
+                    ShootElement(Lwand, iceBall);
+                    break;
+                case "lighting":
+                    ShootElement(Lwand, lightingBall);
+                    break;
+            }
         }
 
         // RIGHT BUTTON //
         if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
-
             string element = Relement; // storing the element information
             LastHitElement = Relement;
-
             nextFire = Time.time + fireRate;  // Prevent player from spamming fire button
-            ShootElement(Rwand, iceBall);
+            switch (element)
+            {
+                case "fire":
+                    FireShoot(Rwand);
+                    break;
+                case "ice":
+                    ShootElement(Rwand, iceBall);
+                    break;
+                case "lighting":
+                    ShootElement(Rwand, lightingBall);
+                    break;
+            }
         }
 
         // BOTH BUTTONS //
         if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
-
-
             LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             
@@ -147,7 +124,6 @@ public class MagicSystem : MonoBehaviour
                 Lelement = "ice";
             }
         }
-
         // E KEY: Right Wand //
         if (Input.GetKey(KeyCode.E) && Time.time > nextFire)
         {
@@ -155,27 +131,20 @@ public class MagicSystem : MonoBehaviour
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
                 Relement = "lighting";
-                RlaserLine.material = new Material(lightingMaterial);
-                //print(Relement);
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Relement = "fire";
-                RlaserLine.material = new Material(fireMaterial);
-                // print(Relement);
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Relement = "ice";
-                RlaserLine.material = new Material(iceMaterial);
-                // print(Relement);
             }
         }
         // Ram regeneration system //
         if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
         {
             nextRamFire = Time.time + ramFireRate;
-
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
                 ramAmount += 5;
@@ -190,22 +159,19 @@ public class MagicSystem : MonoBehaviour
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
             }
-            // print(ramAmount);
         }
 
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
-            // print("Starting penalty");
             IsRamPenalty = true;
             StartPenalty();
         }
 
-    } // end update
+    } // end UPDATE
 
 
     // Creating elemental damages //
-
     void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
     {
         if (element == "fire" && enemyH != null)
@@ -221,7 +187,6 @@ public class MagicSystem : MonoBehaviour
                 // does regular damage
                 fireDMG = 5;
                 enemyH.DamageEnemy(fireDMG);
-                //print("success fire");
             }
         }
         if (element == "ice" && enemyH != null)
@@ -259,9 +224,7 @@ public class MagicSystem : MonoBehaviour
         {
             ramAmount = 0;
         }
-        // print(ramAmount);
         ramSlider.value = ramAmount;
-        //print(ramAmount);
     }
 
     // Add Ram //
@@ -275,9 +238,8 @@ public class MagicSystem : MonoBehaviour
             ramAmount = 100;
             ramSlider.value = ramAmount;
         }
-        //print(ramAmount);
     }
-
+    // Starting Penalty //
     void StartPenalty()
     {
         print("Starting penalty");
@@ -300,16 +262,13 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
+    // Cancel Penalty // 
     public void CancelPenaltyCoroutine()
     {
         cancelPenalty = true;
         penaltyRunning = false;
         IsRamPenalty = false;
 
-        // ramAmount = 40;
-        // ramSlider.value = ramAmount;
-
-        //print("Coroutine was stopped successfully");
         StopCoroutine(ramPenaltyCoroutine);
     }
 
@@ -317,7 +276,6 @@ public class MagicSystem : MonoBehaviour
     {
         if (enemyMonster != null)
         {
-            // StartCoroutine(EnemyFreezeCoroutine());
             enemyMonster.IceAI(1f, 1f);
             print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
@@ -342,9 +300,7 @@ public class MagicSystem : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         Vector3 pointTo = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hitObj;
-
         GameObject elementToShoot = Instantiate(Element, wand.transform.position, Quaternion.identity);
-
         if (Physics.Raycast(pointTo, cam.transform.forward, out hitObj, shootRange))
         {
             Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
@@ -367,11 +323,7 @@ public class MagicSystem : MonoBehaviour
         GameObject fireCopy = Instantiate(fireBall, wandE.transform.position, Quaternion.identity);
         if (fireCopy != null)
         {
-
-            //ballCopy.GetComponent<Rigidbody>().AddForceAtPosition(fpsCam.transform.forward * 350, wand.transform.position);
             fireCopy.GetComponent<Rigidbody>().AddForceAtPosition(cam.transform.forward * 300, wandE.transform.position);
-
-            //ballCopy.GetComponent<Rigidbody>().velocity = transform.up * bounceHeight;
             fireCopy.GetComponent<Rigidbody>().AddForce(0, 5, 0, ForceMode.VelocityChange);
         }
     } // End FireShoot
