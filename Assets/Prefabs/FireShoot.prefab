@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5710447335357598968}
   - component: {fileID: 5710447335357598916}
   - component: {fileID: 6429382014248143386}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: FireShoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466bd503a9e12ff428ab3c7f0fe32591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colCounter: 3
 --- !u!1 &6787182467788546412
 GameObject:
   m_ObjectHideFlags: 0
@@ -134,7 +135,7 @@ GameObject:
   - component: {fileID: 2049885674747272757}
   - component: {fileID: 5207117188289064411}
   - component: {fileID: 1042071954244702630}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
