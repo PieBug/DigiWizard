@@ -301,11 +301,12 @@ public class MagicSystem : MonoBehaviour
         Vector3 pointTo = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hitObj;
         GameObject elementToShoot = Instantiate(Element, wand.transform.position, Quaternion.identity);
-        if (Physics.Raycast(pointTo, cam.transform.forward, out hitObj, shootRange))
+        if (Physics.Raycast(ray, out hitObj, shootRange))
         {
+            // cam.transform.forward,
             Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
             Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
-            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, rotationDestination, 1);
+            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion();
             enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
             enemyMonster = hitObj.collider.GetComponent<BaseAI>();
@@ -321,7 +322,7 @@ public class MagicSystem : MonoBehaviour
             var position = ray.GetPoint(shootRange);
             Vector3 destintion = elementToShoot.transform.position - position;
             Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
-            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, rotationDestination, 1);
+            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion();
         }
     } // End shootElement
