@@ -37,7 +37,7 @@ public class SpiderAI : BaseAI
     new void Start()
     {
         base.Start();
-        
+        baseAttributes = new SpiderEnemyAttributes(attributes);
     }
 
     // Update is called once per frame
