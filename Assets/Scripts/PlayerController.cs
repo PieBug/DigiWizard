@@ -13,12 +13,14 @@ public class PlayerController : MonoBehaviour {
     public float jumpSpeed = 10;
     public LayerMask solidLayerMask;
     public LayerMask groundMask;
-    private Vector3 direction = Vector3.zero;
-    private Vector3 playerVelocity = Vector3.zero;
+    public Vector3 direction = Vector3.zero;
+    public Vector3 playerVelocity = Vector3.zero;
     [HideInInspector]
     new public Rigidbody rigidbody;
     [HideInInspector]
     new public CapsuleCollider collider;
+    public float zAxis;
+    public float xAxis;
 
     private bool jumpPressed;
     private bool onGround;
@@ -66,8 +68,8 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame //
     void Update()
     {
-        float zAxis = Input.GetAxis("Vertical") * walkSpeed; // Getting the z axis and multiplying by player's speed.
-        float xAxis = Input.GetAxis("Horizontal") * walkSpeed; // Getting the x axis and multiplying by player's speed.
+        zAxis = Input.GetAxis("Vertical") * walkSpeed; // Getting the z axis and multiplying by player's speed.
+        xAxis = Input.GetAxis("Horizontal") * walkSpeed; // Getting the x axis and multiplying by player's speed.
 
         //zAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
         //xAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
