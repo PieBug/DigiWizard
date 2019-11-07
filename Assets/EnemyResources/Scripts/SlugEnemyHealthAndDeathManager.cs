@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
 {
+    public GameObject mesh;
     public override void DamageEnemy(int damageAmount)
     {
         base.DamageEnemy(damageAmount);
@@ -21,8 +22,7 @@ public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         yield return new WaitForSeconds(1f);
         //Play particle effect
         //Play dissappear noise
-        transform.Find("Slug").gameObject.SetActive(false);
-        GetComponent<Collider>().enabled = false;
+        mesh.SetActive(false);
         GameObject pickup = Instantiate(slug.attributes.normalDrop, transform.position, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
         Destroy(gameObject, 5f);

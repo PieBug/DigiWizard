@@ -330,10 +330,10 @@ public class MagicSystem : MonoBehaviour
             ai.IceAI(0.5f, 0.5f);
             print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
-            ai.IceAI(1f, 1f);
+            //ai.IceAI(1f, 1f);
             print("Freezing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
-            ai.ResetAI();
+            //ai.ResetAI();
             print("Un freezing enemy");
         }
     }

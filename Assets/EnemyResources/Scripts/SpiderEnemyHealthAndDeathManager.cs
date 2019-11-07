@@ -16,6 +16,7 @@ public class SpiderEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         spider.animator.SetTrigger("death");
         spider.state = SpiderAI.State.dead;
         spider.StopAllCoroutines();
+        spider.attackSphere.gameObject.SetActive(false);
         spider.audioSource2D.PlayOneShot(spider.attributes.deathClip);
         yield return new WaitForSeconds(1f);
         //Play particle effect

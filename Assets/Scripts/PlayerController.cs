@@ -124,7 +124,7 @@ public class PlayerController : MonoBehaviour {
                 solidLayerMask))
         {
             //If normal has a significant y component, break the while loop
-            if (hit_info.normal.y > 0.5f || (!hit_info.transform.gameObject.isStatic && onGround))
+            if (hit_info.normal.y > 0.5f /*|| (!hit_info.transform.gameObject.isStatic && onGround)*/)
             {
                 break;
             }

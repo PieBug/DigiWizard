@@ -20,9 +20,9 @@ public class EnemyAttackSystem : MonoBehaviour {
     bool isPlayerRange;
     float timer;
 
-    void Awake()
+    void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = PlayerController.singleton.gameObject;
         playerHealth = player.GetComponent<PlayerHealthAndDeathManager>(); 
     }
 
@@ -42,6 +42,11 @@ public class EnemyAttackSystem : MonoBehaviour {
         {
             isPlayerRange = false;
         }
+    }
+
+    private void OnDisable()
+    {
+        isPlayerRange = false;
     }
 
     // Attack will happen once per frame
