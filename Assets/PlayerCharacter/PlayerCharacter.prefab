@@ -576,8 +576,12 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 513
+  direction: {x: 0, y: 0, z: 0}
+  playerVelocity: {x: 0, y: 0, z: 0}
   rigidbody: {fileID: 0}
   collider: {fileID: 0}
+  zAxis: 0
+  xAxis: 0
 --- !u!114 &2125132071942386170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,8 +601,10 @@ MonoBehaviour:
   fireBall: {fileID: 5710447335357598971, guid: a5c7aedc61e89e64c9d1f2d264097305,
     type: 3}
   iceBall: {fileID: 1207267766565289932, guid: 6de32e962d8f843478b5d5eb23d2d251, type: 3}
-  lightingBall: {fileID: 1410525128861470132, guid: 77fe1f354ec3f1042883f5c1b2aa24d7,
+  lightingBall: {fileID: 580811443030227047, guid: 84f530b60841a64469bba53e923aec35,
     type: 3}
+  fireBallForce: 10
+  fireBallArch: 1
   cancelPenalty: 0
   penaltyRunning: 0
   ramSlider: {fileID: 2125132073198583924}
