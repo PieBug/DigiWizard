@@ -572,7 +572,7 @@ MonoBehaviour:
   jumpSpeed: 12
   solidLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 513
   groundMask:
     serializedVersion: 2
     m_Bits: 513

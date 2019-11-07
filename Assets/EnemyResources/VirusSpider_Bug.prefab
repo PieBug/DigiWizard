@@ -332,7 +332,7 @@ GameObject:
   - component: {fileID: 3188471793826362257}
   - component: {fileID: 389999056885103167}
   m_Layer: 9
-  m_Name: AssHitBox
+  m_Name: ButtHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,7 +347,7 @@ Transform:
   m_GameObject: {fileID: 4231572255537556756}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.34020707, z: -1.5120314}
-  m_LocalScale: {x: 1.956302, y: 1.956302, z: 1.956302}
+  m_LocalScale: {x: 2.6070995, y: 2.6070995, z: 2.6070995}
   m_Children: []
   m_Father: {fileID: 6498152840612317937}
   m_RootOrder: 0
@@ -615,7 +615,7 @@ Transform:
   m_GameObject: {fileID: 6979935982699713026}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.13230273, z: 0.094501965}
-  m_LocalScale: {x: 1.5185143, y: 1.5185143, z: 1.5185143}
+  m_LocalScale: {x: 2.2644083, y: 2.2644083, z: 2.2644083}
   m_Children: []
   m_Father: {fileID: 6498152840612317937}
   m_RootOrder: 1
@@ -766,7 +766,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
