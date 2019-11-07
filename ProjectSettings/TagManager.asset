@@ -16,7 +16,7 @@ TagManager:
   - 
   - Player
   - Enemy
-  - 
+  - Pickup
   - PostProcess
   - EnemyProjectile
   - PlayerProjectile

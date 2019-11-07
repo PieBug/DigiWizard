@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5612414386248250648}
   - component: {fileID: 5612414386248250630}
   - component: {fileID: 5612414386248250631}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4822,7 +4822,7 @@ GameObject:
   - component: {fileID: 5612414387744598335}
   - component: {fileID: 5612414387744598334}
   - component: {fileID: 5612414387744598333}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4900,7 +4900,7 @@ GameObject:
   - component: {fileID: 5612414388084988488}
   - component: {fileID: 5612414388084988489}
   - component: {fileID: 619042638453387840}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Pickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4950,7 +4950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider: {fileID: 5612414388084988489}
-  meshRenderer: {fileID: 5612414387744598333}
   pickup: {fileID: 5612414387744598331}
   particles: {fileID: 5612414386248250630}
   audioSource: {fileID: 3654322628554225656}
@@ -4967,7 +4966,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5202283984821301401}
   - component: {fileID: 3654322628554225656}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Audio Source
   m_TagString: Untagged
   m_Icon: {fileID: 0}
