@@ -22,7 +22,7 @@ MonoBehaviour:
   burstRate: 3
   burstRange: 10
   burstSpeedIncrease: 10
-  patheticRunawayClip: {fileID: 8300000, guid: ccca99566aaebb44882e38b1e029ba91, type: 3}
-  deathClip: {fileID: 8300000, guid: 3ba4f06d7c957d549947b2af2f0d39e9, type: 3}
+  patheticRunawayClip: {fileID: 8300000, guid: 20f6dee66dd3f2444a9f4d21bf7646b2, type: 3}
+  deathClip: {fileID: 8300000, guid: 017f6d98e75667e4a8c976afb69057d9, type: 3}
   normalDrop: {fileID: 4195618873056576784, guid: 2107fb5330dbf344095f392252158f1f,
     type: 3}
