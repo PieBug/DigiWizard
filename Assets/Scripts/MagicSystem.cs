@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class MagicSystem : MonoBehaviour
 {
+    //Input Variables//
+    bool leftPressed;
+    bool rightPressed;
+    bool updateRightLightBool;
+    bool updateLeftLightBool;
+
     // Shooting Variables // 
     public float shootRange = 10f; // How long rays are shot
     public float fireRate = .25f; // How often player can fire weapon
-    public Transform Lwand; // Marks the tip of the wand where ray will shoot from
-    public Transform Rwand; // Marks the tip of the wand where ray will shoot from
     private Camera cam; // Player camera
     private float nextFire; // Holds time when player can fire again after firing
 
     // Wand Objects //
+    public Transform Lwand; // Marks the tip of the wand where spell will shoot from
+    public Transform Rwand; // Marks the tip of the wand where spell will shoot from
     public GameObject fireBall; // Holds fire prefab
     public GameObject iceBall; // Holds ice prefab
     public GameObject lightingBall; // Holds lighting prefab
@@ -21,7 +27,13 @@ public class MagicSystem : MonoBehaviour
     string Relement; // string to store current element in RIGHT hand
     int lightingDMG; // lighting damage 
     int fireDMG; // fire damage 
+    public float fireBallForce;
+    public float fireBallArch;
     int iceDMG; // ice damage
+
+   // GameObject lightingCopy;
+    public GameObject lightingRightLine;
+    public GameObject lightingLeftLine;
 
     string LastHitElement; // obtains the element last shot
     int LightingCounter; // counting lighting -> if shot consecutively, lighting does more damage
@@ -41,27 +53,38 @@ public class MagicSystem : MonoBehaviour
     BaseAI enemyMonster; // WIP freezing spider AI
     EnemyHealthAndDeathManager enemyHealth; // damaging enemy
 
+    // Player Controller // 
+    PlayerController playerMovement;
+    Vector3 PlayerVel;
+    Vector3 PlayerDir;
+    Vector3 PlayerTranslate;
+    Rigidbody rbPlayer;
+
     //---------------------------------------------------------------------------------------------//
 
     void Start()
     {
         Lelement = "fire";
-        Relement = "ice";
-
+        Relement = "lighting";
         cam = GetComponentInChildren<Camera>();
-
+        playerMovement = this.GetComponent<PlayerController>();
+        rbPlayer = this.GetComponent<Rigidbody>();
     } // end Start
 
     // Update is called once per frame
     void Update()
     {
+        PlayerVel = this.transform.position;
+        PlayerDir = playerMovement.direction;
+        PlayerTranslate = rbPlayer.worldCenterOfMass.normalized;
 
+        
         // LEFT BUTTON // 
-        if (Input.GetButtonDown("Fire1") && !Input.GetButtonDown("Fire2") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+        if (Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+            nextFire = Time.time + fireRate; // making sure player does not constantly fire
             string element = Lelement; // storing the element information
             LastHitElement = Lelement;
-            nextFire = Time.time + fireRate; // making sure player does not constantly fire
             switch (element)
             {
                 case "fire":
@@ -71,17 +94,17 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(Lwand, iceBall, element);
                     break;
                 case "lighting":
-                    ShootElement(Lwand, lightingBall, element);
+                    ActivateLighting(Lwand);
                     break;
             }
         }
 
-        // RIGHT BUTTON //
-        if (Input.GetButtonDown("Fire2") && !Input.GetButtonDown("Fire1") && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+        // RIGHT BUTTON // 
+        if (Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(0) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
+            nextFire = Time.time + fireRate; // making sure player does not constantly fire
             string element = Relement; // storing the element information
             LastHitElement = Relement;
-            nextFire = Time.time + fireRate;  // Prevent player from spamming fire button
             switch (element)
             {
                 case "fire":
@@ -91,19 +114,75 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(Rwand, iceBall, element);
                     break;
                 case "lighting":
-                    ShootElement(Rwand, lightingBall, element);
+                    ActivateLighting(Rwand);
                     break;
             }
         }
 
         // BOTH BUTTONS //
-        if ((Input.GetButtonDown("Fire1") && Input.GetButtonDown("Fire2") || Input.GetButtonDown("Fire2") && Input.GetButtonDown("Fire1")) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+        if ((Input.GetMouseButtonDown(1) && Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1)) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
             LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
             
         }
+ 
+        // Ram regeneration system //
+        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
+        {
+            nextRamFire = Time.time + ramFireRate;
+            if (!(ramAmount == 100) || !(ramAmount > 100))
+            {
+                ramAmount += 5;
+                if (ramAmount > 100)
+                {
+                    ramAmount = 100;
+                }
+                ramSlider.value = ramAmount;
+            }
+            else if (ramAmount > 100)
+            {
+                ramAmount = 100;
+                ramSlider.value = ramAmount;
+            }
+        }
 
+        // Ram penalty system //
+        if (ramAmount == 0 || ramAmount < 0)
+        {
+            IsRamPenalty = true;
+            StartPenalty();
+        }
+
+        if (updateRightLightBool)
+        {
+            UpdateLighting(Rwand);
+        }
+        if (updateLeftLightBool)
+        {
+            UpdateLighting(Lwand);
+        }
+
+    } // end UPDATE
+
+    private void FixedUpdate()
+    {
+        // RIGHT BUTTON // 
+        if (Input.GetMouseButtonUp(1))
+        {
+            if (updateRightLightBool == true)
+            {
+                EnableLighting(Rwand);
+            }
+        }
+        // LEFT BUTTON //
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (updateLeftLightBool == true)
+            {
+                EnableLighting(Lwand);
+            } 
+        }
 
         // Magic Switching System //
         // Q KEY: Left Wand //
@@ -141,38 +220,10 @@ public class MagicSystem : MonoBehaviour
                 Relement = "ice";
             }
         }
-        // Ram regeneration system //
-        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
-        {
-            nextRamFire = Time.time + ramFireRate;
-            if (!(ramAmount == 100) || !(ramAmount > 100))
-            {
-                ramAmount += 5;
-                if (ramAmount > 100)
-                {
-                    ramAmount = 100;
-                }
-                ramSlider.value = ramAmount;
-            }
-            else if (ramAmount > 100)
-            {
-                ramAmount = 100;
-                ramSlider.value = ramAmount;
-            }
-        }
-
-        // Ram penalty system //
-        if (ramAmount == 0 || ramAmount < 0)
-        {
-            IsRamPenalty = true;
-            StartPenalty();
-        }
-
-    } // end UPDATE
-
+    } // end FIXED UPDATE
 
     // Creating elemental damages //
-    void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
+    public void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
     {
         if (element == "fire" && enemyH != null)
         {
@@ -214,11 +265,11 @@ public class MagicSystem : MonoBehaviour
     }
 
     // Deplete ram slider bar //
-    public void RamDepletion()
+    public void RamDepletion(int damageAmt)
     {
         if (ramAmount > 0 && !(ramAmount <= 0))
         {
-            ramAmount -= 5;
+            ramAmount -= damageAmt;
         }
         else if (ramAmount < 0)
         {
@@ -303,18 +354,17 @@ public class MagicSystem : MonoBehaviour
         GameObject elementToShoot = Instantiate(Element, wand.transform.position, Quaternion.identity);
         if (Physics.Raycast(ray, out hitObj, shootRange))
         {
-            // cam.transform.forward,
             Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
             Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
-            RamDepletion();
+            RamDepletion(3);
             enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
             enemyMonster = hitObj.collider.GetComponent<BaseAI>();
 
             if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
             {
                 ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
-                RamDepletion();
+                RamDepletion(3);
             }
         }
         else
@@ -323,22 +373,78 @@ public class MagicSystem : MonoBehaviour
             Vector3 destintion = elementToShoot.transform.position - position;
             Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
-            RamDepletion();
+            RamDepletion(3);
+            Destroy(elementToShoot, 0.6f);
         }
     } // End shootElement
 
+    private void LightingShoot(Transform wandE)
+    {
+        GameObject elementToShoot;
+        elementToShoot = Instantiate(lightingBall, wandE.transform);
+
+    } // End LightingShoot
+
+    private void ActivateLighting(Transform wandE)
+    {
+        if (wandE.name == "RightWandEnd")
+        {
+            updateRightLightBool = true;
+            lightingRightLine.SetActive(true);
+        }
+        else if (wandE.name == "LeftWandEnd")
+        {
+            updateLeftLightBool = true;
+            lightingLeftLine.SetActive(true);
+        }
+    }
+    
+    private void UpdateLighting(Transform wandE)
+    {
+        if (updateLeftLightBool == true)
+        {
+            lightingLeftLine.transform.position = wandE.transform.position;
+        }
+        else if (updateRightLightBool == true)
+        {
+            lightingRightLine.transform.position = wandE.transform.position;
+        }
+    }
+
+    private void EnableLighting(Transform wandE)
+    {
+        if (wandE.name == "RightWandEnd")
+        {
+            updateRightLightBool = false;
+            lightingRightLine.SetActive(false);
+        }
+        else if (wandE.name == "LeftWandEnd")
+        {
+            updateLeftLightBool = false;
+            lightingLeftLine.SetActive(false);
+        }
+    }
+
+    // FireBall Projectile //
     private void FireShoot(Transform wandE)
     {
-        GameObject fireCopy = Instantiate(fireBall, wandE.transform.position, Quaternion.identity);
+        GameObject fireCopy;
+        fireCopy = Instantiate(fireBall, wandE.transform.position, cam.transform.rotation);
+        fireCopy.GetComponent<FireBall>().magicSystem = this;
         if (fireCopy != null)
         {
-            fireCopy.GetComponent<Rigidbody>().AddForceAtPosition(cam.transform.forward * 300, wandE.transform.position);
-            fireCopy.GetComponent<Rigidbody>().AddForce(0, 5, 0, ForceMode.VelocityChange);
+            RamDepletion(4);
+            Rigidbody rbFireBall;
+            rbFireBall = fireCopy.GetComponent<Rigidbody>();
+            rbFireBall.AddForce((cam.transform.forward + new Vector3(0, fireBallArch, 0)).normalized * fireBallForce, ForceMode.VelocityChange);
+            Vector3 v = rbFireBall.velocity;
+            v += playerMovement.playerVelocity * 30f;
+            rbFireBall.velocity = v;
         }
     } // End FireShoot
-
 }
-
 
 // NOTES: //
 // Spider AI Frozen float - to increase or decrease speed
+
+
