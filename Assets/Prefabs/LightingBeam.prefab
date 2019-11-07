@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 580811443030227045}
   - component: {fileID: 580811443030227046}
   - component: {fileID: 8071627218608241546}
-  - component: {fileID: 3258184137307144422}
   m_Layer: 0
   m_Name: LightingBeam
   m_TagString: Untagged
@@ -153,19 +152,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicSystem: {fileID: 0}
   shootRange: 10
---- !u!65 &3258184137307144422
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 580811443030227047}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5650895, y: 0.5650895, z: 98.26508}
-  m_Center: {x: 0, y: 0, z: 48.85}
 --- !u!1 &580811444586730284
 GameObject:
   m_ObjectHideFlags: 0

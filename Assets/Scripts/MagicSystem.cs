@@ -29,6 +29,7 @@ public class MagicSystem : MonoBehaviour
     int fireDMG; // fire damage 
     public float fireBallForce;
     public float fireBallArch;
+    public float playerInfluenceOnFireBall;
     int iceDMG; // ice damage
 
    // GameObject lightingCopy;
@@ -150,6 +151,17 @@ public class MagicSystem : MonoBehaviour
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
+            
+            if (updateLeftLightBool == true)
+            {
+                lightingLeftLine.SetActive(false);
+                updateLeftLightBool = false;
+            }
+            else if (updateRightLightBool == true)
+            {
+                lightingRightLine.SetActive(false);
+                updateLeftLightBool = false;
+            }
             IsRamPenalty = true;
             StartPenalty();
         }
@@ -438,7 +450,7 @@ public class MagicSystem : MonoBehaviour
             rbFireBall = fireCopy.GetComponent<Rigidbody>();
             rbFireBall.AddForce((cam.transform.forward + new Vector3(0, fireBallArch, 0)).normalized * fireBallForce, ForceMode.VelocityChange);
             Vector3 v = rbFireBall.velocity;
-            v += playerMovement.playerVelocity * 30f;
+            v += playerMovement.playerVelocity * playerInfluenceOnFireBall;
             rbFireBall.velocity = v;
         }
     } // End FireShoot

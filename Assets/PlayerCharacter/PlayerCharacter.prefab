@@ -607,6 +607,7 @@ MonoBehaviour:
     type: 3}
   fireBallForce: 10
   fireBallArch: 1
+  playerInfluenceOnFireBall: 10
   lightingRightLine: {fileID: 580811444173448850}
   lightingLeftLine: {fileID: 580811443095832072}
   cancelPenalty: 0
