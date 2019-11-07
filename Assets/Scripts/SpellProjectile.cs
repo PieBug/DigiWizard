@@ -24,4 +24,13 @@ public class SpellProjectile : MonoBehaviour {
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (true)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    
+
 }

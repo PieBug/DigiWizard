@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
+    public MagicSystem magicSystem;
     public int colCounter;
     // Collision counter
     void OnCollisionEnter(Collision col)
     {
+        colCounter--;
         
-        //if (col.gameObject.tag == "Ground" && colCounter != 5) // If collided gameObject does not have game tag "Ground"
-        //{
-            colCounter--;
-        //}
         if (colCounter == 0)
         {
-           Destroy(gameObject);
+            Destroy(gameObject);
+        }
+        EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
+        if (enemyHealth != null)
+        {
+
+            magicSystem.ElementDamageManager("fire", enemyHealth);
+            
         }
     }
 }
