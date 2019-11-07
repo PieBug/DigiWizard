@@ -37,6 +37,7 @@ public class SpiderAI : BaseAI
     new void Start()
     {
         base.Start();
+        attributes = new SpiderEnemyAttributes(attributes);
         baseAttributes = new SpiderEnemyAttributes(attributes);
     }
 
