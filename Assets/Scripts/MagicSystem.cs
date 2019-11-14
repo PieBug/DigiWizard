@@ -61,12 +61,22 @@ public class MagicSystem : MonoBehaviour
     Vector3 PlayerTranslate;
     Rigidbody rbPlayer;
 
+    // Magic Switch Image //
+    public Image R_Fire;
+    public Image R_Ice;
+    public Image R_Lightning;
+    public Image L_Fire;
+    public Image L_Ice;
+    public Image L_Lightning;
+
     //---------------------------------------------------------------------------------------------//
 
     void Start()
     {
         Lelement = "fire";
-        Relement = "lighting";
+        Relement = "ice";
+        L_Fire.enabled = true;
+        R_Ice.enabled = true;
         cam = GetComponentInChildren<Camera>();
         playerMovement = this.GetComponent<PlayerController>();
         rbPlayer = this.GetComponent<Rigidbody>();
@@ -204,15 +214,23 @@ public class MagicSystem : MonoBehaviour
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
                 Lelement = "lighting";
+                L_Lightning.enabled = true;
+                L_Fire.enabled = false;
+                L_Ice.enabled = false;
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Lelement = "fire";
-
+                L_Lightning.enabled = false;
+                L_Fire.enabled = true;
+                L_Ice.enabled = false;
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Lelement = "ice";
+                L_Lightning.enabled = false;
+                L_Fire.enabled = false;
+                L_Ice.enabled = true;
             }
         }
         // E KEY: Right Wand //
@@ -222,14 +240,23 @@ public class MagicSystem : MonoBehaviour
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
                 Relement = "lighting";
+                R_Lightning.enabled = true;
+                R_Fire.enabled = false;
+                R_Ice.enabled = false;
             }
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Relement = "fire";
+                R_Lightning.enabled = false;
+                R_Fire.enabled = true;
+                R_Ice.enabled = false;
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Relement = "ice";
+                R_Lightning.enabled = false;
+                R_Fire.enabled = false;
+                R_Ice.enabled = true;
             }
         }
     } // end FIXED UPDATE

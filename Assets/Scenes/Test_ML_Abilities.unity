@@ -247,7 +247,7 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 0
   m_Loop: 0
---- !u!1001 &376656004
+--- !u!1001 &232075114
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -257,22 +257,22 @@ PrefabInstance:
     - target: {fileID: 2125132071942386162, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_Name
-      value: 'PlayerCharacter '
+      value: PlayerCharacter (1)
       objectReference: {fileID: 0}
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.8924646
+      value: -1.8188313
       objectReference: {fileID: 0}
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.0113986
+      value: 1.09
       objectReference: {fileID: 0}
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.150665
+      value: -3.9737468
       objectReference: {fileID: 0}
     - target: {fileID: 2125132071942386175, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
@@ -319,22 +319,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2125132071975452852, guid: b722d7435d48a9245b6b42aa8d72b325,
+    - target: {fileID: 3708242767812559278, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2125132071975452852, guid: b722d7435d48a9245b6b42aa8d72b325,
+    - target: {fileID: 3708242767812559278, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2125132071422969806, guid: b722d7435d48a9245b6b42aa8d72b325,
+    - target: {fileID: 7967924238210854165, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2125132071422969806, guid: b722d7435d48a9245b6b42aa8d72b325,
+    - target: {fileID: 7967924238210854165, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
