@@ -83,7 +83,7 @@ public class SlugAI : BaseAI
                 state = State.bursting;
                 agent.speed = baseSpeed + attributes.burstSpeedIncrease;
                 SetFleeDestination(20, 2.5f);
-                yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
+                //yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
                 state = State.fleeing;
                 agent.speed = baseSpeed;
             }
@@ -123,9 +123,15 @@ public class SlugAI : BaseAI
             pathExists = agent.CalculatePath(target, path);
         } while (i < attempts && !pathExists);
         if (pathExists)
+        {
             agent.destination = target;
+            //Debug.Log("Path Does Exist");
+        }
         else
+        {
+            //Debug.Log("Path Does Not Exist");
             agent.destination = player.transform.position;
+        }
     }
 
     public override void Alert()
