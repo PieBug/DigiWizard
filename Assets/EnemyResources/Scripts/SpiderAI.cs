@@ -149,7 +149,7 @@ public class SpiderAI : BaseAI
             bool right = Random.Range(0f, 1f) < 0.5f;
             Vector3 direction = right ? transform.right : -transform.right;
             agent.destination = transform.position + direction * attributes.jitterRange;
-            yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
+            //yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
             agent.destination = player.transform.position;
         }
     }
