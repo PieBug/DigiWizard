@@ -20,6 +20,7 @@ public class MagicSystem : MonoBehaviour
     // Wand Objects //
     public Transform Lwand; // Marks the tip of the wand where spell will shoot from
     public Transform Rwand; // Marks the tip of the wand where spell will shoot from
+    public Transform ComboPosition; // Marks the tip of the wand where spell will shoot from
     public GameObject fireBall; // Holds fire prefab
     public GameObject iceBall; // Holds ice prefab
     public GameObject lightingBall; // Holds lighting prefab
@@ -68,6 +69,11 @@ public class MagicSystem : MonoBehaviour
     public Image L_Fire;
     public Image L_Ice;
     public Image L_Lightning;
+
+    // Combo Magics //
+    public GameObject ComboFireLight;
+    public GameObject ComboIceFire;
+    public GameObject ComboLightIce;
 
     //---------------------------------------------------------------------------------------------//
 
@@ -135,9 +141,51 @@ public class MagicSystem : MonoBehaviour
         {
             LastHitElement = "";
             nextFire = Time.time + fireRate; // Making sure player does not constantly fire
-            
+            print("Both buttons were pressed");
+
+            if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
+            {
+                print("Fire and ice");
+                //GameObject fireiceClone = Instantiate(ComboIceFire, ComboPosition.transform.position, Quaternion.identity);
+                ShootElement(ComboPosition, ComboIceFire, "ice");
+            }
+            else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
+            {
+                print("Ice and lightning");
+                ComboLightIce.SetActive(true);
+                ShootElement(ComboPosition, iceBall, "ice");
+            }
+            else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
+            {
+                print("fire and lightning");
+                ComboFireLight.SetActive(true);
+            }
         }
- 
+
+        // BOTH BUTTONS //
+        if ((Input.GetMouseButtonUp(1) && Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(0) && Input.GetMouseButtonUp(1)))
+        {
+            LastHitElement = "";
+            //nextFire = Time.time + fireRate; // Making sure player does not constantly fire
+            // && Time.time > nextFire && ramAmount != 0 && ramAmount > 0
+
+            if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
+            {
+                print("BUTTON UP Fire and ice");
+
+            }
+            else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
+            {
+                print("BUTTON UP Ice and lightning");
+                ComboLightIce.SetActive(false);
+            }
+            else if (ComboFireLight == true)
+            {
+                print("BUTTON UP fire and lightning");
+                ComboFireLight.SetActive(false);
+            }
+        }
+
         // Ram regeneration system //
         if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
         {
