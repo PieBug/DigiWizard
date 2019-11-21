@@ -24,6 +24,7 @@ public class MagicSystem : MonoBehaviour
     public GameObject fireBall; // Holds fire prefab
     public GameObject iceBall; // Holds ice prefab
     public GameObject lightingBall; // Holds lighting prefab
+    public GameObject bullet; // Holds lighting prefab
     string Lelement; // string to store current element in LEFT hand
     string Relement; // string to store current element in RIGHT hand
     int lightingDMG; // lighting damage 
@@ -95,7 +96,6 @@ public class MagicSystem : MonoBehaviour
         PlayerDir = playerMovement.direction;
         PlayerTranslate = rbPlayer.worldCenterOfMass.normalized;
 
-        
         // LEFT BUTTON // 
         if (Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
         {
@@ -444,10 +444,12 @@ public class MagicSystem : MonoBehaviour
             Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
             Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
+           // elementToShoot.transform.position = Vector3.Lerp(elementToShoot.transform.position, hitObj.transform.position, 1);
+            GameObject bulletClone = Instantiate(bullet, hitObj.point, Quaternion.identity);
+            Destroy(bulletClone, 0.2f);
             RamDepletion(3);
             enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
             enemyMonster = hitObj.collider.GetComponent<BaseAI>();
-
             if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
             {
                 ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element

@@ -212,6 +212,12 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2125132071942386170, guid: b722d7435d48a9245b6b42aa8d72b325,
+        type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 4688218476907212599, guid: 0e502299cd105c14b9f36ca80e406428,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b722d7435d48a9245b6b42aa8d72b325, type: 3}
 --- !u!1 &431347397
