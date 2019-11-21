@@ -8,6 +8,9 @@ public class SlugEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
     public override void DamageEnemy(int damageAmount)
     {
         base.DamageEnemy(damageAmount);
+        SlugEnemyAttributes attributes = ((SlugAI)ai).attributes;
+        attributes.distanceBias = Mathf.Min(attributes.distanceBias * 1.1f, 1f);
+        attributes.dot1Bias = Mathf.Max(attributes.dot1Bias * 0.5f, attributes.distanceBias * 0.5f);
         ai.Alert();
     }
     protected override IEnumerator Death()
