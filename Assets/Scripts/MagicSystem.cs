@@ -234,15 +234,6 @@ public class MagicSystem : MonoBehaviour
             UpdateLighting(Lwand);
         }
 
-        if (lightingRightLine == true)
-        {
-            print ("yes");
-        }
-        else
-        {
-            print("no");
-        }
-
     } // end UPDATE
 
     private void FixedUpdate()
