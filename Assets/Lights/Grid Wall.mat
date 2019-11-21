@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Grid Wall
+  m_Shader: {fileID: -6465566751694194690, guid: 3a4b8d58b5dad5f48908ca956f8c1875,
+    type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs: []
+    m_Floats:
+    - Vector1_8B04EFBD: 0.8
+    m_Colors:
+    - Color_C7F15076: {r: 0.07450981, g: 0.1137255, b: 0.5, a: 0}
+    - Vector2_A3B4FAB: {r: 2, g: 2, b: 0, a: 0}
