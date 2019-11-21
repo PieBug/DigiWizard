@@ -12,16 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fb741f3380bc44eae0c817da584b3d, type: 3}
   m_Name: WormSlug
   m_EditorClassIdentifier: 
-  infertile: 0
+  infertile: 1
   brave: 0
   viewRunaway: 0
   sightRange: 50
+  distanceBias: 0.61
+  dot1Bias: 1
+  dot2Bias: 0.831
   child: {fileID: 6363290153404773665, guid: 5992af52a52f9184eaad362fbf564e6b, type: 3}
-  defensiveBirthRange: 5
+  defensiveBirthRate: 5
   rotSpeed: 0
-  burstRate: 3
-  burstRange: 10
-  burstSpeedIncrease: 10
+  burstRate: 0.1
+  burstRange: 20
+  burstSpeedIncrease: 44
   patheticRunawayClip: {fileID: 8300000, guid: 20f6dee66dd3f2444a9f4d21bf7646b2, type: 3}
   deathClip: {fileID: 8300000, guid: 017f6d98e75667e4a8c976afb69057d9, type: 3}
   normalDrop: {fileID: 4195618873056576784, guid: 2107fb5330dbf344095f392252158f1f,
