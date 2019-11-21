@@ -6177,7 +6177,7 @@ MonoBehaviour:
   cancelPenalty: 0
   penaltyRunning: 0
   ramSlider: {fileID: 8572754816774904224}
-  ramAmount: 100
+  ramAmount: 0
   nextRamFire: 0
   ramFireRate: 1
   R_Fire: {fileID: 8766775710370746206}
@@ -7095,7 +7095,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 100
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7944,7 +7944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f21a8a3b6d88144a84910be82ead54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicSystem: {fileID: 0}
+  magicSystem: {fileID: 2125132071942386170}
   shootRange: 0
 --- !u!1 &9045990423081713913
 GameObject:
