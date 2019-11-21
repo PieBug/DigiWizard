@@ -12,9 +12,15 @@ public class SlugEnemyAttributes : ScriptableObject
     [Range(-1f, 1f)]
     public float viewRunaway;
     public float sightRange;
+    [Range(0f, 1f)]
+    public float distanceBias = 1f;
+    [Range(0f, 1f)]
+    public float dot1Bias = 1f;
+    [Range(0f, 1f)]
+    public float dot2Bias = 1f;
     [Header("Attacks")]
     public GameObject child;
-    public float defensiveBirthRange;
+    public float defensiveBirthRate;
 
     public float rotSpeed;
 
@@ -27,4 +33,24 @@ public class SlugEnemyAttributes : ScriptableObject
 
     [Header("Drops")]
     public GameObject normalDrop;
+
+    public SlugEnemyAttributes(SlugEnemyAttributes attributes)
+    {
+        infertile = attributes.infertile;
+        brave = attributes.brave;
+        viewRunaway = attributes.viewRunaway;
+        sightRange = attributes.sightRange;
+        distanceBias = attributes.distanceBias;
+        dot1Bias = attributes.dot1Bias;
+        dot2Bias = attributes.dot2Bias;
+        child = attributes.child;
+        defensiveBirthRate = attributes.defensiveBirthRate;
+        rotSpeed = attributes.rotSpeed;
+        burstRate = attributes.burstRate;
+        burstRange = attributes.burstRange;
+        burstSpeedIncrease = attributes.burstSpeedIncrease;
+        patheticRunawayClip = attributes.patheticRunawayClip;
+        deathClip = attributes.deathClip;
+        normalDrop = attributes.normalDrop;
+    }
 }
