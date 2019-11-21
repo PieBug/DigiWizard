@@ -6,8 +6,10 @@ using UnityEngine;
 public class SlugAI : BaseAI
 {
     public SlugEnemyAttributes attributes;
+    public SlugEnemyAttributes baseAttributes;
     //public EnemyAttackSystem attackSphere;
     public State state;
+    public int area;
 
     public enum State
     {
@@ -28,7 +30,8 @@ public class SlugAI : BaseAI
     new void Start()
     {
         base.Start();
-
+        attributes = new SlugEnemyAttributes(attributes);
+        baseAttributes = new SlugEnemyAttributes(attributes);
 
     }
 
@@ -61,6 +64,8 @@ public class SlugAI : BaseAI
                 {
                     state = State.idling;
                     agent.isStopped = true;
+                    attributes.distanceBias = Mathf.Lerp(attributes.dot1Bias, baseAttributes.distanceBias, 0.1f);
+                    attributes.dot1Bias = Mathf.Lerp(attributes.dot1Bias, baseAttributes.dot1Bias, 0.1f);
                     StopCoroutine(walkRoutine);
                     StopCoroutine(birthRoutine);
                 }
@@ -79,9 +84,9 @@ public class SlugAI : BaseAI
             yield return new WaitForSeconds(attributes.burstRate);
             if(state == State.fleeing)
             {
-                Debug.Log(name + "is bursting.");
-                state = State.bursting;
-                agent.speed = baseSpeed + attributes.burstSpeedIncrease;
+                //Debug.Log(name + "is bursting.");
+                //state = State.bursting;
+                //agent.speed = baseSpeed + attributes.burstSpeedIncrease;
                 SetFleeDestination(20, 2.5f);
                 //yield return new WaitUntil(() => agent.pathStatus == NavMeshPathStatus.PathComplete);
                 state = State.fleeing;
@@ -95,16 +100,16 @@ public class SlugAI : BaseAI
         yield return new WaitForSeconds(Random.Range(0, 1f));
         while (true)
         {
-            yield return new WaitForSeconds(attributes.defensiveBirthRange);
+            yield return new WaitForSeconds(attributes.defensiveBirthRate);
             if(state == State.fleeing)
             {
-                Debug.Log(name + "is birthing.");
+                //Debug.Log(name + "is birthing.");
                 Instantiate(attributes.child, transform.position, Quaternion.LookRotation(normalBetweenPlayer,Vector3.up));
                 animator.SetTrigger("birth");
                 state = State.birthing;
-                agent.isStopped = true;
+                //agent.isStopped = true;
                 yield return new WaitForSeconds(1f);
-                agent.isStopped = false;
+                //agent.isStopped = false;
                 state = State.fleeing;
             }
         }
@@ -114,33 +119,34 @@ public class SlugAI : BaseAI
     {
         NavMeshPath path = new NavMeshPath();
         Vector3 target = new Vector3();
-        int i = 0;
-        bool pathExists = false;
-        do
+        float bestAverage = 0f;
+        List<GameObject> retreatPoints = SlugRetreatPoint.GetRetreatPointsInArea(area);
+        foreach (GameObject retreatPoint in retreatPoints)
         {
-            i++;
-            target = transform.position + (-normalBetweenPlayer * attributes.burstRange) + (-normalBetweenPlayer * i * step);
-            pathExists = agent.CalculatePath(target, path);
-        } while (i < attempts && !pathExists);
-        if (pathExists)
-        {
-            agent.destination = target;
-            //Debug.Log("Path Does Exist");
+            float distance = Vector3.Distance(player.transform.position, retreatPoint.transform.position);
+            float dot1 = Vector3.Dot(normalBetweenPlayer, Vector3.Normalize(player.transform.position - retreatPoint.transform.position));
+            float dot2 = Vector3.Dot(Vector3.Cross(Vector3.up, normalBetweenPlayer), Vector3.Normalize(transform.position - retreatPoint.transform.position));
+            dot2 = Mathf.Abs(dot2);
+            float average = ((distance * attributes.distanceBias) + ((dot1 * distance) * attributes.dot1Bias + (dot2 * distance) * attributes.dot2Bias)) / 3f;
+            if (average > bestAverage)
+            {
+                bestAverage = average;
+                target = retreatPoint.transform.position;
+            }
+            retreatPoint.GetComponentInChildren<TextMesh>().text = average.ToString();
         }
-        else
-        {
-            //Debug.Log("Path Does Not Exist");
-            agent.destination = player.transform.position;
-        }
+        agent.destination = target;
     }
 
     public override void Alert()
     {
-        if(state != State.dead)
+        if(state == State.idling)
         {
             state = State.fleeing;
             audioSource3D.PlayOneShot(attributes.patheticRunawayClip);
+            if (walkRoutine != null) StopCoroutine(walkRoutine);
             walkRoutine = StartCoroutine(FleeFromPlayer());
+            if (birthRoutine != null) StopCoroutine(birthRoutine);
             if (!attributes.infertile)
                 birthRoutine = StartCoroutine(BirthSpiders());
             agent.isStopped = false;
