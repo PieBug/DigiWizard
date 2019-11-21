@@ -24,7 +24,8 @@ public class MagicSystem : MonoBehaviour
     public GameObject fireBall; // Holds fire prefab
     public GameObject iceBall; // Holds ice prefab
     public GameObject lightingBall; // Holds lighting prefab
-    public GameObject bullet; // Holds lighting prefab
+    public GameObject bullet;
+   // public GameObject fireExplosion; 
     string Lelement; // string to store current element in LEFT hand
     string Relement; // string to store current element in RIGHT hand
     int lightingDMG; // lighting damage 
@@ -233,6 +234,15 @@ public class MagicSystem : MonoBehaviour
             UpdateLighting(Lwand);
         }
 
+        if (lightingRightLine == true)
+        {
+            print ("yes");
+        }
+        else
+        {
+            print("no");
+        }
+
     } // end UPDATE
 
     private void FixedUpdate()
@@ -338,14 +348,14 @@ public class MagicSystem : MonoBehaviour
             if (LastHitElement == "lighting" != (LightingCounter == 5))
             {
                 LightingCounter += 1;
-                lightingDMG = 3 * LightingCounter;
+                lightingDMG = 2 * LightingCounter;
                 enemyH.DamageEnemy(lightingDMG);
             }
             else
             {
                 LightingCounter = 1;
                 // does damage + increase damage if you conseutively hit an enemy AI
-                lightingDMG = 3;
+                lightingDMG = 2;
                 enemyH.DamageEnemy(lightingDMG);
             }
         }
@@ -493,10 +503,16 @@ public class MagicSystem : MonoBehaviour
         if (updateLeftLightBool == true)
         {
             lightingLeftLine.transform.position = wandE.transform.position;
+            ramAmount -= 1;
+            ramSlider.value = ramAmount;
+
+
         }
         else if (updateRightLightBool == true)
         {
             lightingRightLine.transform.position = wandE.transform.position;
+            ramAmount -= 1;
+            ramSlider.value = ramAmount;
         }
     }
 

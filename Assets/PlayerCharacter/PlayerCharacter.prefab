@@ -6169,6 +6169,8 @@ MonoBehaviour:
   lightingBall: {fileID: 580811443030227047, guid: 84f530b60841a64469bba53e923aec35,
     type: 3}
   bullet: {fileID: 4688218476907212599, guid: 0e502299cd105c14b9f36ca80e406428, type: 3}
+  fireExplosion: {fileID: 3568258903507184239, guid: ac8d4331e1455884eb5788d7fd434ba1,
+    type: 3}
   fireBallForce: 15
   fireBallArch: 1
   playerInfluenceOnFireBall: 10
@@ -6177,7 +6179,7 @@ MonoBehaviour:
   cancelPenalty: 0
   penaltyRunning: 0
   ramSlider: {fileID: 8572754816774904224}
-  ramAmount: 0
+  ramAmount: 100
   nextRamFire: 0
   ramFireRate: 1
   R_Fire: {fileID: 8766775710370746206}
@@ -7095,7 +7097,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 40
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireBall : MonoBehaviour
 {
     public MagicSystem magicSystem;
+    public GameObject fireExplosion;
     public int colCounter;
     // Collision counter
     void OnCollisionEnter(Collision col)
@@ -13,6 +14,7 @@ public class FireBall : MonoBehaviour
         
         if (colCounter == 0)
         {
+            Instantiate(fireExplosion, transform.position, transform.rotation);
             Destroy(gameObject);
         }
         EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
