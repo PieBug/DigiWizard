@@ -6176,6 +6176,7 @@ MonoBehaviour:
   playerInfluenceOnFireBall: 10
   fireRamDepletion: 5
   iceRamDepletion: 2
+  ramDrain: 0.1
   lightingRightLine: {fileID: 580811444173448850}
   lightingLeftLine: {fileID: 580811443095832072}
   cancelPenalty: 0

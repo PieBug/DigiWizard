@@ -42,6 +42,9 @@ public class MagicSystem : MonoBehaviour
     // Ice attributes //
     public int iceRamDepletion;
 
+    // Lightning Attributes //
+    bool confirmLight = true;
+    public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.2f);
 
     // GameObject lightingCopy;
     public GameObject lightingRightLine;
@@ -58,6 +61,7 @@ public class MagicSystem : MonoBehaviour
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
     bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
+    private IEnumerator ramLightningCoroutine;
 
     // Spider AI //
     BaseAI enemyMonster; // WIP freezing spider AI
@@ -178,7 +182,7 @@ public class MagicSystem : MonoBehaviour
         }
 
         // Ram regeneration system //
-        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false)
+        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false && confirmLight == true)
         {
             nextRamFire = Time.time + ramFireRate;
             if (!(ramAmount == 100) || !(ramAmount > 100))
@@ -302,6 +306,18 @@ public class MagicSystem : MonoBehaviour
                 R_Ice.enabled = true;
             }
         }
+
+        if (updateRightLightBool && confirmLight)
+        {
+            RamDepletion(1);
+            StartLightningCor();
+
+        }
+        if (updateLeftLightBool && confirmLight)
+        {
+            RamDepletion(1);
+            StartLightningCor();
+        }
     } // end FIXED UPDATE
 
     // Element Damage Manager //
@@ -369,13 +385,6 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
-    private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
-    {
-        yield return new WaitForSeconds(0.9f);
-        Destroy(elementObj);
-        Instantiate(particle, elementObj.transform.position, elementObj.transform.rotation); 
-    }
-
     // Cancel Penalty // 
     public void CancelPenaltyCoroutine()
     {
@@ -384,6 +393,36 @@ public class MagicSystem : MonoBehaviour
         IsRamPenalty = false;
 
         StopCoroutine(ramPenaltyCoroutine);
+    }
+
+    // Particle Coroutine //
+    private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
+    {
+        yield return new WaitForSeconds(0.9f);
+        if (elementObj != null)
+        {
+            Instantiate(particle, elementObj.transform.position, elementObj.transform.rotation);
+            Destroy(elementObj, 0.3f);
+        }
+    }
+    // StartCoroutine(LightningRamDeplete());
+    // Lightning Ram Coroutine //
+
+    private void StartLightningCor()
+    {
+        ramLightningCoroutine = LightningRamDeplete();
+        StartCoroutine(ramLightningCoroutine);
+    }
+    private void StopLighting()
+    {
+        confirmLight = true;
+        StopCoroutine(ramLightningCoroutine);
+    }
+    private IEnumerator LightningRamDeplete()
+    {
+        confirmLight = false;
+        yield return ramDrainSpeed;
+        StopLighting();
     }
 
     // Freezing AI //
@@ -440,8 +479,6 @@ public class MagicSystem : MonoBehaviour
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion(ramAmt);
             StartCoroutine(InstantiateParticle(particle, elementToShoot));
-            //Destroy(elementToShoot, 0.6f);
-            //Instantiate(bullet, elementToShoot.transform.position, elementToShoot.transform.rotation); 
         }
     } 
 
