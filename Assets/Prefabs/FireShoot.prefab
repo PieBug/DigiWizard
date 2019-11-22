@@ -123,7 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 466bd503a9e12ff428ab3c7f0fe32591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magicSystem: {fileID: 0}
+  magicSystem: {fileID: 2125132071942386170, guid: b722d7435d48a9245b6b42aa8d72b325,
+    type: 3}
   fireExplosion: {fileID: 3568258903507184239, guid: ac8d4331e1455884eb5788d7fd434ba1,
     type: 3}
   colCounter: 3

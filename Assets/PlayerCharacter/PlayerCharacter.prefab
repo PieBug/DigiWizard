@@ -5150,7 +5150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1779999338}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.35, z: 1.937}
+  m_LocalPosition: {x: 0, y: -0.022, z: 1.937}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2125132072461335367}
@@ -6213,7 +6213,7 @@ MonoBehaviour:
   penaltyRunning: 0
   ramSlider: {fileID: 8572754816774904224}
   ramAmount: 100
-  nextRamFire: 0
+  nextRamFire: 1
   ramFireRate: 1
   R_Fire: {fileID: 8766775710370746206}
   R_Ice: {fileID: 1356703016}

@@ -451,7 +451,7 @@ public class MagicSystem : MonoBehaviour
         if (elementObj != null)
         {
             Instantiate(particle, elementObj.transform.position, elementObj.transform.rotation);
-            Destroy(elementObj, 0.3f);
+            Destroy(elementObj, 0.1f); //0.3
         }
     }
 

@@ -21,7 +21,7 @@ public class FireBall : MonoBehaviour
         EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
         if (enemyHealth != null)
         {
-
+            print("hit enemy");
             magicSystem.ElementDamageManager(power, enemyHealth);
             
         }
