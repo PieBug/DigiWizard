@@ -416,7 +416,7 @@ public class MagicSystem : MonoBehaviour
     // RAM penalty //
     void StartPenalty()
     {
-        print("Starting penalty");
+        //print("Starting penalty");
         ramPenaltyCoroutine = RamPenalty();
         StartCoroutine(ramPenaltyCoroutine);
         cancelPenalty = false;
@@ -446,7 +446,7 @@ public class MagicSystem : MonoBehaviour
     // Particle Coroutine //
     private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
     {
-        print("Inside particle coroutine");
+        //print("Inside particle coroutine");
         yield return new WaitForSeconds(0.9f);
         if (elementObj != null)
         {
@@ -499,20 +499,20 @@ public class MagicSystem : MonoBehaviour
         if (ai != null)
         {
             ai.IceAI(0.5f, 0.5f);
-            print("Slowing enemy");
+            //print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
             //ai.IceAI(1f, 1f);
-            print("Freezing enemy");
+            //print("Freezing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
             //ai.ResetAI();
-            print("Un freezing enemy");
+            //print("Un freezing enemy");
         }
     }
     private IEnumerator EnemyFreezeCoroutine()
     {
-        print("Enemy Coroutine start");
+        //print("Enemy Coroutine start");
         yield return new WaitForSeconds(5);
-        print("Enemy Coroutine is over");
+        //print("Enemy Coroutine is over");
     }
 
     // Element Magic Shooting //
@@ -546,7 +546,7 @@ public class MagicSystem : MonoBehaviour
         }
         else
         {
-            print("Did not hit");
+            //print("Did not hit");
             var position = ray.GetPoint(shootRange);
             Vector3 destintion = elementToShoot.transform.position - position;
             //Quaternion rotationDestination = Quaternion.LookRotation(-destintion);

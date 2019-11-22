@@ -33,7 +33,7 @@ public class SpellProjectile : MonoBehaviour {
         {
             Instantiate(explosion, transform.position, transform.rotation);
             Destroy(gameObject);
-            print("success in spell projectile");
+            //print("success in spell projectile");
         }
     }
 
