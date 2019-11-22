@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpellProjectile : MonoBehaviour {
     public float speed;
-    public float firerate;
     public GameObject explosion;
     // Start is called before the first frame update
     void Start()

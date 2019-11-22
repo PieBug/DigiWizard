@@ -21,10 +21,19 @@ public class MagicSystem : MonoBehaviour
     public Transform Lwand; // Marks the tip of the wand where spell will shoot from
     public Transform Rwand; // Marks the tip of the wand where spell will shoot from
     public Transform MidPosition; // Marks the tip of the wand where spell will shoot from
-    public GameObject fireBall; // Holds fire prefab
-    public GameObject iceBall; // Holds ice prefab
-    public GameObject lightingBall; // Holds lighting prefab
-    public GameObject bullet; 
+    public GameObject fireProjectile; // Holds fire prefab
+    public GameObject iceProjectile; // Holds ice prefab
+    public GameObject lightingProjectile; // Holds lighting prefab
+    public GameObject fireiceProjectile;
+    public GameObject icelightProjectile;
+    public GameObject lightfireProjectile;
+
+    // Particle Feedback //
+    public GameObject blueParticle;
+    public GameObject redParticle;
+    public GameObject yellowParticle;
+
+    //public GameObject bullet; 
     string Lelement; // string to store current element in LEFT hand
     string Relement; // string to store current element in RIGHT hand
 
@@ -45,6 +54,19 @@ public class MagicSystem : MonoBehaviour
     // Lightning Attributes //
     bool confirmLight = true;
     public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.2f);
+    public int lightningRamDepletion;
+
+    // FireIce Attributes //
+    public int fireiceRamDepletion;
+    public int fireiceDMG;
+
+    // IceLightning Attributes //
+    public int icelightRamDepletion;
+    public int icelightDMG;
+
+    // LightningFire Attributes //
+    public int lightfireRamDepletion;
+    public int lightfireDMG;
 
     // GameObject lightingCopy;
     public GameObject lightingRightLine;
@@ -108,10 +130,10 @@ public class MagicSystem : MonoBehaviour
             switch (element)
             {
                 case "fire":
-                    FireShoot(Lwand);
+                    FireShoot(MidPosition);
                     break;
                 case "ice":
-                    ShootElement(MidPosition, iceBall, element, iceRamDepletion, bullet);
+                    ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
                     ActivateLighting(Lwand);
@@ -127,10 +149,10 @@ public class MagicSystem : MonoBehaviour
             switch (element)
             {
                 case "fire":
-                    FireShoot(Rwand);
+                    FireShoot(MidPosition);
                     break;
                 case "ice":
-                    ShootElement(MidPosition, iceBall, element, iceRamDepletion, bullet);
+                    ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
                     ActivateLighting(Rwand);
@@ -145,18 +167,15 @@ public class MagicSystem : MonoBehaviour
 
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
-                print("Fire and ice");
-                ShootElement(MidPosition, ComboIceFire, "ice", 4, bullet); // combo ram need to re-do
+                ShootElement(MidPosition, ComboIceFire, "fireice", fireiceRamDepletion, redParticle); // combo ram need to re-do
             }
             else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
             {
-                print("Ice and lightning");
                 ComboLightIce.SetActive(true);
-                ShootElement(MidPosition, iceBall, "ice", 4, bullet); // combo ram need to re-do
+                ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, redParticle); // combo ram need to re-do
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
-                print("fire and lightning");
                 ComboFireLight.SetActive(true);
             }
         }
@@ -307,15 +326,16 @@ public class MagicSystem : MonoBehaviour
             }
         }
 
+        // Lightning Ram Depletion // 
         if (updateRightLightBool && confirmLight)
         {
-            RamDepletion(1);
+            RamDepletion(lightningRamDepletion);
             StartLightningCor();
 
         }
         if (updateLeftLightBool && confirmLight)
         {
-            RamDepletion(1);
+            RamDepletion(lightningRamDepletion);
             StartLightningCor();
         }
     } // end FIXED UPDATE
@@ -335,6 +355,21 @@ public class MagicSystem : MonoBehaviour
         if (element == "lighting" && enemyH != null)
         {
             enemyH.DamageEnemy(lightingDMG);
+        }
+
+        if (element == "fireice" && enemyH != null)
+        {
+            enemyH.DamageEnemy(fireiceDMG);
+        }
+
+        if (element == "icelight" && enemyH != null)
+        {
+            enemyH.DamageEnemy(icelightDMG);
+        }
+
+        if (element == "lightfire" && enemyH != null)
+        {
+            enemyH.DamageEnemy(lightfireDMG);
         }
     } 
 
@@ -486,7 +521,7 @@ public class MagicSystem : MonoBehaviour
     private void LightingShoot(Transform wandE)
     {
         GameObject elementToShoot;
-        elementToShoot = Instantiate(lightingBall, wandE.transform);
+        elementToShoot = Instantiate(lightingProjectile, wandE.transform);
 
     } // End LightingShoot
 
@@ -536,7 +571,7 @@ public class MagicSystem : MonoBehaviour
     private void FireShoot(Transform wandE)
     {
         GameObject fireCopy;
-        fireCopy = Instantiate(fireBall, wandE.transform.position, cam.transform.rotation);
+        fireCopy = Instantiate(fireProjectile, wandE.transform.position, cam.transform.rotation);
         //fireCopy.GetComponent<FireBall>().magicSystem = this;
         if (fireCopy != null)
         {
