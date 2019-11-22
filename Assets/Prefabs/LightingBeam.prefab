@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicSystem: {fileID: 0}
   shootRange: 10
+  element: 
 --- !u!1 &580811444586730284
 GameObject:
   m_ObjectHideFlags: 0
