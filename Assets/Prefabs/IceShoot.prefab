@@ -42,7 +42,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
-  firerate: 0
   explosion: {fileID: 3568258903507184239, guid: 4f7b69a5082de4b4991dbdd4e34dd805,
     type: 3}
 --- !u!1001 &7197032259103778501

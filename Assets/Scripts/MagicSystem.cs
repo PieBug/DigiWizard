@@ -23,10 +23,15 @@ public class MagicSystem : MonoBehaviour
     public Transform MidPosition; // Marks the tip of the wand where spell will shoot from
     public GameObject fireProjectile; // Holds fire prefab
     public GameObject iceProjectile; // Holds ice prefab
-    public GameObject lightingProjectile; // Holds lighting prefab
-    public GameObject fireiceProjectile;
-    public GameObject icelightProjectile;
-    public GameObject lightfireProjectile;
+
+    // GameObject lightingCopy;
+    public GameObject lightingRightLine;
+    public GameObject lightingLeftLine;
+
+    // Combo Magics //
+    public GameObject ComboFireLight;
+    public GameObject ComboIceFire;
+    public GameObject ComboLightIce;
 
     // Particle Feedback //
     public GameObject blueParticle;
@@ -55,6 +60,8 @@ public class MagicSystem : MonoBehaviour
     bool confirmLight = true;
     public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.2f);
     public int lightningRamDepletion;
+    //------------------------------
+            // COMBOS //
 
     // FireIce Attributes //
     public int fireiceRamDepletion;
@@ -67,11 +74,9 @@ public class MagicSystem : MonoBehaviour
     // LightningFire Attributes //
     public int lightfireRamDepletion;
     public int lightfireDMG;
+    bool confirmLightFire = true;
 
-    // GameObject lightingCopy;
-    public GameObject lightingRightLine;
-    public GameObject lightingLeftLine;
-
+    //------------------------------
 
     // RAM System //
     public bool cancelPenalty = false;
@@ -84,6 +89,7 @@ public class MagicSystem : MonoBehaviour
     bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
     private IEnumerator ramLightningCoroutine;
+    private IEnumerator ramLightFireCoroutine;
 
     // Spider AI //
     BaseAI enemyMonster; // WIP freezing spider AI
@@ -101,10 +107,7 @@ public class MagicSystem : MonoBehaviour
     public Image L_Ice;
     public Image L_Lightning;
 
-    // Combo Magics //
-    public GameObject ComboFireLight;
-    public GameObject ComboIceFire;
-    public GameObject ComboLightIce;
+
 
     //---------------------------------------------------------------------------------------------//
 
@@ -172,31 +175,32 @@ public class MagicSystem : MonoBehaviour
             else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
             {
                 ComboLightIce.SetActive(true);
-                ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, redParticle); // combo ram need to re-do
+                ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, blueParticle); // combo ram need to re-do
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 ComboFireLight.SetActive(true);
+                confirmLightFire = true;
+                StartLightFireCor();
             }
         }
 
         // BOTH BUTTONS //
         if ((Input.GetMouseButtonUp(1) && Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(0) && Input.GetMouseButtonUp(1)))
         {
+            /**
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
+            {}
+            **/
+            if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
             {
-                print("BUTTON UP Fire and ice");
-
-            }
-            else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
-            {
-                print("BUTTON UP Ice and lightning");
                 ComboLightIce.SetActive(false);
             }
             else if (ComboFireLight == true)
             {
-                print("BUTTON UP fire and lightning");
                 ComboFireLight.SetActive(false);
+                confirmLightFire = false;
+                StopLightFire();
             }
         }
 
@@ -338,6 +342,15 @@ public class MagicSystem : MonoBehaviour
             RamDepletion(lightningRamDepletion);
             StartLightningCor();
         }
+
+        // Light FIRE Ram Depletion // 
+        if (confirmLightFire)
+        {
+            RamDepletion(lightfireRamDepletion);
+            StartLightFireCor();
+
+        }
+
     } // end FIXED UPDATE
 
     // Element Damage Manager //
@@ -433,6 +446,7 @@ public class MagicSystem : MonoBehaviour
     // Particle Coroutine //
     private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
     {
+        print("Inside particle coroutine");
         yield return new WaitForSeconds(0.9f);
         if (elementObj != null)
         {
@@ -440,7 +454,7 @@ public class MagicSystem : MonoBehaviour
             Destroy(elementObj, 0.3f);
         }
     }
-    // StartCoroutine(LightningRamDeplete());
+
     // Lightning Ram Coroutine //
 
     private void StartLightningCor()
@@ -458,6 +472,25 @@ public class MagicSystem : MonoBehaviour
         confirmLight = false;
         yield return ramDrainSpeed;
         StopLighting();
+    }
+
+    // Light FIRE Ram Coroutine //
+
+    private void StartLightFireCor()
+    {
+        ramLightFireCoroutine = LightFireRamDeplete();
+        StartCoroutine(ramLightFireCoroutine);
+    }
+    private void StopLightFire()
+    {
+        confirmLightFire = true;
+        StopCoroutine(ramLightFireCoroutine);
+    }
+    private IEnumerator LightFireRamDeplete()
+    {
+        confirmLightFire = false;
+        yield return new WaitForSeconds(0.1f);
+        //StopLightFire();
     }
 
     // Freezing AI //
@@ -495,7 +528,7 @@ public class MagicSystem : MonoBehaviour
         if (Physics.Raycast(ray, out hitObj, shootRange))
         {
             Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
-            Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
+            //Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion(ramAmt);
             enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
@@ -505,25 +538,23 @@ public class MagicSystem : MonoBehaviour
                 ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                 RamDepletion(ramAmt);
             }
+            else
+            {
+                RamDepletion(ramAmt);
+                StartCoroutine(InstantiateParticle(particle, elementToShoot));
+            }
         }
         else
         {
+            print("Did not hit");
             var position = ray.GetPoint(shootRange);
             Vector3 destintion = elementToShoot.transform.position - position;
-            Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
+            //Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion(ramAmt);
             StartCoroutine(InstantiateParticle(particle, elementToShoot));
         }
     } 
-
-    // Lightning Projectile //
-    private void LightingShoot(Transform wandE)
-    {
-        GameObject elementToShoot;
-        elementToShoot = Instantiate(lightingProjectile, wandE.transform);
-
-    } // End LightingShoot
 
     private void ActivateLighting(Transform wandE)
     {

@@ -5,10 +5,11 @@ using UnityEngine;
 public class SpellProjectile : MonoBehaviour {
     public float speed;
     public GameObject explosion;
+
     // Start is called before the first frame update
     void Start()
     {
-   
+
     }
 
     // Update is called once per frame
@@ -24,14 +25,17 @@ public class SpellProjectile : MonoBehaviour {
         }
     }
 
+
     void OnCollisionEnter(Collision collision)
     {
-        if (true)
+        EnemyHealthAndDeathManager enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
+        if (enemyHealth == null)
         {
             Instantiate(explosion, transform.position, transform.rotation);
             Destroy(gameObject);
+            print("success in spell projectile");
         }
     }
-    
+
 
 }

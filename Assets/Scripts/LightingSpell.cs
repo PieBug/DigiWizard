@@ -6,6 +6,7 @@ public class LightingSpell : MonoBehaviour {
     public MagicSystem magicSystem;
     float timeSinceLastHit;
     public float shootRange;
+    public string element;
     private void Update()
     {
         //Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -19,7 +20,7 @@ public class LightingSpell : MonoBehaviour {
 
             if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
             {
-                magicSystem.ElementDamageManager("lighting", enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                magicSystem.ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
             }
         }
     }
