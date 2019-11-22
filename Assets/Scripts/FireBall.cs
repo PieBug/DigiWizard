@@ -6,8 +6,9 @@ public class FireBall : MonoBehaviour
 {
     public MagicSystem magicSystem;
     public GameObject fireExplosion;
-    public int colCounter;
-    // Collision counter
+    public int colCounter = 3;
+    public string power;
+    // Collision counter //
     void OnCollisionEnter(Collision col)
     {
         colCounter--;
@@ -21,7 +22,7 @@ public class FireBall : MonoBehaviour
         if (enemyHealth != null)
         {
 
-            magicSystem.ElementDamageManager("fire", enemyHealth);
+            magicSystem.ElementDamageManager(power, enemyHealth);
             
         }
     }

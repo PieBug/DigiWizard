@@ -6161,16 +6161,21 @@ MonoBehaviour:
   fireRate: 0.25
   Lwand: {fileID: 2125132071929899416}
   Rwand: {fileID: 2125132071808896483}
-  ComboPosition: {fileID: 1779999339}
+  MidPosition: {fileID: 1779999339}
   fireBall: {fileID: 5710447335357598971, guid: a5c7aedc61e89e64c9d1f2d264097305,
     type: 3}
   iceBall: {fileID: 1207267766565289932, guid: 6de32e962d8f843478b5d5eb23d2d251, type: 3}
   lightingBall: {fileID: 580811443030227047, guid: 84f530b60841a64469bba53e923aec35,
     type: 3}
-  bullet: {fileID: 4688218476907212599, guid: 0e502299cd105c14b9f36ca80e406428, type: 3}
+  bullet: {fileID: 3568258903507184239, guid: 4f7b69a5082de4b4991dbdd4e34dd805, type: 3}
+  lightingDMG: 4
+  fireDMG: 5
+  iceDMG: 3
   fireBallForce: 15
   fireBallArch: 1
   playerInfluenceOnFireBall: 10
+  fireRamDepletion: 5
+  iceRamDepletion: 2
   lightingRightLine: {fileID: 580811444173448850}
   lightingLeftLine: {fileID: 580811443095832072}
   cancelPenalty: 0
