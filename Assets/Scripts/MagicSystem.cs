@@ -441,12 +441,12 @@ public class MagicSystem : MonoBehaviour
     // Particle Coroutine //
     private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
     {
-        //print("Inside particle coroutine");
-        yield return new WaitForSeconds(0.9f);
+        
         if (elementObj != null)
         {
-            Instantiate(particle, elementObj.transform.position, elementObj.transform.rotation);
-            Destroy(elementObj, 0.1f); //0.3
+            Destroy(elementObj, 0.3f); //0.3
+            yield return new WaitForSeconds(0.28f);
+            Instantiate(particle, elementObj.transform.position, Quaternion.identity);
         }
     }
 
@@ -512,22 +512,26 @@ public class MagicSystem : MonoBehaviour
             {
                 ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                 RamDepletion(ramAmt);
+                Destroy(elementToShoot, 0.3f); //0.3
+                Instantiate(particle, hitObj.point, Quaternion.identity);
             }
             else
             {
                 RamDepletion(ramAmt);
-                StartCoroutine(InstantiateParticle(particle, elementToShoot));
+                Destroy(elementToShoot, 0.3f); //0.3
+                Instantiate(particle, hitObj.point, Quaternion.identity);
             }
         }
         else
         {
             //print("Did not hit");
             var position = ray.GetPoint(shootRange);
+            //Vector3 position = ray.GetPoint(shootRange);
             Vector3 destintion = elementToShoot.transform.position - position;
             //Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
             elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
             RamDepletion(ramAmt);
-            StartCoroutine(InstantiateParticle(particle, elementToShoot));
+            StartCoroutine(InstantiateParticle(particleToInstantiate, elementToShoot));
         }
     }
 

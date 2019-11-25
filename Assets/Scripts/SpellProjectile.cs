@@ -25,17 +25,16 @@ public class SpellProjectile : MonoBehaviour {
         }
     }
 
-
+    /**
     void OnCollisionEnter(Collision collision)
     {
         EnemyHealthAndDeathManager enemyHealth = collision.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
-        if (enemyHealth == null)
+        if (enemyHealth != null)
         {
             Instantiate(explosion, transform.position, transform.rotation);
             Destroy(gameObject);
             //print("success in spell projectile");
         }
     }
-
-
+    **/
 }
