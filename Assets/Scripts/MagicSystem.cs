@@ -60,8 +60,11 @@ public class MagicSystem : MonoBehaviour
     bool confirmLight = true;
     public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.2f);
     public int lightningRamDepletion;
+    public LineRenderer RlaserLine;
+    public LineRenderer LlaserLine; 
+    private WaitForSeconds rayDuration = new WaitForSeconds(.07f);
     //------------------------------
-            // COMBOS //
+    // COMBOS //
 
     // FireIce Attributes //
     public int fireiceRamDepletion;
@@ -139,7 +142,8 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
-                    ActivateLighting(Lwand);
+                    //ActivateLighting(Lwand);
+                    LinerRendererShoot(Lwand, "lighting", lightingDMG, LlaserLine);
                     break;
             }
         }
@@ -158,7 +162,8 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
-                    ActivateLighting(Rwand);
+                    //ActivateLighting(Rwand);
+                    LinerRendererShoot(Rwand, "lighting", lightingDMG, RlaserLine);
                     break;
             }
         }
@@ -179,9 +184,9 @@ public class MagicSystem : MonoBehaviour
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
-                ComboFireLight.SetActive(true);
-                confirmLightFire = true;
-                StartLightFireCor();
+                //ComboFireLight.SetActive(true);
+                //confirmLightFire = true;
+                //StartLightFireCor();
             }
         }
 
@@ -198,9 +203,9 @@ public class MagicSystem : MonoBehaviour
             }
             else if (ComboFireLight == true)
             {
-                ComboFireLight.SetActive(false);
-                confirmLightFire = false;
-                StopLightFire();
+                //ComboFireLight.SetActive(false);
+                //confirmLightFire = false;
+                //StopLightFire();
             }
         }
 
@@ -240,6 +245,7 @@ public class MagicSystem : MonoBehaviour
             IsRamPenalty = true;
             StartPenalty();
         }
+        /**
         if (updateRightLightBool)
         {
             UpdateLighting(Rwand);
@@ -248,11 +254,13 @@ public class MagicSystem : MonoBehaviour
         {
             UpdateLighting(Lwand);
         }
+        **/
     } // end UPDATE
 
     // Fixed Update //
     private void FixedUpdate()
     {
+        /**
         // RIGHT BUTTON // 
         if (Input.GetMouseButtonUp(1))
         {
@@ -269,6 +277,7 @@ public class MagicSystem : MonoBehaviour
                 EnableLighting(Lwand);
             } 
         }
+        **/
 
         // Magic Switching System //
         // Q KEY: Left Wand //
@@ -330,6 +339,8 @@ public class MagicSystem : MonoBehaviour
             }
         }
 
+        /**
+
         // Lightning Ram Depletion // 
         if (updateRightLightBool && confirmLight)
         {
@@ -351,6 +362,7 @@ public class MagicSystem : MonoBehaviour
 
         }
 
+       **/
     } // end FIXED UPDATE
 
     // Element Damage Manager //
@@ -455,6 +467,7 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
+    /**
     // Lightning Ram Coroutine //
 
     private void StartLightningCor()
@@ -492,6 +505,8 @@ public class MagicSystem : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         //StopLightFire();
     }
+
+    **/ 
 
     // Freezing AI //
     private void FreezeAIEnemy(BaseAI ai)
@@ -554,8 +569,9 @@ public class MagicSystem : MonoBehaviour
             RamDepletion(ramAmt);
             StartCoroutine(InstantiateParticle(particle, elementToShoot));
         }
-    } 
+    }
 
+    /**
     private void ActivateLighting(Transform wandE)
     {
         if (wandE.name == "RightWandEnd")
@@ -597,6 +613,15 @@ public class MagicSystem : MonoBehaviour
             lightingLeftLine.SetActive(false);
         }
     }
+    **/
+
+    // Coroutine ShotEffect()
+    private IEnumerator ShotEffect(LineRenderer laserLine)
+    {
+        laserLine.enabled = true; // When shot, laserline is enabled and coroutine is waiting for .07 seconds until it enables the laser from game view
+        yield return rayDuration;
+        laserLine.enabled = false;
+    }
 
     // FireBall Projectile //
     private void FireShoot(Transform wandE)
@@ -615,4 +640,47 @@ public class MagicSystem : MonoBehaviour
             rbFireBall.velocity = v;
         }
     } 
+
+    // Lightning Line Renderer
+    private void LinerRendererShoot(Transform wand, string element, int RamDepleteAmt, LineRenderer Line)
+    {
+        StartCoroutine(ShotEffect(Line)); // Calling the coroutine ShotEffect function to enable laser line
+
+        Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
+
+        RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
+        Line.SetPosition(0, wand.position); // starting position of the laserline is set to current position of the tip of the wand where the ray will shoot from
+        GameObject particle;
+        if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
+        {
+            Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
+            RamDepletion(RamDepleteAmt);
+            // Bullet Cloning //
+            particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
+            Destroy(particle, 0.2f);
+
+            enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
+            enemyMonster = hitObject.collider.GetComponent<BaseAI>();
+
+            if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+            {
+                print("hit enemy");
+                ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
+                Destroy(particle, 0.2f);
+                RamDepletion(RamDepleteAmt);
+            }
+
+        }
+        else // Raycast returns false
+        {
+            Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
+
+            // Bullet Cloning //
+            particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
+            Destroy(particle, 0.2f);
+            RamDepletion(RamDepleteAmt);
+
+        }
+    }
 }
