@@ -8,8 +8,10 @@ public class MagicSystem : MonoBehaviour
     //Input Variables//
     bool leftPressed;
     bool rightPressed;
-    bool updateRightLightBool;
-    bool updateLeftLightBool;
+    bool updateRightLine = false;
+    bool updateLeftLine = false;
+    bool updateMidLine = false;
+    bool activateRamLine = false;
 
     // Shooting Variables // 
     public float shootRange = 10f; // How long rays are shot
@@ -24,12 +26,7 @@ public class MagicSystem : MonoBehaviour
     public GameObject fireProjectile; // Holds fire prefab
     public GameObject iceProjectile; // Holds ice prefab
 
-    // GameObject lightingCopy;
-    public GameObject lightingRightLine;
-    public GameObject lightingLeftLine;
-
     // Combo Magics //
-    public GameObject ComboFireLight;
     public GameObject ComboIceFire;
     public GameObject ComboLightIce;
 
@@ -57,12 +54,13 @@ public class MagicSystem : MonoBehaviour
     public int iceRamDepletion;
 
     // Lightning Attributes //
-    bool confirmLight = true;
-    public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.2f);
+    public WaitForSeconds ramDrainSpeed = new WaitForSeconds(0.7f);
     public int lightningRamDepletion;
     public LineRenderer RlaserLine;
     public LineRenderer LlaserLine; 
+    public LineRenderer MlaserLine; 
     private WaitForSeconds rayDuration = new WaitForSeconds(.07f);
+
     //------------------------------
     // COMBOS //
 
@@ -87,12 +85,12 @@ public class MagicSystem : MonoBehaviour
     public Slider ramSlider;
     public int ramAmount = 100;
     public float nextRamFire;
+    public float regenWait;
     public float ramFireRate = 3.0f;
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
     bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
-    private IEnumerator ramLightningCoroutine;
-    private IEnumerator ramLightFireCoroutine;
+    private IEnumerator ramLineRendererCoroutine;
 
     // Spider AI //
     BaseAI enemyMonster; // WIP freezing spider AI
@@ -142,10 +140,27 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
-                    //ActivateLighting(Lwand);
-                    LinerRendererShoot(Lwand, "lighting", lightingDMG, LlaserLine);
+                    updateLeftLine = true;
+                    activateRamLine = true;
                     break;
             }
+        }
+
+        // LEFT BUTTON // 
+        if (Input.GetMouseButtonUp(0) && !Input.GetMouseButtonUp(1) && ramAmount != 0 && ramAmount > 0)
+        {
+            //print("up");
+            updateLeftLine = false;
+            activateRamLine = false;
+            LlaserLine.enabled = false;
+        }
+        // RIGHT BUTTON // 
+        if (Input.GetMouseButtonUp(1) && !Input.GetMouseButtonUp(0) && ramAmount != 0 && ramAmount > 0)
+        {
+            //print("up");
+            updateRightLine = false;
+            activateRamLine = false;
+            RlaserLine.enabled = false;
         }
 
         // RIGHT BUTTON // 
@@ -162,8 +177,8 @@ public class MagicSystem : MonoBehaviour
                     ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                     break;
                 case "lighting":
-                    //ActivateLighting(Rwand);
-                    LinerRendererShoot(Rwand, "lighting", lightingDMG, RlaserLine);
+                    updateRightLine = true;
+                    activateRamLine = true;
                     break;
             }
         }
@@ -184,38 +199,27 @@ public class MagicSystem : MonoBehaviour
             }
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
-                //ComboFireLight.SetActive(true);
-                //confirmLightFire = true;
-                //StartLightFireCor();
+                updateMidLine = true;
+                activateRamLine = true;
             }
         }
 
         // BOTH BUTTONS //
-        if ((Input.GetMouseButtonUp(1) && Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(0) && Input.GetMouseButtonUp(1)))
+        if ((Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0)))
         {
-            /**
-            if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
-            {}
-            **/
-            if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
-            {
-                ComboLightIce.SetActive(false);
-            }
-            else if (ComboFireLight == true)
-            {
-                //ComboFireLight.SetActive(false);
-                //confirmLightFire = false;
-                //StopLightFire();
-            }
+            ComboLightIce.SetActive(false);
+            updateMidLine = false;
+            activateRamLine = false;
+            MlaserLine.enabled = false;
         }
 
         // Ram regeneration system //
-        if (!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > nextRamFire) && IsRamPenalty == false && confirmLight == true)
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false))
         {
-            nextRamFire = Time.time + ramFireRate;
+            regenWait = Time.time + 1;   
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
-                ramAmount += 5;
+                ramAmount += 1;
                 if (ramAmount > 100)
                 {
                     ramAmount = 100;
@@ -229,55 +233,60 @@ public class MagicSystem : MonoBehaviour
             }
         }
 
+        if ((Input.GetButtonUp("Fire1") && Input.GetButtonUp("Fire2")) || (Input.GetButtonUp("Fire2") && Input.GetButtonUp("Fire1")))
+        {
+            updateLeftLine = false;
+            updateRightLine = false;
+            updateMidLine = false;
+        }
+
         // Ram penalty system //
         if (ramAmount == 0 || ramAmount < 0)
         {
-            if (updateLeftLightBool == true)
-            {
-                lightingLeftLine.SetActive(false);
-                updateLeftLightBool = false;
-            }
-            else if (updateRightLightBool == true)
-            {
-                lightingRightLine.SetActive(false);
-                updateLeftLightBool = false;
-            }
+            updateLeftLine = false;
+            updateRightLine = false;
+            updateMidLine = false;
+            activateRamLine = false;
+            MlaserLine.enabled = false;
+            RlaserLine.enabled = false;
+            LlaserLine.enabled = false;
+            //-------------------------
             IsRamPenalty = true;
             StartPenalty();
         }
-        /**
-        if (updateRightLightBool)
-        {
-            UpdateLighting(Rwand);
-        }
-        if (updateLeftLightBool)
-        {
-            UpdateLighting(Lwand);
-        }
-        **/
+
     } // end UPDATE
 
     // Fixed Update //
     private void FixedUpdate()
     {
-        /**
-        // RIGHT BUTTON // 
-        if (Input.GetMouseButtonUp(1))
+        if (updateLeftLine == true)
         {
-            if (updateRightLightBool == true)
+            ActivateLineRenderer(Lwand, "lighting", lightingDMG, LlaserLine);
+            if (activateRamLine == true)
             {
-                EnableLighting(Rwand);
+                RamDepletion(lightingDMG);
+                StartLineCoroutine();
             }
         }
-        // LEFT BUTTON //
-        if (Input.GetMouseButtonUp(0))
+        else if (updateRightLine == true)
         {
-            if (updateLeftLightBool == true)
+            ActivateLineRenderer(Rwand, "lighting", lightingDMG, RlaserLine);
+            if (activateRamLine == true)
             {
-                EnableLighting(Lwand);
-            } 
+                RamDepletion(lightingDMG);
+                StartLineCoroutine();
+            }
         }
-        **/
+        else if (updateMidLine == true)
+        {
+            ActivateLineRenderer(MidPosition, "lightfire", lightfireDMG, MlaserLine);
+            if (activateRamLine == true)
+            {
+                RamDepletion(lightfireDMG);
+                StartLineCoroutine();
+            }
+        }
 
         // Magic Switching System //
         // Q KEY: Left Wand //
@@ -338,31 +347,6 @@ public class MagicSystem : MonoBehaviour
                 R_Ice.enabled = true;
             }
         }
-
-        /**
-
-        // Lightning Ram Depletion // 
-        if (updateRightLightBool && confirmLight)
-        {
-            RamDepletion(lightningRamDepletion);
-            StartLightningCor();
-
-        }
-        if (updateLeftLightBool && confirmLight)
-        {
-            RamDepletion(lightningRamDepletion);
-            StartLightningCor();
-        }
-
-        // Light FIRE Ram Depletion // 
-        if (confirmLightFire)
-        {
-            RamDepletion(lightfireRamDepletion);
-            StartLightFireCor();
-
-        }
-
-       **/
     } // end FIXED UPDATE
 
     // Element Damage Manager //
@@ -428,7 +412,6 @@ public class MagicSystem : MonoBehaviour
     // RAM penalty //
     void StartPenalty()
     {
-        //print("Starting penalty");
         ramPenaltyCoroutine = RamPenalty();
         StartCoroutine(ramPenaltyCoroutine);
         cancelPenalty = false;
@@ -467,46 +450,23 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
-    /**
-    // Lightning Ram Coroutine //
-
-    private void StartLightningCor()
+    // Line Renderer Ram Coroutine //
+    private void StartLineCoroutine()
     {
-        ramLightningCoroutine = LightningRamDeplete();
-        StartCoroutine(ramLightningCoroutine);
+        ramLineRendererCoroutine = LineRamDeplete();
+        StartCoroutine(ramLineRendererCoroutine);
     }
-    private void StopLighting()
+    private void StopLineCoroutine()
     {
-        confirmLight = true;
-        StopCoroutine(ramLightningCoroutine);
+        activateRamLine = true;
+        StopCoroutine(ramLineRendererCoroutine);
     }
-    private IEnumerator LightningRamDeplete()
+    private IEnumerator LineRamDeplete()
     {
-        confirmLight = false;
+        activateRamLine = false;
         yield return ramDrainSpeed;
-        StopLighting();
+        StopLineCoroutine();
     }
-
-    // Light FIRE Ram Coroutine //
-
-    private void StartLightFireCor()
-    {
-        ramLightFireCoroutine = LightFireRamDeplete();
-        StartCoroutine(ramLightFireCoroutine);
-    }
-    private void StopLightFire()
-    {
-        confirmLightFire = true;
-        StopCoroutine(ramLightFireCoroutine);
-    }
-    private IEnumerator LightFireRamDeplete()
-    {
-        confirmLightFire = false;
-        yield return new WaitForSeconds(0.1f);
-        //StopLightFire();
-    }
-
-    **/ 
 
     // Freezing AI //
     private void FreezeAIEnemy(BaseAI ai)
@@ -571,49 +531,11 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
-    /**
-    private void ActivateLighting(Transform wandE)
-    {
-        if (wandE.name == "RightWandEnd")
-        {
-            updateRightLightBool = true;
-            lightingRightLine.SetActive(true);
-        }
-        else if (wandE.name == "LeftWandEnd")
-        {
-            updateLeftLightBool = true;
-            lightingLeftLine.SetActive(true);
-        }
-    }
     
-    private void UpdateLighting(Transform wandE)
+    private void ActivateLineRenderer(Transform wand, string element, int damage, LineRenderer line)
     {
-        if (updateLeftLightBool == true)
-        {
-            // continously updating the position of the laser to the wand
-            lightingLeftLine.transform.position = wandE.transform.position;
-        }
-        else if (updateRightLightBool == true)
-        {
-            // continously updating the position of the laser to the wand
-            lightingRightLine.transform.position = wandE.transform.position;
-        }
+        LinerRendererShoot(wand, element, damage, line);
     }
-
-    private void EnableLighting(Transform wandE)
-    {
-        if (wandE.name == "RightWandEnd")
-        {
-            updateRightLightBool = false;
-            lightingRightLine.SetActive(false);
-        }
-        else if (wandE.name == "LeftWandEnd")
-        {
-            updateLeftLightBool = false;
-            lightingLeftLine.SetActive(false);
-        }
-    }
-    **/
 
     // Coroutine ShotEffect()
     private IEnumerator ShotEffect(LineRenderer laserLine)
@@ -644,8 +566,8 @@ public class MagicSystem : MonoBehaviour
     // Lightning Line Renderer
     private void LinerRendererShoot(Transform wand, string element, int RamDepleteAmt, LineRenderer Line)
     {
-        StartCoroutine(ShotEffect(Line)); // Calling the coroutine ShotEffect function to enable laser line
-
+        //StartCoroutine(ShotEffect(Line)); // Calling the coroutine ShotEffect function to enable laser line
+        Line.enabled = true;
         Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
 
         RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
@@ -654,7 +576,7 @@ public class MagicSystem : MonoBehaviour
         if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
         {
             Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
-            RamDepletion(RamDepleteAmt);
+            //RamDepletion(RamDepleteAmt);
             // Bullet Cloning //
             particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
             Destroy(particle, 0.2f);
@@ -664,22 +586,28 @@ public class MagicSystem : MonoBehaviour
 
             if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
             {
-                print("hit enemy");
+                //print("Enemy was hit.");
                 ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                 particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
                 Destroy(particle, 0.2f);
-                RamDepletion(RamDepleteAmt);
+                //RamDepletion(RamDepleteAmt);
+            }
+            else
+            {
+                //print("Something besides enemy was hit.");
+                //RamDepletion(RamDepleteAmt); 
             }
 
         }
         else // Raycast returns false
         {
+            //print("Nothing was hit.");
             Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
 
             // Bullet Cloning //
             particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
             Destroy(particle, 0.2f);
-            RamDepletion(RamDepleteAmt);
+            //RamDepletion(RamDepleteAmt);
 
         }
     }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5710447335357598968}
   - component: {fileID: 5710447335357598916}
   - component: {fileID: 6429382014248143386}
+  - component: {fileID: 5236070565639399917}
   m_Layer: 13
   m_Name: FireShoot
   m_TagString: Untagged
@@ -129,6 +130,19 @@ MonoBehaviour:
     type: 3}
   colCounter: 3
   power: fire
+--- !u!65 &5236070565639399917
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5710447335357598971}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 5.0429254, y: 3.9825556, z: 6.1594477}
+  m_Center: {x: -0.030266035, y: -0.008162715, z: -0.1028361}
 --- !u!1 &6787182467788546412
 GameObject:
   m_ObjectHideFlags: 0
