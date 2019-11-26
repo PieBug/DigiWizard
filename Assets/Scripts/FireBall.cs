@@ -22,19 +22,17 @@ public class FireBall : MonoBehaviour
         colCounter--;
         if (colCounter == 0)
         {
-            areaDamage();
+            Explode();
             return;
         }
         EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
         if (enemyHealth != null)
         {
-            magicSystem.ElementDamageManager(power, enemyHealth);
-            Instantiate(fireExplosion, transform.position, transform.rotation);
-            Destroy(gameObject);
+            Explode();
         }
     }
 
-    private void areaDamage()
+    private void Explode()
     {
         Instantiate(fireExplosion, transform.position, transform.rotation);
         Collider[] hitObjs = Physics.OverlapSphere(transform.position, radius, enemyMask);

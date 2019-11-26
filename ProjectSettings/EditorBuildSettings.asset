@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/DigiWizards_VS.unity
-    guid: 6a1ff1e69bb43ea4ba3688994d3f6f95
+    path: Assets/Scenes/DigiWizards_Vertical-Slice.unity
+    guid: c90f7b46e108e504591befacadb7ac7e
   m_configObjects: {}

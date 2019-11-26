@@ -24,6 +24,6 @@ public class PopUpEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         //GetComponent<Collider>().enabled = false;
         GameObject pickup = Instantiate(popUp.attributes.normalDrop, transform.position + Vector3.down, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
-        Destroy(gameObject, 5f);
+        Destroy(transform.parent.gameObject, 5f);
     }
 }
