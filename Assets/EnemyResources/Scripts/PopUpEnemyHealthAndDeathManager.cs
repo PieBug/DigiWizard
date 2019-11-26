@@ -22,7 +22,7 @@ public class PopUpEnemyHealthAndDeathManager : EnemyHealthAndDeathManager
         //Play dissappear noise
         //transform.Find("Slug").gameObject.SetActive(false);
         //GetComponent<Collider>().enabled = false;
-        GameObject pickup = Instantiate(popUp.attributes.normalDrop, transform.position, Quaternion.identity);
+        GameObject pickup = Instantiate(popUp.attributes.normalDrop, transform.position + Vector3.down, Quaternion.identity);
         pickup.GetComponent<Pickup>().MakeTemporary(3f);
         Destroy(gameObject, 5f);
     }
