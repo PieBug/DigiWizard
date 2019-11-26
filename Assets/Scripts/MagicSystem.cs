@@ -214,7 +214,7 @@ public class MagicSystem : MonoBehaviour
             }
             
         } // end casting time
-        if (!(Input.anyKey) && que1 == false && que2 == false)
+        if ((Input.anyKey == false) || !(Input.GetMouseButton(0)) && !(Input.GetMouseButton(1)) || (Input.GetMouseButtonUp(1)) && (Input.GetMouseButtonUp(0)))
         {
             updateLeftLine = false;
             activateRamLine = false;
@@ -224,34 +224,8 @@ public class MagicSystem : MonoBehaviour
             ComboLightIce.SetActive(false);
             updateMidLine = false;
             MlaserLine.enabled = false;
-        }
-        /*
-        // LEFT BUTTON // 
-        if (Input.GetMouseButtonUp(0) && !Input.GetMouseButtonUp(1) && ramAmount != 0 && ramAmount > 0)
-        {
-            //print("up");
-            updateLeftLine = false;
-            activateRamLine = false;
-            LlaserLine.enabled = false;
-        }
-        // RIGHT BUTTON // 
-        if (Input.GetMouseButtonUp(1) && !Input.GetMouseButtonUp(0) && ramAmount != 0 && ramAmount > 0)
-        {
-            //print("up");
-            updateRightLine = false;
-            activateRamLine = false;
-            RlaserLine.enabled = false;
         }
 
-        // BOTH BUTTONS //
-        if ((Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0)))
-        {
-            ComboLightIce.SetActive(false);
-            updateMidLine = false;
-            activateRamLine = false;
-            MlaserLine.enabled = false;
-        }
-        */
         // Ram regeneration system //
         if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false))
         {
@@ -270,13 +244,6 @@ public class MagicSystem : MonoBehaviour
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
             }
-        }
-
-        if ((Input.GetButtonUp("Fire1") && Input.GetButtonUp("Fire2")) || (Input.GetButtonUp("Fire2") && Input.GetButtonUp("Fire1")))
-        {
-            updateLeftLine = false;
-            updateRightLine = false;
-            updateMidLine = false;
         }
 
         // Ram penalty system //
