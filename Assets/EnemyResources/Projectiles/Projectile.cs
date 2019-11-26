@@ -6,6 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed;
     public int damage;
+    public LayerMask hitMask;
     public Rigidbody rigidbody;
 
     public virtual void Fire(Vector3 direction)
@@ -16,9 +17,10 @@ public class Projectile : MonoBehaviour
     {
 
     }
-    private void OnCollisionEnter(Collision collision)
+
+    protected virtual void Hit(GameObject hit)
     {
-        PlayerHealthAndDeathManager healthManager = collision.gameObject.GetComponent<PlayerHealthAndDeathManager>();
+        PlayerHealthAndDeathManager healthManager = hit.gameObject.GetComponent<PlayerHealthAndDeathManager>();
         if (healthManager != null)
         {
             healthManager.DamagePlayer(damage);

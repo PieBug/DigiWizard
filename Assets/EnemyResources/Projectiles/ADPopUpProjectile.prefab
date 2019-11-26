@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 40
-  damage: 1
-  rigidbody: {fileID: 3523418545185145083}
+  damage: 50
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 256
+  rigidbody: {fileID: 0}
 --- !u!1001 &8033047642433396007
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26,6 +29,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ADPopUpProjectile
+      objectReference: {fileID: 0}
+    - target: {fileID: 7933869438046703176, guid: 5b3831855694d034d8c8e8dd5cfef9e4,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2942396393973437210, guid: 5b3831855694d034d8c8e8dd5cfef9e4,
         type: 3}
@@ -89,16 +97,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 04eff9f99c7f316419afbf916d963a60, type: 2}
     m_RemovedComponents:
     - {fileID: 784607395346955348, guid: 5b3831855694d034d8c8e8dd5cfef9e4, type: 3}
+    - {fileID: 6890133847913061852, guid: 5b3831855694d034d8c8e8dd5cfef9e4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5b3831855694d034d8c8e8dd5cfef9e4, type: 3}
 --- !u!1 &3839188215730322321 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6502238067585230518, guid: 5b3831855694d034d8c8e8dd5cfef9e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 8033047642433396007}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &3523418545185145083 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 6890133847913061852, guid: 5b3831855694d034d8c8e8dd5cfef9e4,
     type: 3}
   m_PrefabInstance: {fileID: 8033047642433396007}
   m_PrefabAsset: {fileID: 0}

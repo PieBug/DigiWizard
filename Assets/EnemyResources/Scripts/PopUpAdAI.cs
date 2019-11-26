@@ -136,6 +136,7 @@ public class PopUpAdAI : BaseAI
             //Wait
             yield return new WaitForSeconds(attributes.fireRate);
             chargeParticles.Play();
+            audioSource3D.PlayOneShot(attributes.shootClip);
             yield return new WaitUntil(() => !chargeParticles.IsAlive());
         }
     }
@@ -146,7 +147,9 @@ public class PopUpAdAI : BaseAI
         {
             animator.SetBool("hide", false);
             state = State.chasingAndShooting;
+            if (walkRoutine != null) walkRoutine = StartCoroutine(ChasePlayer());
             walkRoutine = StartCoroutine(ChasePlayer());
+            if (shootRoutine != null) shootRoutine = StartCoroutine(ShootAtPlayer());
             shootRoutine = StartCoroutine(ShootAtPlayer());
         }
     }
