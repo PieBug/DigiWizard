@@ -108,8 +108,11 @@ public class MagicSystem : MonoBehaviour
     public Image L_Ice;
     public Image L_Lightning;
 
-
-
+    float buttonPressedTime = 0f;
+    public float waitTime = 0.1f;
+    bool casting = false;
+    bool que1;
+    bool que2;
     //---------------------------------------------------------------------------------------------//
 
     void Start()
@@ -126,26 +129,103 @@ public class MagicSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // LEFT BUTTON // 
-        if (Input.GetMouseButtonDown(0) && !Input.GetMouseButtonDown(1) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+        bool fire1 = Input.GetMouseButtonDown(0);
+        bool fire2 = Input.GetMouseButtonDown(1);
+        que1 = que1 || fire1;
+        que2 = que2 || fire2;
+        if (fire1 || fire2 && casting == false)
         {
-            nextFire = Time.time + fireRate; // making sure player does not constantly fire
-            string element = Lelement; // storing the element information
-            switch (element)
-            {
-                case "fire":
-                    FireShoot(MidPosition);
-                    break;
-                case "ice":
-                    ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
-                    break;
-                case "lighting":
-                    updateLeftLine = true;
-                    activateRamLine = true;
-                    break;
-            }
+            casting = true;
         }
 
+        if (casting == true)
+        {
+            buttonPressedTime += Time.deltaTime;
+            if (buttonPressedTime > waitTime)
+            {
+                // COMBO POWERS
+                // BOTH BUTTONS //
+                if (que1 && que2 && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+                {
+                    //waitTime += Time.deltaTime;
+                    //print(waitTime);
+                    nextFire = Time.time + fireRate; // Making sure player does not constantly fire
+
+                    if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
+                    {
+                        ShootElement(MidPosition, ComboIceFire, "fireice", fireiceRamDepletion, redParticle); // combo ram need to re-do
+                    }
+                    else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
+                    {
+                        ComboLightIce.SetActive(true);
+                        ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, blueParticle); // combo ram need to re-do
+                    }
+                    else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
+                    {
+                        updateMidLine = true;
+                        activateRamLine = true;
+                    }
+                    
+                } // End Both Button
+                // LEFT BUTTON // 
+                if (que1 && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+                {
+                    //waitTime += Time.time;
+                    //print(waitTime);
+                    nextFire = Time.time + fireRate; // making sure player does not constantly fire
+                    string element = Lelement; // storing the element information
+                    switch (element)
+                    {
+                        case "fire":
+                            FireShoot(MidPosition);
+                            break;
+                        case "ice":
+                            ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
+                            break;
+                        case "lighting":
+                            updateLeftLine = true;
+                            activateRamLine = true;
+                            break;
+                    }
+                    
+                } // END Left Mouse Button Down
+
+                // RIGHT BUTTON // 
+                if (que2 && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
+                {
+                    nextFire = Time.time + fireRate; // making sure player does not constantly fire
+                    string element = Relement; // storing the element information
+                    switch (element)
+                    {
+                        case "fire":
+                            FireShoot(MidPosition);
+                            break;
+                        case "ice":
+                            ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
+                            break;
+                        case "lighting":
+                            updateRightLine = true;
+                            activateRamLine = true;
+                            break;
+                    }
+                    
+                } // END Right Mouse Button Down
+                que1 = que2 = casting = false;
+            }
+            
+        } // end casting time
+        if (!(Input.anyKey) && que1 == false && que2 == false)
+        {
+            updateLeftLine = false;
+            activateRamLine = false;
+            LlaserLine.enabled = false;
+            updateRightLine = false;
+            RlaserLine.enabled = false;
+            ComboLightIce.SetActive(false);
+            updateMidLine = false;
+            MlaserLine.enabled = false;
+        }
+        /*
         // LEFT BUTTON // 
         if (Input.GetMouseButtonUp(0) && !Input.GetMouseButtonUp(1) && ramAmount != 0 && ramAmount > 0)
         {
@@ -163,47 +243,6 @@ public class MagicSystem : MonoBehaviour
             RlaserLine.enabled = false;
         }
 
-        // RIGHT BUTTON // 
-        if (Input.GetMouseButtonDown(1) && !Input.GetMouseButtonDown(0) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
-        {
-            nextFire = Time.time + fireRate; // making sure player does not constantly fire
-            string element = Relement; // storing the element information
-            switch (element)
-            {
-                case "fire":
-                    FireShoot(MidPosition);
-                    break;
-                case "ice":
-                    ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
-                    break;
-                case "lighting":
-                    updateRightLine = true;
-                    activateRamLine = true;
-                    break;
-            }
-        }
-        // COMBO POWERS
-        // BOTH BUTTONS //
-        if ((Input.GetMouseButtonDown(1) && Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(0) && Input.GetMouseButtonDown(1)) && Time.time > nextFire && ramAmount != 0 && ramAmount > 0)
-        {
-            nextFire = Time.time + fireRate; // Making sure player does not constantly fire
-
-            if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
-            {
-                ShootElement(MidPosition, ComboIceFire, "fireice", fireiceRamDepletion, redParticle); // combo ram need to re-do
-            }
-            else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
-            {
-                ComboLightIce.SetActive(true);
-                ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, blueParticle); // combo ram need to re-do
-            }
-            else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
-            {
-                updateMidLine = true;
-                activateRamLine = true;
-            }
-        }
-
         // BOTH BUTTONS //
         if ((Input.GetMouseButtonUp(1) || Input.GetMouseButtonUp(0)))
         {
@@ -212,7 +251,7 @@ public class MagicSystem : MonoBehaviour
             activateRamLine = false;
             MlaserLine.enabled = false;
         }
-
+        */
         // Ram regeneration system //
         if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false))
         {

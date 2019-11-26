@@ -11082,6 +11082,7 @@ MonoBehaviour:
   ramSlider: {fileID: 8572754816774904224}
   ramAmount: 100
   nextRamFire: 1
+  regenWait: 10
   ramFireRate: 1
   R_Fire: {fileID: 8766775710370746206}
   R_Ice: {fileID: 1356703016}
@@ -12814,41 +12815,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.33333582
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.89411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.89411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 580811443030227045, guid: 84f530b60841a64469bba53e923aec35,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12902,6 +12868,41 @@ PrefabInstance:
     - target: {fileID: 580811443030227045, guid: 84f530b60841a64469bba53e923aec35,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.33333582
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8071627218608241546, guid: 84f530b60841a64469bba53e923aec35,
@@ -13189,41 +13190,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
-      value: 0.33333582
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.g
-      value: 0.89411765
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key0.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.g
-      value: 0.89104825
-      objectReference: {fileID: 0}
-    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
-        type: 3}
-      propertyPath: m_Parameters.colorGradient.key1.b
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 580811443030227045, guid: 84f530b60841a64469bba53e923aec35,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13277,6 +13243,41 @@ PrefabInstance:
     - target: {fileID: 580811443030227045, guid: 84f530b60841a64469bba53e923aec35,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.33333582
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.g
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.g
+      value: 0.89104825
+      objectReference: {fileID: 0}
+    - target: {fileID: 580811443030227046, guid: 84f530b60841a64469bba53e923aec35,
+        type: 3}
+      propertyPath: m_Parameters.colorGradient.key1.b
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8071627218608241546, guid: 84f530b60841a64469bba53e923aec35,
