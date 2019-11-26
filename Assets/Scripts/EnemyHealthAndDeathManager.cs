@@ -14,7 +14,7 @@ public class EnemyHealthAndDeathManager : MonoBehaviour
         if (enemyHealth <= 0)  // if enemy health is less or equal to 0, then detroy the enemy from game view
         {
             Kill();
-            print("EnemyDead");
+            //print("EnemyDead");
         }
     }
 

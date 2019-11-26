@@ -17,7 +17,6 @@ public class FireBall : MonoBehaviour
         colCounter--;
         if (colCounter == 0)
         {
-            print("col is 0, now calling area damage");
             areaDamage();
             return;
         }
@@ -32,19 +31,16 @@ public class FireBall : MonoBehaviour
 
     private void areaDamage()
     {
-        print("Area damage");
         Instantiate(fireExplosion, transform.position, transform.rotation);
         Collider[] hitObjs = Physics.OverlapSphere(transform.position, radius, enemyMask);
         for (int i = 0; i < hitObjs.Length; i++)
         {
-            print("in foreach");
             float distanceFromRadius = Vector3.Distance(transform.position, hitObjs[i].transform.position);
             float modNum = Mathf.Max((radius - distanceFromRadius), 0f) / radius;
             EnemyHealthAndDeathManager enemyManager = hitObjs[i].GetComponentInParent<EnemyHealthAndDeathManager>();
             if (enemyManager != null)
             {
                 magicSystem.ElementDamageManager(power, enemyManager, modNum);
-                print("WE DID IT!");
             }
         }
         Destroy(gameObject);

@@ -12,7 +12,7 @@ public class FireBallAreaDamage : MonoBehaviour
         EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
         if (enemyHealth != null)
         {
-            print("sphere");
+            //print("sphere");
             magicSystem.ElementDamageManager("fire", enemyHealth);
             Instantiate(fireExplosion, transform.position, transform.rotation);
             Destroy(gameObject);
