@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
-    public MagicSystem magicSystem;
+    private MagicSystem magicSystem;
     public GameObject fireExplosion;
     public int colCounter = 3;
     public string power;
     public float radius;
     public LayerMask enemyMask;
+
+    private void Start()
+    {
+        magicSystem = PlayerController.singleton.GetComponent<MagicSystem>();
+    }
     // Collision counter //
     void OnCollisionEnter(Collision col)
     {
