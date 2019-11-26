@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class MagicSystem : MonoBehaviour
 {
     //Input Variables//
-    bool leftPressed;
-    bool rightPressed;
     bool updateRightLine = false;
     bool updateLeftLine = false;
     bool updateMidLine = false;
