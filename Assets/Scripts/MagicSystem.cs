@@ -271,7 +271,7 @@ public class MagicSystem : MonoBehaviour
             ActivateLineRenderer(Lwand, "lighting", lightingDMG, LlaserLine);
             if (activateRamLine == true)
             {
-                RamDepletion(lightingDMG);
+                RamDepletion(lightningRamDepletion);
                 StartLineCoroutine();
             }
         }
@@ -280,7 +280,7 @@ public class MagicSystem : MonoBehaviour
             ActivateLineRenderer(Rwand, "lighting", lightingDMG, RlaserLine);
             if (activateRamLine == true)
             {
-                RamDepletion(lightingDMG);
+                RamDepletion(lightningRamDepletion);
                 StartLineCoroutine();
             }
         }
@@ -289,7 +289,7 @@ public class MagicSystem : MonoBehaviour
             ActivateLineRenderer(MidPosition, "lightfire", lightfireDMG, MlaserLine);
             if (activateRamLine == true)
             {
-                RamDepletion(lightfireDMG);
+                RamDepletion(lightfireRamDepletion);
                 StartLineCoroutine();
             }
         }
