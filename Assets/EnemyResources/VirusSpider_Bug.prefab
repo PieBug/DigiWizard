@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ai: {fileID: 3684287894612679328}
-  enemyHealth: 3
+  enemyHealth: 10
   colliders:
   - {fileID: 2688182052824634135}
   - {fileID: 389999056885103167}
