@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class FireBall : MonoBehaviour
 {
-    public MagicSystem magicSystem;
+    private MagicSystem magicSystem;
     public GameObject fireExplosion;
     public int colCounter = 3;
     public string power;
     public float radius;
     public LayerMask enemyMask;
+
+    private void Start()
+    {
+        magicSystem = PlayerController.singleton.GetComponent<MagicSystem>();
+    }
     // Collision counter //
     void OnCollisionEnter(Collision col)
     {
@@ -17,19 +22,17 @@ public class FireBall : MonoBehaviour
         colCounter--;
         if (colCounter == 0)
         {
-            areaDamage();
+            Explode();
             return;
         }
         EnemyHealthAndDeathManager enemyHealth = col.gameObject.GetComponentInParent<EnemyHealthAndDeathManager>();
         if (enemyHealth != null)
         {
-            magicSystem.ElementDamageManager(power, enemyHealth);
-            Instantiate(fireExplosion, transform.position, transform.rotation);
-            Destroy(gameObject);
+            Explode();
         }
     }
 
-    private void areaDamage()
+    private void Explode()
     {
         Instantiate(fireExplosion, transform.position, transform.rotation);
         Collider[] hitObjs = Physics.OverlapSphere(transform.position, radius, enemyMask);

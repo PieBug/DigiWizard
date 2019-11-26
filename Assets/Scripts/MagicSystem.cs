@@ -6,8 +6,6 @@ using UnityEngine.UI;
 public class MagicSystem : MonoBehaviour
 {
     //Input Variables//
-    bool leftPressed;
-    bool rightPressed;
     bool updateRightLine = false;
     bool updateLeftLine = false;
     bool updateMidLine = false;
@@ -75,7 +73,9 @@ public class MagicSystem : MonoBehaviour
     // LightningFire Attributes //
     public int lightfireRamDepletion;
     public int lightfireDMG;
-    bool confirmLightFire = true;
+
+    int regenCounter = 1;
+    bool regenRam = false;
 
     //------------------------------
 
@@ -113,7 +113,6 @@ public class MagicSystem : MonoBehaviour
     bool casting = false;
     bool que1;
     bool que2;
-    int ramRegenCounter = 1;
     //---------------------------------------------------------------------------------------------//
 
     void Start()
@@ -226,16 +225,17 @@ public class MagicSystem : MonoBehaviour
             updateMidLine = false;
             MlaserLine.enabled = false;
         }
-         
+
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && ramAmount != 100)
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && regenRam == true)
         {
-            ramRegenCounter *= 2;
-            print(ramRegenCounter);
+            //int regenCounter = 1;
+            print (regenCounter);
+            regenCounter *=2;
             regenWait = Time.time + 1;   
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
-                ramAmount += ramRegenCounter;
+                ramAmount += regenCounter;
                 if (ramAmount > 100)
                 {
                     ramAmount = 100;
@@ -246,7 +246,7 @@ public class MagicSystem : MonoBehaviour
             {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
-                ramRegenCounter = 0;
+                regenCounter = 1;
             }
         }
 
@@ -263,7 +263,14 @@ public class MagicSystem : MonoBehaviour
             //-------------------------
             IsRamPenalty = true;
             StartPenalty();
+            regenRam = true;
         }
+        else if (ramAmount == 100)
+        {
+            regenCounter = 1;
+            regenRam = false;
+        }
+        
 
     } // end UPDATE
 

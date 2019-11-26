@@ -35,7 +35,13 @@ public class SlugRetreatPoint : MonoBehaviour
 
     private void Start()
     {
-        
+        if (!Application.isEditor)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+            Destroy(GetComponent<MeshFilter>());
+            Destroy(GetComponent<MeshRenderer>());
+            Destroy(GetComponent<DebugBillboardText>());
+        }
         id = retreatPoints[area].Count;
         retreatPoints[area].Add(gameObject);
     }
