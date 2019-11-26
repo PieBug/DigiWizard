@@ -10,7 +10,15 @@ public class SlugRetreatPoint : MonoBehaviour
     private int id;
     public static List<GameObject> GetRetreatPointsInArea(int area)
     {
-        return retreatPoints[area];
+        if (retreatPoints.ContainsKey(area))
+        {
+            return retreatPoints[area];
+        }
+        else
+        {
+            return null;
+        }
+        
     }
     // Start is called before the first frame update
     void Awake()
