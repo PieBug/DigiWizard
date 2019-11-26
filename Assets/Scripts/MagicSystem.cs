@@ -113,7 +113,6 @@ public class MagicSystem : MonoBehaviour
     bool casting = false;
     bool que1;
     bool que2;
-    int ramRegenCounter = 1;
     //---------------------------------------------------------------------------------------------//
 
     void Start()
@@ -226,16 +225,14 @@ public class MagicSystem : MonoBehaviour
             updateMidLine = false;
             MlaserLine.enabled = false;
         }
-         
+
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && ramAmount != 100)
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false))
         {
-            ramRegenCounter *= 2;
-            print(ramRegenCounter);
             regenWait = Time.time + 1;   
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
-                ramAmount += ramRegenCounter;
+                ramAmount += 1;
                 if (ramAmount > 100)
                 {
                     ramAmount = 100;
@@ -246,7 +243,6 @@ public class MagicSystem : MonoBehaviour
             {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
-                ramRegenCounter = 0;
             }
         }
 
