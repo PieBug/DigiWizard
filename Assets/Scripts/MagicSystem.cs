@@ -75,7 +75,9 @@ public class MagicSystem : MonoBehaviour
     // LightningFire Attributes //
     public int lightfireRamDepletion;
     public int lightfireDMG;
-    bool confirmLightFire = true;
+
+    int regenCounter = 1;
+    bool regenRam = false;
 
     //------------------------------
 
@@ -227,12 +229,15 @@ public class MagicSystem : MonoBehaviour
         }
 
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false))
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && regenRam == true)
         {
+            //int regenCounter = 1;
+            print (regenCounter);
+            regenCounter *=2;
             regenWait = Time.time + 1;   
             if (!(ramAmount == 100) || !(ramAmount > 100))
             {
-                ramAmount += 1;
+                ramAmount += regenCounter;
                 if (ramAmount > 100)
                 {
                     ramAmount = 100;
@@ -243,6 +248,7 @@ public class MagicSystem : MonoBehaviour
             {
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
+                regenCounter = 1;
             }
         }
 
@@ -259,7 +265,14 @@ public class MagicSystem : MonoBehaviour
             //-------------------------
             IsRamPenalty = true;
             StartPenalty();
+            regenRam = true;
         }
+        else if (ramAmount == 100)
+        {
+            regenCounter = 1;
+            regenRam = false;
+        }
+        
 
     } // end UPDATE
 
