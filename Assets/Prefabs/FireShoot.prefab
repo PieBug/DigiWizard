@@ -129,6 +129,10 @@ MonoBehaviour:
     type: 3}
   colCounter: 3
   power: fire
+  radius: 10
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &6787182467788546412
 GameObject:
   m_ObjectHideFlags: 0

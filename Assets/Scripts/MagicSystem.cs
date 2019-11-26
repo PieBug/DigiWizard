@@ -389,11 +389,11 @@ public class MagicSystem : MonoBehaviour
     } // end FIXED UPDATE
 
     // Element Damage Manager //
-    public void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH)
+    public void ElementDamageManager(string element, EnemyHealthAndDeathManager enemyH, float modifier = 1f)
     {
         if (element == "fire" && enemyH != null)
         {
-            enemyH.DamageEnemy(fireDMG);
+            enemyH.DamageEnemy((int)(fireDMG * modifier));
         }
         if (element == "ice" && enemyH != null)
         {
@@ -407,7 +407,7 @@ public class MagicSystem : MonoBehaviour
 
         if (element == "fireice" && enemyH != null)
         {
-            enemyH.DamageEnemy(fireiceDMG);
+            enemyH.DamageEnemy((int)(fireiceDMG * modifier));
         }
 
         if (element == "icelight" && enemyH != null)
