@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92b986937bd47b44ca319fc7dc2cdd5c, type: 3}
-  m_Name: DebugAttributes
+  m_Name: DefaultSpiderEnemyAttributes
   m_EditorClassIdentifier: 
   docile: 0
   pacifist: 0
