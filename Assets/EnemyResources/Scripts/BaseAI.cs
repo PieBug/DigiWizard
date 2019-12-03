@@ -27,6 +27,9 @@ public abstract class BaseAI : MonoBehaviour
     public AudioSource audioSource2D;
     public AudioSource audioSource3D;
 
+    //Material
+    protected Material material;
+
     //What damage states am I in
     [HideInInspector]
     //public float slowDownAI = 1;
@@ -38,6 +41,18 @@ public abstract class BaseAI : MonoBehaviour
         player = PlayerController.singleton;
         baseSpeed = agent.speed;
         baseAngularSpeed = agent.angularSpeed;
+
+        MeshRenderer meshRenderer = GetComponentInChildren<MeshRenderer>();
+        material = meshRenderer.material;
+        foreach (MeshRenderer otherMeshRenderers in GetComponentsInChildren<MeshRenderer>())
+        {
+            otherMeshRenderers.sharedMaterial = material;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(material);
     }
 
     protected void UpdateDistanceToAndDotProductBetweenPlayer()

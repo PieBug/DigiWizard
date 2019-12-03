@@ -33,6 +33,8 @@ public class SpiderAI : BaseAI
     private Coroutine walkRoutine;
     private Coroutine pounceRoutine;
 
+    
+
     // Start is called before the first frame update
     new void Start()
     {
@@ -157,6 +159,10 @@ public class SpiderAI : BaseAI
     public override void IceAI(float linearIceFactor, float angularIceFactor)
     {
         base.IceAI(linearIceFactor, angularIceFactor);
+        Color color = new Color(0f, 0.97f, 1f);
+        material.SetColor("_BaseColor", color);
+        //material.SetColor("_BaseColor", Color.blue);
+        
         attributes.lungeSpeed = baseAttributes.lungeSpeed * linearIceFactor;
         attributes.rotSpeed = baseAttributes.rotSpeed * angularIceFactor;
     }

@@ -133,9 +133,19 @@ public class SlugAI : BaseAI
                 bestAverage = average;
                 target = retreatPoint.transform.position;
             }
-            retreatPoint.GetComponentInChildren<TextMesh>().text = average.ToString();
+            //retreatPoint.GetComponentInChildren<TextMesh>().text = average.ToString();
         }
         agent.destination = target;
+    }
+
+    public override void IceAI(float linearIceFactor, float angularIceFactor)
+    {
+        base.IceAI(linearIceFactor, angularIceFactor);
+        Color color = new Color(0f, 0.97f, 1f);
+        material.SetColor("_BaseColor", color);
+        attributes.burstSpeedIncrease = baseAttributes.burstSpeedIncrease * linearIceFactor;
+        attributes.rotSpeed = baseAttributes.burstSpeedIncrease * angularIceFactor;
+        attributes.defensiveBirthRate = baseAttributes.defensiveBirthRate * linearIceFactor;
     }
 
     public override void Alert()
