@@ -80,15 +80,15 @@ public class MagicSystem : MonoBehaviour
     //------------------------------
 
     // RAM System //
-    public bool cancelPenalty = false;
-    public bool penaltyRunning;
+    //public bool cancelPenalty = false;
+    //public bool penaltyRunning;
     public Slider ramSlider;
     public int ramAmount = 100;
     public float nextRamFire;
     public float regenWait;
     public float ramFireRate = 3.0f;
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
-    bool IsRamPenalty = false;
+    //bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
     private IEnumerator ramLineRendererCoroutine;
 
@@ -114,7 +114,6 @@ public class MagicSystem : MonoBehaviour
     bool que1;
     bool que2;
     //---------------------------------------------------------------------------------------------//
-
     void Start()
     {
         Lelement = "fire";
@@ -129,6 +128,8 @@ public class MagicSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        print(ramAmount);
+        // Buffer for holding down buttons
         bool fire1 = Input.GetMouseButton(0);
         bool fire2 = Input.GetMouseButton(1);
         que1 = que1 || fire1;
@@ -157,13 +158,19 @@ public class MagicSystem : MonoBehaviour
                     }
                     else if ((Lelement == "ice" && Relement == "lighting") || (Lelement == "lighting" && Relement == "ice"))
                     {
-                        ComboLightIce.SetActive(true);
-                        ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, blueParticle); // combo ram need to re-do
+                        if (ramAmount >= icelightRamDepletion)
+                        {
+                            ComboLightIce.SetActive(true);
+                            ShootElement(MidPosition, iceProjectile, "icelight", icelightRamDepletion, blueParticle); // combo ram need to re-do
+                        }
                     }
                     else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
                     {
-                        updateMidLine = true;
-                        activateRamLine = true;
+                        if (ramAmount >= lightfireRamDepletion)
+                        {
+                            updateMidLine = true;
+                            activateRamLine = true;
+                        }
                     }
                     
                 } // End Both Button
@@ -183,8 +190,11 @@ public class MagicSystem : MonoBehaviour
                             ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                             break;
                         case "lighting":
-                            updateLeftLine = true;
-                            activateRamLine = true;
+                            if (ramAmount >= lightningRamDepletion)
+                            {
+                                updateLeftLine = true;
+                                activateRamLine = true;
+                            }
                             break;
                     }
                     
@@ -204,8 +214,11 @@ public class MagicSystem : MonoBehaviour
                             ShootElement(MidPosition, iceProjectile, element, iceRamDepletion, blueParticle);
                             break;
                         case "lighting":
-                            updateRightLine = true;
-                            activateRamLine = true;
+                            if (ramAmount >= lightningRamDepletion)
+                            {
+                                updateRightLine = true;
+                                activateRamLine = true;
+                            }
                             break;
                     }
                     
@@ -228,7 +241,7 @@ public class MagicSystem : MonoBehaviour
         }
 
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && regenRam == true)
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait)) && regenRam == true && playerMovement.isPlayerMoving == true)
         {
             //int regenCounter = 1;
             print (regenCounter);
@@ -248,11 +261,13 @@ public class MagicSystem : MonoBehaviour
                 ramAmount = 100;
                 ramSlider.value = ramAmount;
                 regenCounter = 1;
+                playerMovement.isPlayerMoving = false;
+                regenRam = false;
             }
         }
 
-        // Ram penalty system //
-        if (ramAmount == 0 || ramAmount < 0)
+        // Ram hitting zero //
+        if (ramAmount <= 0 || ramAmount <= 3)
         {
             updateLeftLine = false;
             updateRightLine = false;
@@ -262,8 +277,8 @@ public class MagicSystem : MonoBehaviour
             RlaserLine.enabled = false;
             LlaserLine.enabled = false;
             //-------------------------
-            IsRamPenalty = true;
-            StartPenalty();
+            //IsRamPenalty = true;
+            //StartPenalty();
             regenRam = true;
         }
         else if (ramAmount == 100)
@@ -271,32 +286,31 @@ public class MagicSystem : MonoBehaviour
             regenCounter = 1;
             regenRam = false;
         }
-        
 
     } // end UPDATE
 
     // Fixed Update //
     private void FixedUpdate()
     {
-        if (updateLeftLine == true)
+        if (updateLeftLine == true && ramAmount >= lightningRamDepletion)
         {
             ActivateLineRenderer(Lwand, "lighting", lightingDMG, LlaserLine);
             if (activateRamLine == true)
             {
-                RamDepletion(lightningRamDepletion);
+                RamDepletion(lightningRamDepletion); // Starting lightning RamDepletion
                 StartLineCoroutine();
             }
         }
-        else if (updateRightLine == true)
+        else if (updateRightLine == true && ramAmount >= lightningRamDepletion)
         {
             ActivateLineRenderer(Rwand, "lighting", lightingDMG, RlaserLine);
             if (activateRamLine == true)
             {
-                RamDepletion(lightningRamDepletion);
+                RamDepletion(lightningRamDepletion); // Starting lightning RamDepletion
                 StartLineCoroutine();
             }
         }
-        else if (updateMidLine == true)
+        else if (updateMidLine == true && ramAmount >= lightfireRamDepletion)
         {
             ActivateLineRenderer(MidPosition, "lightfire", lightfireDMG, MlaserLine);
             if (activateRamLine == true)
@@ -314,7 +328,7 @@ public class MagicSystem : MonoBehaviour
             if ((Lelement == "fire" && Relement == "ice") || (Lelement == "ice" && Relement == "fire"))
             {
                 Lelement = "lighting";
-                // Switching images
+                // Switching HUD images
                 L_Lightning.enabled = true;
                 L_Fire.enabled = false;
                 L_Ice.enabled = false;
@@ -322,7 +336,7 @@ public class MagicSystem : MonoBehaviour
             else if ((Lelement == "lighting" && Relement == "ice") || (Lelement == "ice" && Relement == "lighting"))
             {
                 Lelement = "fire";
-                // Switching images
+                // Switching HUD images
                 L_Lightning.enabled = false;
                 L_Fire.enabled = true;
                 L_Ice.enabled = false;
@@ -330,7 +344,7 @@ public class MagicSystem : MonoBehaviour
             else if ((Lelement == "fire" && Relement == "lighting") || (Lelement == "lighting" && Relement == "fire"))
             {
                 Lelement = "ice";
-                // Switching images
+                // Switching HUD images
                 L_Lightning.enabled = false;
                 L_Fire.enabled = false;
                 L_Ice.enabled = true;
@@ -403,7 +417,7 @@ public class MagicSystem : MonoBehaviour
     // Deplete ram //
     public void RamDepletion(int damageAmt)
     {
-        if (ramAmount > 0 && !(ramAmount <= 0))
+        if (ramAmount > 0 && !(ramAmount <= 0) && ramAmount >= damageAmt)
         {
             ramAmount -= damageAmt;
         }
@@ -427,44 +441,16 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
-    // RAM penalty //
-    void StartPenalty()
-    {
-        ramPenaltyCoroutine = RamPenalty();
-        StartCoroutine(ramPenaltyCoroutine);
-        cancelPenalty = false;
-    }
-
-    private IEnumerator RamPenalty()
-    {
-        if (cancelPenalty == false)
-        {
-            penaltyRunning = true;
-            yield return ramDuration;
-            IsRamPenalty = false;
-            penaltyRunning = false;
-        }
-    }
-
-    // Cancel Penalty // 
-    public void CancelPenaltyCoroutine()
-    {
-        cancelPenalty = true;
-        penaltyRunning = false;
-        IsRamPenalty = false;
-
-        StopCoroutine(ramPenaltyCoroutine);
-    }
-
     // Particle Coroutine //
     private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
     {
         
         if (elementObj != null)
         {
-            Destroy(elementObj, 0.3f); //0.3
-            yield return new WaitForSeconds(0.28f);
+            //Destroy(elementObj, 0.3f);
+            yield return new WaitForSeconds(0.6f);
             Instantiate(particle, elementObj.transform.position, Quaternion.identity);
+            Destroy(elementObj);
         }
     }
 
@@ -494,62 +480,60 @@ public class MagicSystem : MonoBehaviour
             ai.iceFactor += 0.1f;
             //print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
-            //ai.IceAI(1f, 1f);
-            //print("Freezing enemy");
-            StartCoroutine(EnemyFreezeCoroutine());
-            //ai.ResetAI();
-            //print("Un freezing enemy");
         }
     }
     private IEnumerator EnemyFreezeCoroutine()
     {
         //print("Enemy Coroutine start");
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
         //print("Enemy Coroutine is over");
     }
 
     // Element Magic Shooting //
     public void ShootElement(Transform wandPosition, GameObject Element, string power, int ramAmt, GameObject particleToInstantiate)
     {
-        Transform wand = wandPosition;
-        Quaternion BulletRotation = Quaternion.LookRotation(cam.transform.forward);
-        Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-        Vector3 pointTo = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hitObj;
-        GameObject elementToShoot = Instantiate(Element, wand.transform.position, Quaternion.identity);
-        GameObject particle = particleToInstantiate;
-        if (Physics.Raycast(ray, out hitObj, shootRange))
+        if (ramAmount >= ramAmt)
         {
-            Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
-            //Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
-            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
-            RamDepletion(ramAmt);
-            enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
-            enemyMonster = hitObj.collider.GetComponent<BaseAI>();
-            if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+            Transform wand = wandPosition;
+            Quaternion BulletRotation = Quaternion.LookRotation(cam.transform.forward);
+            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+            Vector3 pointTo = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hitObj;
+            GameObject elementToShoot = Instantiate(Element, wand.transform.position, Quaternion.identity);
+            GameObject particle = particleToInstantiate;
+            if (Physics.Raycast(ray, out hitObj, shootRange))
             {
-                ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                Vector3 desitnation = elementToShoot.transform.position - hitObj.point;
+                //Quaternion rotationDestination = Quaternion.LookRotation(-desitnation);
+                elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
                 RamDepletion(ramAmt);
-                Destroy(elementToShoot, 0.3f); //0.3
-                Instantiate(particle, hitObj.point, Quaternion.identity);
+                enemyHealth = hitObj.collider.GetComponentInParent<EnemyHealthAndDeathManager>(); // getting script from the object hit
+                enemyMonster = hitObj.collider.GetComponent<BaseAI>();
+                if (enemyHealth != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+                {
+                    ElementDamageManager(power, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                    RamDepletion(ramAmt);
+                    Destroy(elementToShoot, 0.3f); //0.3
+                    Instantiate(particle, hitObj.point, Quaternion.identity);
+                }
+                else
+                {
+                    RamDepletion(ramAmt);
+                    Destroy(elementToShoot, 0.3f); //0.3
+                    Instantiate(particle, hitObj.point, Quaternion.identity);
+                }
             }
             else
             {
+                //print("Did not hit");
+                var position = ray.GetPoint(shootRange);
+                //Vector3 position = ray.GetPoint(shootRange);
+                Vector3 destintion = elementToShoot.transform.position - position;
+                //Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
+                elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
                 RamDepletion(ramAmt);
-                Destroy(elementToShoot, 0.3f); //0.3
-                Instantiate(particle, hitObj.point, Quaternion.identity);
+                StartCoroutine(InstantiateParticle(particleToInstantiate, elementToShoot));
             }
-        }
-        else
-        {
-            //print("Did not hit");
-            var position = ray.GetPoint(shootRange);
-            //Vector3 position = ray.GetPoint(shootRange);
-            Vector3 destintion = elementToShoot.transform.position - position;
-            //Quaternion rotationDestination = Quaternion.LookRotation(-destintion);
-            elementToShoot.transform.localRotation = Quaternion.Lerp(elementToShoot.transform.rotation, cam.transform.rotation, 1);
-            RamDepletion(ramAmt);
-            StartCoroutine(InstantiateParticle(particleToInstantiate, elementToShoot));
         }
     }
 
@@ -570,67 +554,65 @@ public class MagicSystem : MonoBehaviour
     // FireBall Projectile //
     private void FireShoot(Transform wandE)
     {
-        GameObject fireCopy;
-        fireCopy = Instantiate(fireProjectile, wandE.transform.position, cam.transform.rotation);
-        //fireCopy.GetComponent<FireBall>().magicSystem = this;
-        if (fireCopy != null)
+        if (ramAmount >= fireRamDepletion)
         {
-            RamDepletion(fireRamDepletion);
-            Rigidbody rbFireBall;
-            rbFireBall = fireCopy.GetComponent<Rigidbody>();
-            rbFireBall.AddForce((cam.transform.forward + new Vector3(0, fireBallArch, 0)).normalized * fireBallForce, ForceMode.VelocityChange);
-            Vector3 v = rbFireBall.velocity;
-            v += playerMovement.playerVelocity * playerInfluenceOnFireBall;
-            rbFireBall.velocity = v;
+            GameObject fireCopy;
+            fireCopy = Instantiate(fireProjectile, wandE.transform.position, cam.transform.rotation);
+            if (fireCopy != null)
+            {
+                RamDepletion(fireRamDepletion);
+                Rigidbody rbFireBall;
+                rbFireBall = fireCopy.GetComponent<Rigidbody>();
+                rbFireBall.AddForce((cam.transform.forward + new Vector3(0, fireBallArch, 0)).normalized * fireBallForce, ForceMode.VelocityChange);
+                Vector3 v = rbFireBall.velocity;
+                v += playerMovement.playerVelocity * playerInfluenceOnFireBall;
+                rbFireBall.velocity = v;
+            }
         }
     } 
 
     // Lightning Line Renderer
     private void LinerRendererShoot(Transform wand, string element, int RamDepleteAmt, LineRenderer Line)
     {
-        //StartCoroutine(ShotEffect(Line)); // Calling the coroutine ShotEffect function to enable laser line
-        Line.enabled = true;
-        Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
-
-        RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
-        Line.SetPosition(0, wand.position); // starting position of the laserline is set to current position of the tip of the wand where the ray will shoot from
-        GameObject particle;
-        if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
+        if (ramAmount >= RamDepleteAmt)
         {
-            Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
-            //RamDepletion(RamDepleteAmt);
-            // Bullet Cloning //
-            particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
-            Destroy(particle, 0.2f);
+            Line.enabled = true;
+            Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
 
-            enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
-            enemyMonster = hitObject.collider.GetComponent<BaseAI>();
-
-            if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+            RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
+            Line.SetPosition(0, wand.position); // starting position of the laserline is set to current position of the tip of the wand where the ray will shoot from
+            GameObject particle;
+            if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
             {
-                //print("Enemy was hit.");
-                ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
                 particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
-                Destroy(particle, 0.2f);
-                //RamDepletion(RamDepleteAmt);
+                Destroy(particle, 0.07f);
+
+                enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
+                enemyMonster = hitObject.collider.GetComponent<BaseAI>();
+
+                if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
+                {
+                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
+                    particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
+                    Destroy(particle, 0.07f);
+                }
+                else
+                {
+                    // nothing happens
+                }
+
             }
-            else
+            else // Raycast returns false
             {
-                //print("Something besides enemy was hit.");
-                //RamDepletion(RamDepleteAmt); 
+                // nothing was hit
+                Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
+
+                // Bullet Cloning //
+                particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
+                Destroy(particle, 0.75f);
+
             }
-
-        }
-        else // Raycast returns false
-        {
-            //print("Nothing was hit.");
-            Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
-
-            // Bullet Cloning //
-            particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
-            Destroy(particle, 0.2f);
-            //RamDepletion(RamDepleteAmt);
-
         }
     }
 }
