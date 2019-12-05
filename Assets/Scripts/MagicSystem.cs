@@ -80,15 +80,15 @@ public class MagicSystem : MonoBehaviour
     //------------------------------
 
     // RAM System //
-    public bool cancelPenalty = false;
-    public bool penaltyRunning;
+    //public bool cancelPenalty = false;
+    //public bool penaltyRunning;
     public Slider ramSlider;
     public int ramAmount = 100;
     public float nextRamFire;
     public float regenWait;
     public float ramFireRate = 3.0f;
     private WaitForSeconds ramDuration = new WaitForSeconds(7.0f);
-    bool IsRamPenalty = false;
+    //bool IsRamPenalty = false;
     private IEnumerator ramPenaltyCoroutine;
     private IEnumerator ramLineRendererCoroutine;
 
@@ -114,7 +114,6 @@ public class MagicSystem : MonoBehaviour
     bool que1;
     bool que2;
     //---------------------------------------------------------------------------------------------//
-
     void Start()
     {
         Lelement = "fire";
@@ -129,6 +128,7 @@ public class MagicSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Buffer for holding down buttons
         bool fire1 = Input.GetMouseButtonDown(0);
         bool fire2 = Input.GetMouseButtonDown(1);
         que1 = que1 || fire1;
@@ -227,7 +227,7 @@ public class MagicSystem : MonoBehaviour
         }
 
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait) && IsRamPenalty == false) && regenRam == true)
+        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait)) && regenRam == true && playerMovement.isPlayerMoving == true)
         {
             //int regenCounter = 1;
             print (regenCounter);
@@ -250,7 +250,7 @@ public class MagicSystem : MonoBehaviour
             }
         }
 
-        // Ram penalty system //
+        // Ram hitting zero //
         if (ramAmount == 0 || ramAmount < 0)
         {
             updateLeftLine = false;
@@ -261,8 +261,8 @@ public class MagicSystem : MonoBehaviour
             RlaserLine.enabled = false;
             LlaserLine.enabled = false;
             //-------------------------
-            IsRamPenalty = true;
-            StartPenalty();
+            //IsRamPenalty = true;
+            //StartPenalty();
             regenRam = true;
         }
         else if (ramAmount == 100)
@@ -270,7 +270,6 @@ public class MagicSystem : MonoBehaviour
             regenCounter = 1;
             regenRam = false;
         }
-        
 
     } // end UPDATE
 
@@ -426,6 +425,7 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
+    /*
     // RAM penalty //
     void StartPenalty()
     {
@@ -454,6 +454,7 @@ public class MagicSystem : MonoBehaviour
 
         StopCoroutine(ramPenaltyCoroutine);
     }
+    */
 
     // Particle Coroutine //
     private IEnumerator InstantiateParticle(GameObject particle, GameObject elementObj)
