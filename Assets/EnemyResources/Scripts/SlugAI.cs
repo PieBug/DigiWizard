@@ -30,14 +30,15 @@ public class SlugAI : BaseAI
     new void Start()
     {
         base.Start();
-        attributes = new SlugEnemyAttributes(attributes);
-        baseAttributes = new SlugEnemyAttributes(attributes);
+        attributes = Instantiate(attributes);
+        baseAttributes = Instantiate(attributes);
 
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
+        base.Update();
         //Get distance to player
         switch (state)
         {
@@ -141,7 +142,7 @@ public class SlugAI : BaseAI
     public override void IceAI(float linearIceFactor, float angularIceFactor)
     {
         base.IceAI(linearIceFactor, angularIceFactor);
-        Color color = new Color(0f, 0.97f, 1f);
+        Color color = Color.Lerp(new Color(0f, 0.97f, 1f), Color.white, linearIceFactor);
         material.SetColor("_BaseColor", color);
         attributes.burstSpeedIncrease = baseAttributes.burstSpeedIncrease * linearIceFactor;
         attributes.rotSpeed = baseAttributes.burstSpeedIncrease * angularIceFactor;

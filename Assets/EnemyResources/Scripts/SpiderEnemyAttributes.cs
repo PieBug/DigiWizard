@@ -32,25 +32,4 @@ public class SpiderEnemyAttributes : ScriptableObject
 
     [Header("Drops")]
     public GameObject normalDrop;
-
-    public SpiderEnemyAttributes(SpiderEnemyAttributes attributes)
-    {
-        docile = attributes.docile;
-        pacifist = attributes.pacifist;
-        viewEngage = attributes.viewEngage;
-        viewPounce = attributes.viewPounce;
-        sightRange = attributes.sightRange;
-        attackRange = attributes.attackRange;
-        rotSpeed = attributes.rotSpeed;
-        attackTime = attributes.attackTime;
-        recoupTime = attributes.recoupTime;
-        lungeDistance = attributes.lungeDistance;
-        lungeSpeed = attributes.lungeSpeed;
-        jitterRate = attributes.jitterRate;
-        jitterRange = attributes.jitterRange;
-        preparePounceClip = attributes.preparePounceClip;
-        pounceClip = attributes.pounceClip;
-        deathClip = attributes.deathClip;
-        normalDrop = attributes.normalDrop;
-    }
 }

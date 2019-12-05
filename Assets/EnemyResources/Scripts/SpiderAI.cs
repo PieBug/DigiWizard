@@ -39,13 +39,14 @@ public class SpiderAI : BaseAI
     new void Start()
     {
         base.Start();
-        attributes = new SpiderEnemyAttributes(attributes);
-        baseAttributes = new SpiderEnemyAttributes(attributes);
+        attributes = Instantiate(attributes);
+        baseAttributes = Instantiate(attributes);
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
+        base.Update();
         //Get distance to player
         switch (state)
         {
@@ -159,11 +160,10 @@ public class SpiderAI : BaseAI
     public override void IceAI(float linearIceFactor, float angularIceFactor)
     {
         base.IceAI(linearIceFactor, angularIceFactor);
-        Color color = new Color(0f, 0.97f, 1f);
+        Color color = Color.Lerp(new Color(0f, 0.97f, 1f), Color.white, linearIceFactor);
         material.SetColor("_BaseColor", color);
-        //material.SetColor("_BaseColor", Color.blue);
-        
         attributes.lungeSpeed = baseAttributes.lungeSpeed * linearIceFactor;
+        attributes.lungeDistance = baseAttributes.lungeDistance * linearIceFactor;
         attributes.rotSpeed = baseAttributes.rotSpeed * angularIceFactor;
     }
 

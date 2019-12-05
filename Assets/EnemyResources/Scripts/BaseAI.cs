@@ -30,6 +30,11 @@ public abstract class BaseAI : MonoBehaviour
     //Material
     protected Material material;
 
+    //Ice Factor
+    [HideInInspector]
+    public float iceFactor;
+    private float thawRate = 10f; //How long it should take an enemy to thaw
+
     //What damage states am I in
     [HideInInspector]
     //public float slowDownAI = 1;
@@ -48,6 +53,15 @@ public abstract class BaseAI : MonoBehaviour
         {
             otherMeshRenderers.sharedMaterial = material;
         }
+
+        thawRate = 1 / thawRate;
+    }
+
+    protected void Update()
+    {
+        iceFactor = Mathf.Clamp(iceFactor - thawRate * Time.deltaTime, 0f, 1f);
+        float i = 1 - iceFactor;
+        IceAI(i, i);
     }
 
     private void OnDestroy()

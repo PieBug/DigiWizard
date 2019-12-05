@@ -130,8 +130,8 @@ public class MagicSystem : MonoBehaviour
     {
         print(ramAmount);
         // Buffer for holding down buttons
-        bool fire1 = Input.GetMouseButtonDown(0);
-        bool fire2 = Input.GetMouseButtonDown(1);
+        bool fire1 = Input.GetMouseButton(0);
+        bool fire2 = Input.GetMouseButton(1);
         que1 = que1 || fire1;
         que2 = que2 || fire2;
         if (fire1 || fire2 && casting == false)
@@ -493,7 +493,8 @@ public class MagicSystem : MonoBehaviour
     {
         if (ai != null)
         {
-            ai.IceAI(0.5f, 0.5f); // Icing the AI w/ Ice power and Freezing it
+            ai.iceFactor += 0.1f;
+            //print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
         }
     }
