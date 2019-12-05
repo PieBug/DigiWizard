@@ -171,6 +171,10 @@ public class MagicSystem : MonoBehaviour
                             updateMidLine = true;
                             activateRamLine = true;
                         }
+                        else
+                        {
+                            print("less than ram amount");
+                        }
                     }
                     
                 } // End Both Button
@@ -194,6 +198,10 @@ public class MagicSystem : MonoBehaviour
                             {
                                 updateLeftLine = true;
                                 activateRamLine = true;
+                            }
+                            else
+                            {
+                                print("less than ram amount");
                             }
                             break;
                     }
@@ -219,6 +227,10 @@ public class MagicSystem : MonoBehaviour
                                 updateRightLine = true;
                                 activateRamLine = true;
                             }
+                            else
+                            {
+                                print("less than ram amount");
+                            }
                             break;
                     }
                     
@@ -241,13 +253,13 @@ public class MagicSystem : MonoBehaviour
         }
 
         // Ram regeneration system //
-        if ((!(Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2")) && (Time.time > regenWait)) && regenRam == true && playerMovement.isPlayerMoving == true)
-        {
+        if (ramAmount <= 0 && (Time.time > regenWait) && playerMovement.isPlayerMoving == true || regenRam == true && (Time.time > regenWait) && playerMovement.isPlayerMoving)
+        { // && regenRam == true
             //int regenCounter = 1;
             print (regenCounter);
             regenCounter *=2;
-            regenWait = Time.time + 1;   
-            if (!(ramAmount == 100) || !(ramAmount > 100))
+            regenWait = Time.time + 1;
+            if (!(ramAmount >= 100))
             {
                 ramAmount += regenCounter;
                 if (ramAmount > 100)
@@ -262,12 +274,12 @@ public class MagicSystem : MonoBehaviour
                 ramSlider.value = ramAmount;
                 regenCounter = 1;
                 playerMovement.isPlayerMoving = false;
-                regenRam = false;
+                //regenRam = false;
             }
         }
 
         // Ram hitting zero //
-        if (ramAmount <= 0 || ramAmount <= 3)
+        if (ramAmount <= 0)
         {
             updateLeftLine = false;
             updateRightLine = false;
@@ -277,13 +289,17 @@ public class MagicSystem : MonoBehaviour
             RlaserLine.enabled = false;
             LlaserLine.enabled = false;
             //-------------------------
-            //IsRamPenalty = true;
-            //StartPenalty();
+            //regenRam = true;
+        }
+
+        // making sure player always have enough ram to feel strong
+        if (ramAmount < 5)
+        {
             regenRam = true;
         }
         else if (ramAmount == 100)
         {
-            regenCounter = 1;
+            //regenCounter = 1;
             regenRam = false;
         }
 
@@ -292,7 +308,7 @@ public class MagicSystem : MonoBehaviour
     // Fixed Update //
     private void FixedUpdate()
     {
-        if (updateLeftLine == true && ramAmount >= lightningRamDepletion)
+        if (updateLeftLine == true)
         {
             ActivateLineRenderer(Lwand, "lighting", lightingDMG, LlaserLine);
             if (activateRamLine == true)
@@ -301,7 +317,7 @@ public class MagicSystem : MonoBehaviour
                 StartLineCoroutine();
             }
         }
-        else if (updateRightLine == true && ramAmount >= lightningRamDepletion)
+        else if (updateRightLine == true)
         {
             ActivateLineRenderer(Rwand, "lighting", lightingDMG, RlaserLine);
             if (activateRamLine == true)
@@ -310,7 +326,7 @@ public class MagicSystem : MonoBehaviour
                 StartLineCoroutine();
             }
         }
-        else if (updateMidLine == true && ramAmount >= lightfireRamDepletion)
+        else if (updateMidLine == true)
         {
             ActivateLineRenderer(MidPosition, "lightfire", lightfireDMG, MlaserLine);
             if (activateRamLine == true)
@@ -417,7 +433,7 @@ public class MagicSystem : MonoBehaviour
     // Deplete ram //
     public void RamDepletion(int damageAmt)
     {
-        if (ramAmount > 0 && !(ramAmount <= 0) && ramAmount >= damageAmt)
+        if (!(ramAmount <= 0) && ramAmount >= damageAmt)
         {
             ramAmount -= damageAmt;
         }
@@ -536,7 +552,6 @@ public class MagicSystem : MonoBehaviour
         }
     }
 
-    
     private void ActivateLineRenderer(Transform wand, string element, int damage, LineRenderer line)
     {
         LinerRendererShoot(wand, element, damage, line);
@@ -573,45 +588,41 @@ public class MagicSystem : MonoBehaviour
     // Lightning Line Renderer
     private void LinerRendererShoot(Transform wand, string element, int RamDepleteAmt, LineRenderer Line)
     {
-        if (ramAmount >= RamDepleteAmt)
-        {
-            Line.enabled = true;
-            Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
+        Line.enabled = true;
+        Vector3 camShootingPoint = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0)); // Aiming point of the ray -> will be set to the middle position of the fps camera. Takes position of the camera and converts it to world space. 
 
-            RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
-            Line.SetPosition(0, wand.position); // starting position of the laserline is set to current position of the tip of the wand where the ray will shoot from
-            GameObject particle;
-            if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
+        RaycastHit hitObject; // Object that is hit with our ray; object must have a collider on
+        Line.SetPosition(0, wand.position); // starting position of the laserline is set to current position of the tip of the wand where the ray will shoot from
+        GameObject particle;
+        if (Physics.Raycast(camShootingPoint, cam.transform.forward, out hitObject, shootRange)) // Raycast is used to determine where the end of the ray will be, and deals force/damage to the object hit. Physics Raycast returns a bool. [camShootingPoin:] point in the world space where ray will begin [fpsCam:] Direction of the ray [Out - keyword:] Allows us to store information from a function + it's return type of the object hit. ex: Information like Rigidbody, collider, & surfacenormal of object hit. [shootRange:] How far ray goes.
+        {
+            Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
+            particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
+            Destroy(particle, 0.07f);
+
+            enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
+            enemyMonster = hitObject.collider.GetComponent<BaseAI>();
+
+            if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
             {
-                Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
+                ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                 particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
                 Destroy(particle, 0.07f);
-
-                enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
-                enemyMonster = hitObject.collider.GetComponent<BaseAI>();
-
-                if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
-                {
-                    ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
-                    particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
-                    Destroy(particle, 0.07f);
-                }
-                else
-                {
-                    // nothing happens
-                }
-
             }
-            else // Raycast returns false
+            else
             {
-                // nothing was hit
-                Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
-
-                // Bullet Cloning //
-                particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
-                Destroy(particle, 0.75f);
-
+                // nothing happens
             }
+
+        }
+        else // Raycast returns false
+        {
+            // nothing was hit
+            Line.SetPosition(1, (camShootingPoint + (cam.transform.forward * shootRange))); // if nothing is hit, then the ray will just shoot 50 units away from the camera
+
+            // Bullet Cloning //
+            particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
+            Destroy(particle, 0.75f);
         }
     }
 }
