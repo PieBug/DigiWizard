@@ -565,6 +565,7 @@ MonoBehaviour:
   animator: {fileID: 3169578659944365741}
   audioSource2D: {fileID: 2420367032183582620}
   audioSource3D: {fileID: 7321372628320553806}
+  iceFactor: 0
   attributes: {fileID: 11400000, guid: eb805fbd7fbbb1e49bd21b79846690ba, type: 2}
   attackSphere: {fileID: 6821262815451505707}
   state: 0

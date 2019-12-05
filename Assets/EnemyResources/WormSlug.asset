@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7fb741f3380bc44eae0c817da584b3d, type: 3}
   m_Name: WormSlug
   m_EditorClassIdentifier: 
-  infertile: 1
+  infertile: 0
   brave: 0
   viewRunaway: 0
   sightRange: 50

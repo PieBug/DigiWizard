@@ -6,7 +6,8 @@ using UnityEngine;
 public class PopUpAdAI : BaseAI
 {
     public GameObject mesh;
-    public PopUpAdAttributes attributes;
+    public PopUpEnemyAttributes attributes;
+    private PopUpEnemyAttributes baseAttributes;
     public GameObject projectileLauncher;
     public ParticleSystem chargeParticles;
 
@@ -33,11 +34,14 @@ public class PopUpAdAI : BaseAI
         {
             animator.SetBool("hide", true);
         }
+        attributes = Instantiate(attributes);
+        baseAttributes = Instantiate(attributes);
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
+        base.Update();
         //Get distance to player
         switch (state)
         {
@@ -141,16 +145,24 @@ public class PopUpAdAI : BaseAI
         }
     }
 
+    public override void IceAI(float linearIceFactor, float angularIceFactor)
+    {
+        base.IceAI(linearIceFactor, angularIceFactor);
+        Color color = Color.Lerp(new Color(0f, 0.97f, 1f), Color.white, linearIceFactor);
+        material.SetColor("_BaseColor", color);
+        //material.SetColor("_BaseColor", Color.blue);
+
+        attributes.rotSpeed = baseAttributes.rotSpeed * angularIceFactor;
+    }
+
     public override void Alert()
     {
         if(state != State.dead)
         {
             animator.SetBool("hide", false);
             state = State.chasingAndShooting;
-            if (walkRoutine != null) walkRoutine = StartCoroutine(ChasePlayer());
-            walkRoutine = StartCoroutine(ChasePlayer());
-            if (shootRoutine != null) shootRoutine = StartCoroutine(ShootAtPlayer());
-            shootRoutine = StartCoroutine(ShootAtPlayer());
+            if (walkRoutine == null) walkRoutine = StartCoroutine(ChasePlayer());
+            if (shootRoutine == null) shootRoutine = StartCoroutine(ShootAtPlayer());
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newPopUpEnemyAttributes", menuName = "Enemy Attributes/Pop Up Enemy Attributes")]
-public class PopUpAdAttributes : ScriptableObject
+public class PopUpEnemyAttributes : ScriptableObject
 {
     [Header("Behavior")]
     public bool docile;

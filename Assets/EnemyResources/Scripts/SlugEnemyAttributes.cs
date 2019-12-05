@@ -33,24 +33,4 @@ public class SlugEnemyAttributes : ScriptableObject
 
     [Header("Drops")]
     public GameObject normalDrop;
-
-    public SlugEnemyAttributes(SlugEnemyAttributes attributes)
-    {
-        infertile = attributes.infertile;
-        brave = attributes.brave;
-        viewRunaway = attributes.viewRunaway;
-        sightRange = attributes.sightRange;
-        distanceBias = attributes.distanceBias;
-        dot1Bias = attributes.dot1Bias;
-        dot2Bias = attributes.dot2Bias;
-        child = attributes.child;
-        defensiveBirthRate = attributes.defensiveBirthRate;
-        rotSpeed = attributes.rotSpeed;
-        burstRate = attributes.burstRate;
-        burstRange = attributes.burstRange;
-        burstSpeedIncrease = attributes.burstSpeedIncrease;
-        patheticRunawayClip = attributes.patheticRunawayClip;
-        deathClip = attributes.deathClip;
-        normalDrop = attributes.normalDrop;
-    }
 }

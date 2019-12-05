@@ -131,6 +131,8 @@ public class MagicSystem : MonoBehaviour
     {
         bool fire1 = Input.GetMouseButtonDown(0);
         bool fire2 = Input.GetMouseButtonDown(1);
+        bool fire1 = Input.GetMouseButton(0);
+        bool fire2 = Input.GetMouseButton(1);
         que1 = que1 || fire1;
         que2 = que2 || fire2;
         if (fire1 || fire2 && casting == false)
