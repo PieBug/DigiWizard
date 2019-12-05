@@ -211,6 +211,7 @@ public class MagicSystem : MonoBehaviour
                     
                 } // END Right Mouse Button Down
                 que1 = que2 = casting = false;
+                buttonPressedTime = 0f;
             }
             
         } // end casting time
