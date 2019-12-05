@@ -129,8 +129,6 @@ public class MagicSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        bool fire1 = Input.GetMouseButtonDown(0);
-        bool fire2 = Input.GetMouseButtonDown(1);
         bool fire1 = Input.GetMouseButton(0);
         bool fire2 = Input.GetMouseButton(1);
         que1 = que1 || fire1;
@@ -493,7 +491,7 @@ public class MagicSystem : MonoBehaviour
     {
         if (ai != null)
         {
-            ai.IceAI(0.5f, 0.5f);
+            ai.iceFactor += 0.1f;
             //print("Slowing enemy");
             StartCoroutine(EnemyFreezeCoroutine());
             //ai.IceAI(1f, 1f);
