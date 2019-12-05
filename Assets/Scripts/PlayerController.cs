@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
     private bool jumpPressed;
     private bool onGround;
     private int groundContacts;
-    
+    public bool isPlayerMoving;
 
     private void Awake()
     {
@@ -81,6 +81,16 @@ public class PlayerController : MonoBehaviour {
     {
         zAxis = Input.GetAxis("Vertical") * walkSpeed; // Getting the z axis and multiplying by player's speed.
         xAxis = Input.GetAxis("Horizontal") * walkSpeed; // Getting the x axis and multiplying by player's speed.
+
+        // Checking to see if player is constantly moving // 
+        if (Input.GetKey("w") || Input.GetKey("a") || Input.GetKey("s") || Input.GetKey("d"))
+        {
+            isPlayerMoving = true;
+        }
+        if (Input.GetKeyUp("w") || Input.GetKeyUp("a") || Input.GetKeyUp("s") || Input.GetKeyUp("d"))
+        {
+            isPlayerMoving = false;
+        }
 
         //zAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
         //xAxis *= Time.deltaTime; // Ensuring smooth transitioning per updated frame
