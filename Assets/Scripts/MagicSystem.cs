@@ -289,11 +289,11 @@ public class MagicSystem : MonoBehaviour
             RlaserLine.enabled = false;
             LlaserLine.enabled = false;
             //-------------------------
-            //regenRam = true;
+            regenRam = true;
         }
 
         // making sure player always have enough ram to feel strong
-        if (ramAmount < 5)
+        if (ramAmount <= 10)
         {
             regenRam = true;
         }
