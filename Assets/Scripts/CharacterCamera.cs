@@ -43,4 +43,18 @@ public class CharacterCamera : MonoBehaviour {
             Var = a declared varible that inhereits it's "type" from assigned value. Only works locally.
          */
     }
+
+    public void Look(Vector3 direction)
+    {
+        //Orient character based on camera rotation set in editor
+        mouseDirection.x = direction.y;
+        if (direction.x > 270f)
+        {
+            mouseDirection.y = 360 - direction.x;
+        }
+        else
+        {
+            mouseDirection.y = -direction.x;
+        }
+    }
 }

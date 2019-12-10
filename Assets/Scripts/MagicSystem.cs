@@ -128,7 +128,7 @@ public class MagicSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        print(ramAmount);
+        //print(ramAmount);
         // Buffer for holding down buttons
         bool fire1 = Input.GetMouseButton(0);
         bool fire2 = Input.GetMouseButton(1);
@@ -589,7 +589,13 @@ public class MagicSystem : MonoBehaviour
                 Destroy(particle, 0.07f);
 
                 enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
+                LightningReaction reaction = hitObject.collider.GetComponentInParent<LightningReaction>();
                 enemyMonster = hitObject.collider.GetComponent<BaseAI>();
+
+                if (reaction != null)
+                {
+                    reaction.React();
+                }
 
                 if (enemyHealth != null || enemyMonster != null) // checking to make sure the hit object is an enemy type with script "EnemyHealthAndDamageManager" attached
                 {
@@ -601,6 +607,7 @@ public class MagicSystem : MonoBehaviour
                 {
                     // nothing happens
                 }
+                
 
             }
             else // Raycast returns false

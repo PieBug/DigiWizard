@@ -54,6 +54,9 @@ public class PlayerHealthAndDeathManager : MonoBehaviour{
     {
         isDead = true; 
         plyrController.enabled = false; // Stops the player from moving in the scene.
+        Destroy(plyrController.gameObject);
+        DestroyImmediate(plyrController);
+        Checkpoint.Respawn();
         //plyrCam.enabled = false;
         //FindObjectOfType<GameManager>().EndGame();
     }
