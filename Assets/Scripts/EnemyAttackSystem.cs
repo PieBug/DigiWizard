@@ -57,6 +57,11 @@ public class EnemyAttackSystem : MonoBehaviour {
         {
             AttackPlayer(); // Call attack function to damage the player
         }
+        if(playerHealth == null)
+        {
+            playerHealth = PlayerController.singleton.gameObject.GetComponent<PlayerHealthAndDeathManager>();
+            isPlayerRange = false;
+        }
     }
 
     void AttackPlayer()

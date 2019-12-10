@@ -62,6 +62,10 @@ public abstract class BaseAI : MonoBehaviour
         iceFactor = Mathf.Clamp(iceFactor - thawRate * Time.deltaTime, 0f, 1f);
         float i = 1 - iceFactor;
         IceAI(i, i);
+        if(player == null)
+        {
+            player = PlayerController.singleton;
+        }
     }
 
     private void OnDestroy()
