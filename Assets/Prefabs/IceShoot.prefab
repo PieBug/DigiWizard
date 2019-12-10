@@ -56,6 +56,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IceShoot
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 8ece2fc84c622b8458cad431966bb6c9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Thunder
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 8ece2fc84c622b8458cad431966bb6c9,
         type: 3}
       propertyPath: m_LocalPosition.x
