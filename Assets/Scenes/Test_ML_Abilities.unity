@@ -325,11 +325,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2125132071942386170, guid: b722d7435d48a9245b6b42aa8d72b325,
-        type: 3}
-      propertyPath: regenWait
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 7967924238210854165, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -338,11 +333,6 @@ PrefabInstance:
     - target: {fileID: 7967924238210854165, guid: b722d7435d48a9245b6b42aa8d72b325,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2125132072050951277, guid: b722d7435d48a9245b6b42aa8d72b325,
-        type: 3}
-      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3708242767812559278, guid: b722d7435d48a9245b6b42aa8d72b325,
@@ -354,16 +344,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8296172667664610616, guid: b722d7435d48a9245b6b42aa8d72b325,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7718390322038178276, guid: b722d7435d48a9245b6b42aa8d72b325,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b722d7435d48a9245b6b42aa8d72b325, type: 3}
@@ -1546,7 +1526,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 390dd06e9a4abd04795f3e35e9b42e03, type: 2}
+  - {fileID: 2100000, guid: f0f304f51e9273f4c80009e6b8ca3563, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

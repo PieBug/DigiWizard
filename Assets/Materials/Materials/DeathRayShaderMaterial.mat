@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DeathRayShader2
+  m_Name: DeathRayShaderMaterial
   m_Shader: {fileID: -6465566751694194690, guid: d4bd39a1376b44b42a25d48625a4eb87,
     type: 3}
   m_ShaderKeywords: 
@@ -24,7 +24,16 @@ Material:
         m_Texture: {fileID: 2800000, guid: 7d8d15a0296a5924989f288edc273737, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats: []
+    - Texture2D_60F6CFC9:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_1697B6C4: 25
+    - Vector1_6D1671FC: 1.6
+    - Vector1_93747084: 1
+    - Vector1_9C867ADD: 2
     m_Colors:
     - Color_A6131AB8: {r: 1, g: 1, b: 1, a: 1}
     - Vector2_76D38BAA: {r: -0.5, g: 0, b: 0, a: 0}
+    - Vector2_CE21EB93: {r: -1, g: 0, b: 0, a: 0}
