@@ -7,8 +7,9 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LaserBeamSolid
-  m_Shader: {fileID: 200, guid: 0000000000000000f000000000000000, type: 0}
+  m_Name: DeathRayShader2
+  m_Shader: {fileID: -6465566751694194690, guid: d4bd39a1376b44b42a25d48625a4eb87,
+    type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,11 +20,11 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8359a1f13d60ee340b025832d277fde4, type: 3}
+    - Texture2D_1216D3B3:
+        m_Texture: {fileID: 2800000, guid: 7d8d15a0296a5924989f288edc273737, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Floats:
-    - _InvFade: 1
+    m_Floats: []
     m_Colors:
-    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - Color_A6131AB8: {r: 1, g: 1, b: 1, a: 1}
+    - Vector2_76D38BAA: {r: -0.5, g: 0, b: 0, a: 0}
