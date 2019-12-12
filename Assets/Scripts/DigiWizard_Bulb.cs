@@ -20,13 +20,13 @@ public class DigiWizard_Bulb : MonoBehaviour
 
             if (isActivated == false)
             {
-                isActivated = true; //Once Activated, script can not be run again.
+                isActivated = true; //Script is Activated
                 platform.transform.position = platformSpawnPoint1; //Move the pre selected platform to new coordinates 
             }
 
             if (isActivated == true)
             {
-                isActivated = false; //Once Activated, script can not be run again.
+                isActivated = false; //Script is Deactivated
                 platform.transform.position = platformSpawnPoint2; //Move the pre selected platform to new coordinates 
             }
         }
