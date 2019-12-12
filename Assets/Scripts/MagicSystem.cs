@@ -252,7 +252,7 @@ public class MagicSystem : MonoBehaviour
             MlaserLine.enabled = false;
         }
 
-        // Ram regeneration system //
+        // Ram regeneration system whenever player walks and ramAMount is low //
         if (ramAmount <= 0 && (Time.time > regenWait) && playerMovement.isPlayerMoving == true || regenRam == true && (Time.time > regenWait) && playerMovement.isPlayerMoving)
         { // && regenRam == true
             //int regenCounter = 1;
@@ -267,14 +267,6 @@ public class MagicSystem : MonoBehaviour
                     ramAmount = 100;
                 }
                 ramSlider.value = ramAmount;
-            }
-            else if (ramAmount > 100)
-            {
-                ramAmount = 100;
-                ramSlider.value = ramAmount;
-                regenCounter = 1;
-                playerMovement.isPlayerMoving = false;
-                //regenRam = false;
             }
         }
 
@@ -297,9 +289,12 @@ public class MagicSystem : MonoBehaviour
         {
             regenRam = true;
         }
-        else if (ramAmount == 100)
+        if (ramAmount == 100)
         {
-            //regenCounter = 1;
+            ramAmount = 100;
+            ramSlider.value = ramAmount;
+            regenCounter = 1;
+            playerMovement.isPlayerMoving = false;
             regenRam = false;
         }
 
