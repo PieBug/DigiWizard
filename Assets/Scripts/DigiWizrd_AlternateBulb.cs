@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,30 +18,30 @@ public class DigiWizrd_AlternateBulb : LightningReaction
         Debug.Log("Triggered");
         if (isActivated == false)
         {
-            if (running == true)
+            if (running == false)
             {
                 isActivated = true; //Once Activated, script can not be run again.
                 platform.GetComponent<ObjectMovementToggleScript>().move = true; //Alow the selected platform to run it's Movement script, which moves it back and forth in a pendulum motion.
-                //StartCoroutine(TriggerWait);
+                StartCoroutine(TriggerWait());
             }
 
         }
         else
         {
-            if (running == true)
+            if (running == false)
             {
                 isActivated = false; //Once Activated, script can not be run again.
                 platform.GetComponent<ObjectMovementToggleScript>().move = false; //Alow the selected platform to run it's Movement script, which moves it back and forth in a pendulum motion.
-                //StartCoroutine(TriggerWait);
+                StartCoroutine(TriggerWait());
             }
         }
     }
 
-    //IEnumerator TriggerWait()
-    //{
-    //    running = true;
-    //    yield return new WaitForSeconds (60f):
-    //    running = false;
-    //}
+    IEnumerator TriggerWait()
+    {
+        running = true;
+        yield return new WaitForSeconds(1f);
+        running = false;
+    }
 }
 
