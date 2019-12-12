@@ -2,32 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DigiWizrd_AlternateBulb : MonoBehaviour
+public class DigiWizrd_AlternateBulb : LightningReaction
 {
 
     [SerializeField]
     GameObject platform;
 
     bool isActivated = false;
+    bool running = false;
     public Vector3 platformSpawnPoint = new Vector3(0, 0, 0);
 
-    void OnTriggerEnter(Collider col)
+    public override void React()
     {
-        if (col.gameObject.tag.Equals("Thunder")) //When object is hit by another object with the Thunder tag, play script
+        Debug.Log("Triggered");
+        if (isActivated == false)
         {
-            if (isActivated == false)
+            if (running == true)
             {
                 isActivated = true; //Once Activated, script can not be run again.
                 platform.GetComponent<ObjectMovementToggleScript>().move = true; //Alow the selected platform to run it's Movement script, which moves it back and forth in a pendulum motion.
+                //StartCoroutine(TriggerWait);
             }
 
-            if (isActivated == true)
+        }
+        else
+        {
+            if (running == true)
             {
                 isActivated = false; //Once Activated, script can not be run again.
                 platform.GetComponent<ObjectMovementToggleScript>().move = false; //Alow the selected platform to run it's Movement script, which moves it back and forth in a pendulum motion.
+                //StartCoroutine(TriggerWait);
             }
         }
-
     }
+
+    //IEnumerator TriggerWait()
+    //{
+    //    running = true;
+    //    yield return new WaitForSeconds (60f):
+    //    running = false;
+    //}
 }
 
