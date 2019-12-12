@@ -12,7 +12,8 @@ public class Checkpoint : MonoBehaviour
     public GameObject respawn;
     [HideInInspector]
     public GameObject player;
-    private Vector3 positon;
+    [Tooltip("This helps the pointer determine where to point to next")]
+    public Checkpoint nextCheckpoint;
     public UnityEvent onCheckpoint;
 
     private void Start()
@@ -20,7 +21,9 @@ public class Checkpoint : MonoBehaviour
         if (!Application.isEditor)
         {
             trigger.GetComponent<MeshRenderer>().enabled = false;
-            respawn.GetComponent<MeshRenderer>().enabled = false;
+            foreach(MeshRenderer renderer in respawn.GetComponentsInChildren<MeshRenderer>()){
+                renderer.enabled = false;
+            }  
         }    
     }
 
@@ -34,5 +37,18 @@ public class Checkpoint : MonoBehaviour
     {
         Instantiate(currentCheckpoint.player, currentCheckpoint.respawn.transform.position, currentCheckpoint.respawn.transform.rotation);
         PlayerController.singleton.gameObject.GetComponentInChildren<CharacterCamera>().Look(currentCheckpoint.respawn.transform.eulerAngles);
+    }
+
+    public static Vector3 GetGoal()
+    {
+        if (currentCheckpoint?.nextCheckpoint)
+        {
+            return currentCheckpoint.nextCheckpoint.transform.position;
+        }
+        else
+        {
+            return Vector3.zero;
+        }
+        
     }
 }
