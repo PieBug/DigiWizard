@@ -594,7 +594,7 @@ public class MagicSystem : MonoBehaviour
         {
             Line.SetPosition(1, hitObject.point); // if raycast returns true and an object is hit, we're setting the 2nd position of the laser line to that object point
             particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
-            Destroy(particle, 0.07f);
+            Destroy(particle, 0.1f);
 
             enemyHealth = hitObject.collider.GetComponentInParent<EnemyHealthAndDeathManager>();  // getting script from the object hit
             LightningReaction reaction = hitObject.collider.GetComponentInParent<LightningReaction>();
@@ -609,7 +609,7 @@ public class MagicSystem : MonoBehaviour
             {
                 ElementDamageManager(element, enemyHealth); // if "EnemyHealthAndDamageManager" exists, then pass in the element
                 particle = Instantiate(yellowParticle, hitObject.point, Quaternion.identity);
-                Destroy(particle, 0.07f);
+                Destroy(particle, 0.1f);
             }
             else
             {
@@ -624,7 +624,7 @@ public class MagicSystem : MonoBehaviour
 
             // Bullet Cloning //
             particle = Instantiate(yellowParticle, (camShootingPoint + (cam.transform.forward * shootRange)), Quaternion.identity);
-            Destroy(particle, 0.75f);
+            Destroy(particle, 0.1f);
         }
     }
 }
