@@ -55,11 +55,12 @@ public class PlayerController : MonoBehaviour {
             onGround = true;
         }
 
-        //Check if player is on a moving platform. If true, parent Player Character to object to move with it.
-        if (collision.gameObject.tag.Equals("MovingPlatform"))
-        {
-            this.transform.parent = collision.transform;
-        }
+        ////Check if player is on a moving platform. If true, parent Player Character to object to move with it.
+        //if (collision.gameObject.tag.Equals("MovingPlatform"))
+        //{
+        //    this.transform.parent = collision.transform;
+        //    Debug.Log("Parented under:");
+        //}
     }
 
     private void OnCollisionExit(Collision collision)
@@ -71,10 +72,10 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Check if player is no longer on a moving platform. If so, remove parent Player Character to object to stop moving with it.
-        if (collision.gameObject.tag.Equals("MovingPlatform"))
-        {
-            this.transform.parent = null;
-        }
+        //if (collision.gameObject.tag.Equals("MovingPlatform"))
+        //{
+        //    this.transform.parent = null;
+        //}
     }
     // Update is called once per frame //
     void Update()
