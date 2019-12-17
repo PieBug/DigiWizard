@@ -20,7 +20,7 @@ public class PopADProjectile : Projectile
             Hit(raycastHit.collider.gameObject);
         }
     }
-
+    /**
     private void OnTriggerEnter(Collider collision)
     {
         if(collision.gameObject == PlayerController.singleton.gameObject)
@@ -28,4 +28,5 @@ public class PopADProjectile : Projectile
             Hit(PlayerController.singleton.gameObject);
         }
     }
+    **/
 }
