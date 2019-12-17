@@ -48,6 +48,7 @@ MonoBehaviour:
   trigger: {fileID: 3929424504531239971}
   respawn: {fileID: 497570613975307920}
   player: {fileID: 2125132071942386162, guid: b722d7435d48a9245b6b42aa8d72b325, type: 3}
+  nextCheckpoint: {fileID: 0}
   onCheckpoint:
     m_PersistentCalls:
       m_Calls:
@@ -163,7 +164,6 @@ GameObject:
   - component: {fileID: 178618059570660264}
   - component: {fileID: 687128155182674114}
   - component: {fileID: 8239339406759145193}
-  - component: {fileID: 1968931206356368392}
   m_Layer: 14
   m_Name: Sphere
   m_TagString: Untagged
@@ -231,19 +231,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &1968931206356368392
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3890954763409980274}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3929424504531239971
 GameObject:
   m_ObjectHideFlags: 0

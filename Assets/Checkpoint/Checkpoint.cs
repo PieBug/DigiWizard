@@ -10,7 +10,7 @@ public class Checkpoint : MonoBehaviour
     public GameObject trigger;
     [HideInInspector]
     public GameObject respawn;
-    [HideInInspector]
+    //[HideInInspector]
     public GameObject player;
     [Tooltip("This helps the pointer determine where to point to next")]
     public Checkpoint nextCheckpoint;
@@ -35,6 +35,11 @@ public class Checkpoint : MonoBehaviour
 
     public static void Respawn()
     {
+        if (!currentCheckpoint)
+        {
+            Debug.LogWarning("Player died before setting a checkpoint.");
+            currentCheckpoint = FindObjectOfType<Checkpoint>();
+        }
         Instantiate(currentCheckpoint.player, currentCheckpoint.respawn.transform.position, currentCheckpoint.respawn.transform.rotation);
         PlayerController.singleton.gameObject.GetComponentInChildren<CharacterCamera>().Look(currentCheckpoint.respawn.transform.eulerAngles);
     }

@@ -31,6 +31,7 @@ public class PauseMenuScript : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Escape))
         {
+            if (!playerHUD) playerHUD = PlayerController.singleton.transform.Find("HUD").gameObject;
             if(GameIsPaused)
             {
                 Resume();
