@@ -95,13 +95,13 @@ public class PopUpAdAI : BaseAI
 
     private IEnumerator ChasePlayer()
     {
-        agent.destination = player.transform.position;
+        if(player) agent.destination = player.transform.position;
         yield return new WaitForSeconds(Random.Range(0, 1f));
         while (true)
         {
             if(state == State.chasingAndShooting || state == State.justShooting)
             {
-                agent.destination = player.transform.position;
+                if(player) agent.destination = player.transform.position;
                 agent.updateRotation = true;
             }
             else if(state == State.closeQuaters)
