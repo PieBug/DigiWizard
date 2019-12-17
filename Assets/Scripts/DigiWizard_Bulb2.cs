@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DigiWizard_Bulb : LightningReaction
+public class DigiWizard_Bulb2 : LightningReaction
 {
 
     [SerializeField]
     GameObject platform1;
 
+    public GameObject platform2;
+
     bool isActivated = false;
     bool running = false;
     public Vector3 platformSpawn1Point1 = new Vector3(0, 0, 0);
     public Vector3 platformSpawn1Point2 = new Vector3(0, 0, 0);
+    public Vector3 platformSpawn2Point1 = new Vector3(0, 0, 0);
+    public Vector3 platformSpawn2Point2 = new Vector3(0, 0, 0);
 
     public override void React()
     {
@@ -21,6 +25,7 @@ public class DigiWizard_Bulb : LightningReaction
             {
                 isActivated = true; //Script is Activated
                 platform1.transform.position = platformSpawn1Point2; //Move the pre selected platform to new coordinates 
+                platform2.transform.position = platformSpawn2Point2; //Move the pre selected platform to new coordinates 
                 StartCoroutine(TriggerWait());
             }
 
@@ -31,6 +36,7 @@ public class DigiWizard_Bulb : LightningReaction
             {
                 isActivated = false; //Script is Deactivated
                 platform1.transform.position = platformSpawn1Point1; //Move the pre selected platform to new coordinates 
+                platform2.transform.position = platformSpawn2Point1; //Move the pre selected platform to new coordinates 
                 StartCoroutine(TriggerWait());
             }
         }
@@ -43,4 +49,5 @@ public class DigiWizard_Bulb : LightningReaction
         running = false;
     }
 }
+
 
