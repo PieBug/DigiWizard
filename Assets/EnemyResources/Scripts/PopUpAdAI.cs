@@ -110,7 +110,7 @@ public class PopUpAdAI : BaseAI
             }
             if(agent.pathStatus == NavMeshPathStatus.PathPartial)
             {
-                Debug.Log("Cannot reach player. Stop when I'm close enough.");
+                //Debug.Log("Cannot reach player. Stop when I'm close enough.");
                 agent.stoppingDistance = attributes.playerInaccessibleStoppingDistance;
                 state = State.justShooting;
                 
