@@ -6,12 +6,12 @@ public class DigiWizard_Bulb : LightningReaction
 {
 
     [SerializeField]
-    GameObject platform;
+    GameObject platform1;
 
     bool isActivated = false;
     bool running = false;
-    public Vector3 platformSpawnPoint1 = new Vector3(0, 0, 0);
-    public Vector3 platformSpawnPoint2 = new Vector3(0, 0, 0);
+    public Vector3 platformSpawn1Point1 = new Vector3(0, 0, 0);
+    public Vector3 platformSpawn1Point2 = new Vector3(0, 0, 0);
 
     public override void React()
     {
@@ -20,7 +20,7 @@ public class DigiWizard_Bulb : LightningReaction
             if (running == false)
             {
                 isActivated = true; //Script is Activated
-                platform.transform.position = platformSpawnPoint2; //Move the pre selected platform to new coordinates 
+                platform1.transform.position = platformSpawn1Point2; //Move the pre selected platform to new coordinates 
                 StartCoroutine(TriggerWait());
             }
 
@@ -30,7 +30,7 @@ public class DigiWizard_Bulb : LightningReaction
             if (running == false)
             {
                 isActivated = false; //Script is Deactivated
-                platform.transform.position = platformSpawnPoint1; //Move the pre selected platform to new coordinates 
+                platform1.transform.position = platformSpawn1Point1; //Move the pre selected platform to new coordinates 
                 StartCoroutine(TriggerWait());
             }
         }
