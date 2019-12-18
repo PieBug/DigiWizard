@@ -173,7 +173,7 @@ public class MagicSystem : MonoBehaviour
                         }
                         else
                         {
-                            print("less than ram amount");
+                            //print("less than ram amount");
                         }
                     }
                     
@@ -201,7 +201,7 @@ public class MagicSystem : MonoBehaviour
                             }
                             else
                             {
-                                print("less than ram amount");
+                                //print("less than ram amount");
                             }
                             break;
                     }
@@ -229,7 +229,7 @@ public class MagicSystem : MonoBehaviour
                             }
                             else
                             {
-                                print("less than ram amount");
+                                //print("less than ram amount");
                             }
                             break;
                     }
@@ -256,7 +256,7 @@ public class MagicSystem : MonoBehaviour
         if (ramAmount <= 0 && (Time.time > regenWait) && playerMovement.isPlayerMoving == true || regenRam == true && (Time.time > regenWait) && playerMovement.isPlayerMoving)
         { // && regenRam == true
             //int regenCounter = 1;
-            print (regenCounter);
+            //print (regenCounter);
             regenCounter *=2;
             regenWait = Time.time + 1;
             if (!(ramAmount >= 100))
